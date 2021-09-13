@@ -1,0 +1,24 @@
+{
+  "name": "backend-express",
+  "version": "1.0.0",
+  "description": "Express project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec babel-node ./src/index.js",
+    "clean": "rm -rf dist",
+    "build": "npm run clean; babel ./src --out-dir dist --copy-files",
+    "prod": "npm run build && node ./dist/index.js"
+  },
+  "author": "Ivan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
+    "@babel/node": "^7.15.4",
+    "@babel/preset-env": "^7.15.6",
+    "nodemon": "^2.0.12"
+  }
+}
