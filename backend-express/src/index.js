@@ -1,4 +1,5 @@
 import express from 'express';
+import api from './api';
 
 const app = express();
 const port = 80;
@@ -7,10 +8,6 @@ const port = 80;
 app.use(express.json());
 
 /* api */
-app.get('/api/', (req, res) => {
-  res.send('Hello World!')
-});
+app.use('/api/', api);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+app.listen(port);

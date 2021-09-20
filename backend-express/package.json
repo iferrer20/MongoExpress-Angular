@@ -4,7 +4,7 @@
   "description": "Express project",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node ./src/index.js",
+    "dev": "babel-watch --watch ./src/ ./src/index.js",
     "clean": "rm -rf dist",
     "build": "npm run clean; babel ./src --out-dir dist --copy-files",
     "prod": "npm run build && node ./dist/index.js"
@@ -13,13 +13,17 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^6.0.6"
+    "mongoose": "^6.0.6",
+    "regenerator-runtime": "^0.13.9",
+    "uninstall": "^0.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.4",
     "@babel/core": "^7.15.5",
     "@babel/node": "^7.15.4",
+    "@babel/plugin-transform-runtime": "^7.15.0",
     "@babel/preset-env": "^7.15.6",
-    "nodemon": "^2.0.12"
+    "babel-preset-latest": "^6.24.1",
+    "babel-watch": "^7.5.0"
   }
 }

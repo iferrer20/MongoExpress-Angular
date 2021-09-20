@@ -1,1 +1,1 @@
-_UID=$(id -u) _GID=$(id -g) docker-compose up
+_UID=$(id -u) _GID=$(id -g) docker-compose up 
