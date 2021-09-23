@@ -31,4 +31,4 @@ services:
     working_dir: /home/node/app
     volumes:
       - ./frontend-angular:/home/node/app
-    command: /bin/bash -c "usermod -u `stat -c '%u' package.json` node && groupmod -g `stat -c '%g' package.json` node && su node -c 'npm install && npm start -- --port 80 --host 0.0.0.0 --disable-host-check --deploy-url /dev/ --base-href /dev/'"
+    command: /bin/bash -c "usermod -u `stat -c '%u' .` node && groupmod -g `stat -c '%g' .` node && su node -c 'npm install && npm start -- --port 80 --host 0.0.0.0 --disable-host-check --deploy-url /dev/ --base-href /dev/'"
