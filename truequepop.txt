@@ -1,0 +1,49 @@
+enums:
+ProductQuality:
+    - New
+    - LikeNew
+    - MinorDamages
+    - Decrepit
+    - Broken
+
+interfaces:
+Category:
+    * id?: Integer
+    * short-name: String
+    * description: String
+    * icon-name: String
+Product:
+    * id?: Integer
+    * owner_uid: Integer - owner of the product
+    * category_id: Integer - category of the product
+    * price_eur_cent: Integer - price in euro cents
+    * name: String
+    * description: String
+    * quality: ProductQuality
+    * date_published: Date
+    * approx_lat: Double
+    * approx_lon: Double
+    * views: Integer
+    * likes: Integer
+
+
+categories
+    get - / - list
+        < data: Category[]
+    post - / - create category - admin only
+        * Category
+        < res: Boolean - result
+        < category: Category
+    get - /:id - info
+    put - /:id - update category - admin only
+        * Category
+        < res: 
+    delete - /:id - delete category - admin only
+
+products
+    get - / - list
+    get - /:id - info
+
+profile
+    get - / - list - admin only
+    get - /:uid - info
