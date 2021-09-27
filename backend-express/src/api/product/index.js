@@ -7,7 +7,7 @@ const router = Router();
 
 router.param('product', ah(async (req, res, next, slug) => {
     let product = await Product.findOne({slug})
-            .populate('owner')
+            /*.populate('owner')*/
             .populate('category')
             .exec();
 
@@ -21,7 +21,7 @@ router.param('product', ah(async (req, res, next, slug) => {
 
 router.get('/', ah(async (req, res) => {
     let [ data, total ] = await allResolved([
-        Product.find().exec(),
+        Product.find().populate({path: 'category', options: {select: 'slug shortName'}}).exec(),
         Product.countDocuments().exec()
     ]);
 

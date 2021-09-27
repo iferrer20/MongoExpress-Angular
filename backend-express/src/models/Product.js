@@ -1,9 +1,12 @@
 import mongoose from 'mongoose';
+import Category from './Category';
+
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const field = (type, required = true) => ({type, required});
 const productSchema = mongoose.Schema({
-    owner: {...field(ObjectId), ref: 'Profile'},
+    /* TODO: make owner required when profiles are implemented */
+    owner: {...field(ObjectId, false), ref: 'Profile'},
     category: {...field(ObjectId), ref: 'Category'},
     priceEurCent: field(Number),
     name: field(String),
@@ -17,6 +20,10 @@ const productSchema = mongoose.Schema({
     views: {...field(Number), default: 0},
     likes: {...field(Number), default: 0}
 });
+
+productSchema.path('category').validate(async value => {
+    return await Category.findById(value);
+}, 'Category does not exist');
 
 productSchema.virtual('slug')
     .get(function() {
