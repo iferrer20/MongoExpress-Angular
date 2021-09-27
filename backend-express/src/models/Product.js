@@ -19,7 +19,7 @@ const productSchema = mongoose.Schema({
     datePublished: {...field(Date), default: Date.now()},
     views: {...field(Number), default: 0},
     likes: {...field(Number), default: 0}
-});
+}, {toJSON: {virtuals: true}});
 
 productSchema.path('category').validate(async value => {
     return await Category.findById(value);
@@ -32,5 +32,6 @@ productSchema.virtual('slug')
                         .replace(/[^a-z0-9]/g, '-')
                         .replace(/--+/g, '-');
     });
+
 
 export default mongoose.model('Product', productSchema);

@@ -21,7 +21,9 @@ router.param('product', ah(async (req, res, next, slug) => {
 
 router.get('/', ah(async (req, res) => {
     let [ data, total ] = await allResolved([
-        Product.find().populate({path: 'category', options: {select: 'slug shortName'}}).exec(),
+        Product.find()
+            .populate({path: 'category', select: '-_id slug shortName'})
+            .exec(),
         Product.countDocuments().exec()
     ]);
 

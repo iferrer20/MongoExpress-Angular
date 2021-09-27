@@ -5,7 +5,7 @@ const categorySchema = mongoose.Schema({
     shortName: field(String),
     description: field(String),
     iconName: field(String)
-});
+}, {toJSON: {virtuals: true}});
 
 categorySchema.virtual('slug')
     .get(function() {
