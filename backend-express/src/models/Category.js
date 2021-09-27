@@ -8,7 +8,7 @@ const categorySchema = mongoose.Schema({
 });
 
 categorySchema.virtual('slug')
-    .get(() => {
+    .get(function() {
         return this.shortName.toLowerCase()
                 .replace(/[^a-z0-9]/g, '-');
     });

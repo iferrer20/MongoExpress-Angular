@@ -14,7 +14,7 @@ mongoose.connect('mongodb://root:land@land_db/');
 /* api */
 app.use('/api/', api);
 
-app.use((err, req, res, next) => {
+/*app.use((err, req, res, next) => {
     // https://expressjs.com/en/guide/error-handling.html
     if (res.headersSent) {
         return next(err);
@@ -30,7 +30,7 @@ app.use((err, req, res, next) => {
 
     res.json({ error: err.message });
     res.end(); 
-});
+});*/
 
 app.listen(port);
 

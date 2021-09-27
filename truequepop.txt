@@ -33,6 +33,7 @@ Profile:
 categories
     get - / - list
         < data: Category[]
+        < total: Number
     post - / - create category - admin only
         * Category
         < res: Boolean - result

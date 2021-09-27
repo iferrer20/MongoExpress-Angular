@@ -19,7 +19,7 @@ const productSchema = mongoose.Schema({
 });
 
 productSchema.virtual('slug')
-    .get(() => {
+    .get(function() {
         return this.datePublished.getTime() + '-'
                 + this.name.toLowerCase()
                         .replace(/[^a-z0-9]/g, '-')

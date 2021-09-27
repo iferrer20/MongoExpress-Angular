@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import Product from '../../models/Product';
 import { allResolved } from '../../utils';
+import ah from 'express-async-handler'; /* asyncHandler */
 
 const router = Router();
 
-router.param('product', async (req, res, next, slug) => {
+router.param('product', ah(async (req, res, next, slug) => {
     let product = await Product.findOne({slug})
             .populate('owner')
             .populate('category')
@@ -14,19 +15,20 @@ router.param('product', async (req, res, next, slug) => {
         return res.sendStatus(404);
     }
 
-    return product;
-});
+    req.params.product = product;
+    next();
+}));
 
-router.get('/', async (req, res) => {
+router.get('/', ah(async (req, res) => {
     let [ data, total ] = await allResolved([
         Product.find().exec(),
         Product.countDocuments().exec()
     ]);
 
     res.json({data, total});
-});
+}));
 
-router.post('/', async (req, res) => {
+router.post('/', ah(async (req, res) => {
     // TODO: check if current user is authorized
     const {category, priceEurCent, name, description, quality} = req.body;
     let product = new Product({
@@ -41,13 +43,13 @@ router.post('/', async (req, res) => {
     await product.save();
 
     res.json({product, slug: product.slug});
-});
+}));
 
-router.get('/:product', async (req, res) => {
+router.get('/:product', ah(async (req, res) => {
     res.json({product: req.params.product});
-});
+}));
 
-router.put('/:product', async (req, res) => {
+router.put('/:product', ah(async (req, res) => {
     // TODO: check if current user is owner or admin
     const {category, priceEurCent, name, description, quality} = req.body;
     let product = req.params.product;
@@ -60,12 +62,12 @@ router.put('/:product', async (req, res) => {
     await product.save();
 
     res.json({product, slug: product.slug});
-});
+}));
 
-router.delete('/:product', async (req, res) => {
+router.delete('/:product', ah(async (req, res) => {
     // TODO: check if current user is owner or admin
     await Product.deleteOne({_id: req.params.product._id});
-});
-
+    res.json({ok: true});
+}));
 
 export default router;
