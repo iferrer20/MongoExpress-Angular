@@ -1,0 +1,26 @@
+<div class="product"> <!-- render one time -->
+  <div>
+    <div :style="`background-image: url(/img/car/${car.id}/1.jpg)`">
+    </div>
+  </div>
+  <div class="info">
+    <div class="title">{{ product.name }}</div>
+
+    <div class="price">
+      {{ product.price }}€
+    </div>
+    <div class="description">
+      {{ product.description }}
+    </div>
+    <div class="author">
+      Autor: {{ product.owner }}
+    </div>
+    <div class="quality">
+
+    </div>
+    <div class="actions" v-if="isAdmin">
+      <span><i class="gg-pen"></i></span>
+      <span><i class="delete gg-trash"></i></span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+@import 'global';
+
+.list {
+  display: flex;
+  position: relative;
+
+  .admin-menu {
+    flex: 0 0 100%;
+    display: flex;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    z-index: 2;
+    height: 80px;
+
+    .add {
+      transform: scale(2) translate(50%, 50%);
+      background: rgb(0, 241, 32);
+      z-index: 2;
+      top: 0px;
+      left: 0px;
+      cursor: pointer;
+    }
+  }
+
+  .list-products {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .noproducts {
+      margin: auto;
+      font-size: 15pt;
+      user-select: none;
+      font-weight: bold;
+      color: $gray;
+      text-align: center;
+    }
+
+    .noproducts > i {
+      margin: auto;
+      transform: scale(2) translateY(5px);
+    }
+    
+    .cars {
+      display: flex;
+      position: relative;
+      height: 100%;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+      overflow: auto;
+      justify-content: center;
+      @include scroll;
+    }
+
+    .hidden {
+      flex-grow: 1; 
+      width: 300px; 
+      margin-left: 10px;
+      margin-right: 10px;
+      max-width: 400px;
+    }
+  } 
+}
