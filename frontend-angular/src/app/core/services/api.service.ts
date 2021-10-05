@@ -4,6 +4,10 @@ import { environment } from 'src/environments/environment';
 import { first, map } from "rxjs/operators";
 import { Observable } from 'rxjs';
 
+interface BodyData {
+  data?: any,
+  error?: any
+}
 
 @Injectable()
 export class ApiService {
@@ -16,7 +20,7 @@ export class ApiService {
     })
     .pipe(
       first(),
-      map(({data}: any) => data)
+      map((bodyData: BodyData) => bodyData.data)
     );
   }
   

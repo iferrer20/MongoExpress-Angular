@@ -1,0 +1,11 @@
+<div class="slider">
+  <i (click)="move(-1)" class="button-left gg-chevron-left" *ngIf="images.length > 1"></i>
+  <i (click)="move(1)" class="button-right gg-chevron-right" *ngIf="images.length > 1"></i>
+  <div :style="state.styling" class="imgs" ref="slider">
+    <div *ngFor="let img of images"
+      [style.backgroundImage]="`url(${img.data})`"
+      alt="">
+      
+    </div>
+  </div>
+</div>

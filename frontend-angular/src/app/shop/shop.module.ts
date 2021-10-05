@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { ShopResolverService } from './shop-resolver.service';
+import { ProductListResolver } from './product-list-resolver.service';
 
 import { ShopRoutingModule } from './shop-routing.module';
 import { ShopComponent } from './shop.component';
-
 
 @NgModule({
   declarations: [
@@ -15,7 +14,7 @@ import { ShopComponent } from './shop.component';
     ShopRoutingModule
   ],
   providers: [
-    ShopResolverService
+    ProductListResolver
   ]
 })
 export class ShopModule { }

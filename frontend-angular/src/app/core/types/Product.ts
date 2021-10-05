@@ -15,14 +15,14 @@ Product:
 */
 
 export default interface Product {
-    _id: string,
-    owner: any,
-    category: Category,
-    name: string,
-    description: string,
-    price: number,
-    quality: string,
-    datePublished: Date,
-    views: number,
-    likes: number
+  _id: string,
+  owner: any,
+  category: Category,
+  name: string,
+  description: string,
+  price: number,
+  quality: string,
+  datePublished: Date,
+  views: number,
+  likes: number
 }

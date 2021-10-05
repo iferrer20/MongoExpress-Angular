@@ -1,4 +1,4 @@
-<div class="product"> <!-- render one time -->
+<div class="product" ngOnce> <!-- render one time -->
   <div>
     <div :style="`background-image: url(/img/car/${car.id}/1.jpg)`">
     </div>
@@ -18,7 +18,7 @@
     <div class="quality">
 
     </div>
-    <div class="actions" v-if="isAdmin">
+    <div class="actions" *ngIf="user.isAdmin()">
       <span><i class="gg-pen"></i></span>
       <span><i class="delete gg-trash"></i></span>
     </div>

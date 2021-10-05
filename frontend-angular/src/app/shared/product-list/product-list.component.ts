@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import {User} from 'src/app/core/types/User';
 import Product from '../../core/types/Product';
 
 @Component({
@@ -7,27 +8,10 @@ import Product from '../../core/types/Product';
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit {
-  @Input() products: Product[] = [
-    {
-      _id: 'id',
-      category: {
-        _id: 'id',
-        description: 'a',
-        iconName: 'a',
-        shortName: 'a'
-      },
-      datePublished: new Date(),
-      description: 'description',
-      likes: 0,
-      name: 'name',
-      owner: '',
-      quality: 'a',
-      price: 0,
-      views: 0
-    }
-  ];
+  @Input() products!: Product[];
+  loading: boolean = false;
 
-  constructor() { }
+  constructor() {  }
 
   ngOnInit(): void {
   }

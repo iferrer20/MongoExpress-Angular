@@ -5,7 +5,7 @@ import { ProductService } from '../core/services/product.service';
 import Product from '../core/types/Product';
 
 @Injectable()
-export class ShopResolverService implements Resolve<Product[]> {
+export class ProductListResolver implements Resolve<Product[]> {
 
   constructor(
     private productService: ProductService
