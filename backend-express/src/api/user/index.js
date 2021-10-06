@@ -7,7 +7,7 @@ const router = Router();
 router.post('/signin/', ah(async (req, res) => {
     const { username, password, email } = req.body;
     const user = await User.findOne({username});
-    
+
     if (!user || !user.comparePassword(password)) 
         throw new Error('Invalid username or password');
 
@@ -24,7 +24,8 @@ router.post('/signup/', ah(async (req, res) => {
         password
     });
 
-    user.save();
+    await user.validate();
+    await user.save();
 
     res.end();
 }));

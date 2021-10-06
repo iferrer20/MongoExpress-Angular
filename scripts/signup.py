@@ -4,7 +4,7 @@ import requests
 import sys
 
 if len(sys.argv) < 4:
-    print("Args: signin.py username email password")
+    print("Args: signup.py username email password")
     exit()
 
 data = {
