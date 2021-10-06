@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 class MultiPromiseError extends Error {
     constructor(errors) {
         super();
@@ -21,4 +23,9 @@ export async function allResolved(prom) {
     }
     
     return prom;
+}
+
+
+export function createHash(salt, text) {
+    return crypto.createHmac('sha256', salt).update(text).digest('hex');
 }
