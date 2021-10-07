@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import ah from 'express-async-handler'; /* asyncHandler */
 import User from '../../models/User';
+import { OAuth2Client } from 'google-auth-library';
 
+const client = new OAuth2Client();
 const router = Router();
 
 router.post('/signin/', ah(async (req, res) => {
@@ -14,6 +16,29 @@ router.post('/signin/', ah(async (req, res) => {
     res.end();
 }));
 
+router.post('/social_signin/', ah(async (req, res) => {
+
+    const { token } = req.body;
+
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.CLIENT_ID
+    });
+
+    const { username, email, picture } = ticket.getPayload();    
+    username = username.replace(' ', '_') + '_' + Math.floor(Math.random() * 1000);
+
+    if (!await User.findOne({email})) {
+        const user = new User({
+            username,
+            email,
+            password: ''
+        });
+        await user.save();
+    }
+
+    res.json(ticket.getPayload());
+}));
 
 router.post('/signup/', ah(async (req, res) => {
     const { username, email, password } = req.body;

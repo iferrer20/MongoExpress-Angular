@@ -12,8 +12,10 @@
   "author": "Ivan",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
+    "google-auth-library": "^7.10.0",
     "mongoose": "^6.0.7",
     "regenerator-runtime": "^0.13.9",
     "uninstall": "^0.0.0"
