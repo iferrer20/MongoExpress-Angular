@@ -1,9 +1,12 @@
 import express from 'express';
 import api from './api';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
+dotenv.config(); // Load dotenv config
 const app = express();
-const port = 80;
+console.log(process.env.PORT);
+const port = process.env.PORT;
 
 /* Middlewares */
 app.use(express.json());
