@@ -1,10 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'global';
 @import 'icons';
+@import 'fonts';
 
 body,html {
   margin: 0;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Wallie,Helvetica;
 }
 
 body {
@@ -12,7 +13,7 @@ body {
 }
 
 input, button, textarea {
-  background-color: $white;
+  background-color: $dark-white;
   border: none;
   outline: none;
   margin: 5px;
@@ -22,7 +23,6 @@ input, button, textarea {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   resize: none;
   box-sizing: border-box;
-  @include shadow;
 }
 
 button {
@@ -99,4 +99,26 @@ input[type=checkbox]:checked::after {
 
 #app {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+
+// Scroll
+* {
+  &::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $white;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    border-radius: 40px;
+    background: $gray;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: $dark-gray;
+  }
 }
