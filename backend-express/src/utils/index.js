@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import jwtkey from '../private/jwt-key';
 
 class MultiPromiseError extends Error {
     constructor(errors) {
@@ -28,4 +30,16 @@ export async function allResolved(prom) {
 
 export function createHash(salt, text) {
     return crypto.createHmac('sha256', salt).update(text).digest('hex');
+}
+
+export function genJWT(o) {
+    return jwt.sign(o, jwtkey, { algorithm: 'HS256' });
+}
+
+export function checkJWT(token) {
+    try {
+        jwt.verify(token, jwtkey); 
+    } catch(e) {
+        throw new Error("Invalid JWT token");
+    }
 }

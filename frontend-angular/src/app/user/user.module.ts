@@ -5,17 +5,21 @@ import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
 import { SigninComponent } from './signin.component';
 import { SignupComponent } from './signup.component';
+import { LogoComponent } from './logo.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     UserComponent,
     SigninComponent,
-    SignupComponent
+    SignupComponent,
+    LogoComponent
   ],
   imports: [
     CommonModule,
-    UserRoutingModule
+    UserRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class UserModule { }

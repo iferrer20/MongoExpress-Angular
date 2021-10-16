@@ -14,7 +14,9 @@ export class UserService {
   }
 
   private loadOwnUser() {
-    this.user = JSON.parse(window.atob(localStorage.getItem("user") as string)) as User;
+    try {
+      this.user = JSON.parse(window.atob(localStorage.getItem("user") as string)) as User;
+    } catch (e) {}
   }
 
   private saveOwnUser() {
