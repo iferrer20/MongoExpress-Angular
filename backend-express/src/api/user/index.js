@@ -7,52 +7,56 @@ const client = new OAuth2Client();
 const router = Router();
 
 router.post('/signin/', ah(async (req, res) => {
-    const { username, password, email } = req.body;
-    const user = await User.findOne({username});
+  const { userOrEmail, password } = req.body;
+  const user = await User.findOne({
+    $or: [
+      { username: userOrEmail },
+      { email: userOrEmail },
+    ]
+  });
 
-    if (!user || !user.comparePassword(password)) 
-        throw new Error('Invalid username or password');
+  if (!user || !user.comparePassword(password))
+    throw new Error('Invalid username or password');
 
-    res.end();
+  res.end(user.toJSONFor(user));
 }));
 
 router.post('/social_signin/', ah(async (req, res) => {
+  const { token } = req.body;
 
-    const { token } = req.body;
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience: process.env.CLIENT_ID
+  });
 
-    const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: process.env.CLIENT_ID
+  let { username, email, picture } = ticket.getPayload();
+  username = username.replace(' ', '_') + '_' + Math.floor(Math.random() * 1000);
+
+  if (!await User.findOne({ email })) {
+    const user = new User({
+      username,
+      email,
+      password: ''
     });
+    await user.save();
+  }
 
-    const { username, email, picture } = ticket.getPayload();    
-    username = username.replace(' ', '_') + '_' + Math.floor(Math.random() * 1000);
-
-    if (!await User.findOne({email})) {
-        const user = new User({
-            username,
-            email,
-            password: ''
-        });
-        await user.save();
-    }
-
-    res.json(ticket.getPayload());
+  res.json(ticket.getPayload());
 }));
 
 router.post('/signup/', ah(async (req, res) => {
-    const { username, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-    const user = new User({
-        username,
-        email,
-        password
-    });
+  const user = new User({
+    username,
+    email,
+    password
+  });
 
-    await user.validate();
-    await user.save();
+  await user.validate();
+  await user.save();
 
-    res.end();
+  res.end();
 }));
 
 
