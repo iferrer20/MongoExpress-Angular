@@ -41,7 +41,7 @@ userSchema.pre('save', function (next) {
   next();
 });
 
-userSchema.methods.toJSONFor = viewer => {
+userSchema.methods.toJSONFor = async function (viewer) {
   let user = {uid: this._id, ...this};
   delete user.password;
   delete user._id;
@@ -53,6 +53,10 @@ userSchema.methods.toJSONFor = viewer => {
   }
 
   return user;
+};
+
+userSchema.methods.hasFavorite = async function (product) {
+  return false; /** TODO: implement */
 };
 
 export default mongoose.model('User', userSchema);
