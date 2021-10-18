@@ -1,0 +1,27 @@
+<form class="form" [formGroup]="signinForm" (ngSubmit)="onSignin()">
+  <div class="error center">{{ errorSignin }}</div>
+  <div>
+    <h1>Sign in</h1>
+    <div class="error">
+      <ng-container *ngIf="submited" [ngSwitch]="(signinForm.get('email') | keyvalue)">
+        <ng-container *ngSwitchCase="'email'">
+          Email invalido
+        </ng-container>
+      </ng-container>
+    </div>
+    <input type="text" formControlName="username" placeholder="Email or username">
+    <div class="error">
+      <ng-container *ngIf="submited" [ngSwitch]="getError('password')">
+        <ng-container *ngSwitchCase="'required'">
+          Inserte una contraseña
+        </ng-container>
+        <ng-container *ngSwitchCase="'minlength'">
+          Contraseña muy corta
+        </ng-container>
+      </ng-container>
+    </div>
+    <input type="text" formControlName="password" placeholder="Password" type="password">
+    <button type="submit">Signin</button>
+    <div class="signup">No estas logeado? <a [routerLink]="['/user/access/signup/']">Registrarse</a></div>
+  </div>
+</form>

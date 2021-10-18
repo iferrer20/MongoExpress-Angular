@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
-import { SigninComponent } from './signin.component';
-import { SignupComponent } from './signup.component';
+import { SigninComponent } from './access/signin.component';
+import { SignupComponent } from './access/signup.component';
 import { LogoComponent } from './logo.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AccessComponent } from './access/access.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     UserComponent,
     SigninComponent,
     SignupComponent,
-    LogoComponent
+    LogoComponent,
+    AccessComponent
   ],
   imports: [
     CommonModule,

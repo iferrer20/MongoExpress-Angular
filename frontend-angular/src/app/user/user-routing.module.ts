@@ -1,11 +1,20 @@
-import { SigninComponent } from './signin.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './user.component';
+import { SignupComponent } from './access/signup.component';
+import { SigninComponent } from './access/signin.component';
+import { AccessComponent } from './access/access.component';
 
 const routes: Routes = [
   { path: '', component: UserComponent },
-  { path: 'signin', component: SigninComponent }
+  {
+    path: 'access',
+    component: AccessComponent,
+    children: [
+      { path: 'signin', component: SigninComponent },
+      { path: 'signup', component: SignupComponent }
+    ]
+  }
 ];
 
 @NgModule({

@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { User, UserPrivileges } from '../types/User';
 import { ApiService } from './api.service';
-import { tap } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
@@ -23,12 +23,27 @@ export class UserService {
     localStorage.setItem(window.btoa(JSON.stringify(this.user)), "user");
   }
 
-  signIn(userOrEmail: string, password: string) : Observable<User> {
-    return this.api.request<User>('POST', '/api/user/signin', {
-      userOrEmail, password
-    }).pipe(tap(function (x: User): User {
-      return x;
-    }));
+  signIn(username: string, password: string) : Observable<User> {
+    return this.api.request<User>('POST', '/user/signin', {
+      username, password
+    }).pipe(
+      first(),
+      tap((user: User) => {
+        this.user = user;
+        return user;
+      }
+    ));
+  }
+  signUp(email: string, username: string, password: string) : Observable<User> {
+    return this.api.request<User>('POST', '/user/signup', {
+      email, username, password
+    }).pipe(
+      first(),
+      tap((user: User) => {
+        this.user = user;
+        return user;
+      }
+    ));
   }
 
   isAdmin() {

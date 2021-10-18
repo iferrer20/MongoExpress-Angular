@@ -1,0 +1,43 @@
+<form class="form" [formGroup]="signupForm" (ngSubmit)="onSignup()">
+  <div class="error center">{{ errorSignup }}</div>
+  <div>
+    <h1>Sign up</h1>
+    <div class="error">
+      <ng-container *ngIf="submited">
+        <ng-container *ngIf="signupForm.get('email')?.errors">
+          Email invalido
+        </ng-container>
+      </ng-container>
+    </div>
+    <input type="text" formControlName="username" placeholder="Email">
+    <div class="error">
+      <ng-container *ngIf="submited">
+        <ng-container *ngIf="signupForm.get('username')?.errors?.minlength">
+          Nombre de usuario muy corto
+        </ng-container>
+      </ng-container>
+    </div>
+    <input type="text" formControlName="username" placeholder="Email">
+    <div class="error">
+      <ng-container *ngIf="submited" [ngSwitch]="signupForm.get('password')?.errors">
+        <ng-container *ngSwitchCase="">
+          Inserte una contraseña
+        </ng-container>
+        <ng-container *ngE="signupForm.get('password')?.errors?.minlength">
+          Contraseña muy corta
+        </ng-container>
+      </ng-container>
+    </div>
+    <input type="text" formControlName="repeatPassword" placeholder="Password" type="password">
+    <div class="error">
+      <ng-container *ngIf="submited">
+        <ng-container *ngIf="signupForm.errors?.mispassword">
+          Contraseña no coincide
+        </ng-container>
+      </ng-container>
+    </div>
+    <input type="text" formControlName="password" placeholder="Retype password" type="password">
+    <button type="submit">Sign up</button>
+    <div class="signup">Estas logeado? <a [routerLink]="['/user/access/signin/']">Iniciar sesión</a></div>
+  </div>
+</form>
