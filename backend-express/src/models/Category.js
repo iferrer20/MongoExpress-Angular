@@ -23,6 +23,7 @@ categorySchema.path('slug')
 
 categorySchema.methods.toJSON = function () {
   return {
+    id: this._id,
     shortName: this.shortName,
     description: this.description,
     iconName: this.iconName,

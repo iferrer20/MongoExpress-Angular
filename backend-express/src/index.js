@@ -18,21 +18,23 @@ mongoose.connect('mongodb://root:land@land_db/');
 app.use('/api/', api);
 
 app.use((err, req, res, next) => {
-    console.log(err)
-    if (err.name == 'Error') {
-        res.status(400);
-        res.json({ error: err.message });
-    } else if (err.name == 'ValidationError') {
-        res.status(400);
-        res.json({ error: err.errors[Object.keys(err.errors)[0]].properties.message});
-    } else if (err.name == 'MongoServerError' && err.code == 11000) { // IF DUPLICATED KEY
-        res.status(400);
-        const key = Object.keys(err.keyValue); 
-        res.json({ error: key + ' ' + err.keyValue[key] + ' already exists' });
-    } else {
-        res.status(500);
-    }
-    res.end(); 
+  const cleanErr = err => err.properties ? err.properties.message : err.message;
+
+  console.log(err)
+  if (err.name == 'Error') {
+    res.status(400);
+    res.json({ error: err.message });
+  } else if (err.name == 'ValidationError') {
+    res.status(400);
+    res.json({ error: Object.keys(err.errors).map(k => cleanErr(err.errors[k])) });
+  } else if (err.name == 'MongoServerError' && err.code == 11000) { // IF DUPLICATED KEY
+    res.status(400);
+    const key = Object.keys(err.keyValue);
+    res.json({ error: key + ' ' + err.keyValue[key] + ' already exists' });
+  } else {
+    res.status(500);
+  }
+  res.end();
 });
 
 app.listen(port);

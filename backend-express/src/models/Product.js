@@ -21,7 +21,7 @@ const productSchema = mongoose.Schema({
     enum: ['Available', 'Reserved', 'Sold'],
     default: 'Available'
   },
-  datePublished: { ...field(Date), default: Date.now() },
+  datePublished: { ...field(Date), default: Date.now },
   views: { ...field(Number), default: 0 },
   likes: { ...field(Number), default: 0 },
   slug: { ...field(String), unique: true, default: function () { return this.v_slug; } }
@@ -44,6 +44,7 @@ productSchema.path('slug')
 
 productSchema.methods.toJSON = function () {
   return {
+    id: this._id,
     owner: this.owner,
     category: this.category,
     name: this.name,
@@ -58,6 +59,7 @@ productSchema.methods.toJSON = function () {
 
 productSchema.methods.toJSONFor = async function (user) {
   return {
+    id: this._id,
     owner: await this.owner.toJSONFor(user),
     category: this.category,
     name: this.name,
