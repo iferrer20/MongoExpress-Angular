@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../core/services/user.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class SignupComponent implements OnInit {
   }
 
   onSignup() {
-    console.log(this.signupForm.get('password')?.errors)
+
     this.submited = true;
     if (this.signupForm.invalid)
       return;
@@ -32,16 +32,17 @@ export class SignupComponent implements OnInit {
       }
     );
   }
-  checkSamePassword(form: FormGroup): ValidationErrors {
-    return {
-      mispassword: form.get('password')?.value !== form.get('repeatPassword')?.value
-    };
+  checkSamePassword(fg: FormGroup) {
+    
+    const mispassword = fg.get('password')?.value !== fg.get('repeatPassword')?.value;
+    return mispassword ? { mispassword } : {};
+
   }
   getError(s: string) {
-    console.log(this.signupForm)
-    const { errors }:any = this.signupForm.get(s);
+    const { errors }:any = s == 'parent' ? this.signupForm : this.signupForm.get(s);
+
     if (errors) {
-      return Object.keys(errors)[0];
+      return Object.keys(errors).filter(e => errors[e])[0];
     } else {
       return null;
     }
@@ -52,8 +53,8 @@ export class SignupComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required, Validators.minLength(6)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      repeatPassword: ['']
-    }, <AbstractControlOptions> {
+      repeatPassword: ['', [this.checkSamePassword]]
+    }, {
       validators: this.checkSamePassword
     });
   }

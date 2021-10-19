@@ -17,21 +17,23 @@ export class SigninComponent implements OnInit {
 
   onSignin() {
     this.submited = true;
+    
     if (this.signinForm.invalid)
       return;
 
+    this.errorSignin = '';
     this.user.signIn(
       this.signinForm.get('username')?.value, 
       this.signinForm.get('password')?.value
     ).subscribe(
-      data => {},
-      ({error}) => {
-        this.errorSignin = error.error;
+      () => {},
+      (error: Error) => {
+        this.errorSignin = error.message;
       }
     );
   }
+
   getError(s: string) {
-    console.log(this.signinForm)
     const { errors }:any = this.signinForm.get(s);
     if (errors) {
       return Object.keys(errors)[0];
@@ -42,8 +44,8 @@ export class SigninComponent implements OnInit {
 
   ngOnInit(): void {
     this.signinForm = this.fb.group({
-      username: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]]
     });
   }
 

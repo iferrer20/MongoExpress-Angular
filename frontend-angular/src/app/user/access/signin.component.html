@@ -3,9 +3,12 @@
   <div>
     <h1>Sign in</h1>
     <div class="error">
-      <ng-container *ngIf="submited" [ngSwitch]="(signinForm.get('email') | keyvalue)">
+      <ng-container *ngIf="submited" [ngSwitch]="getError('username')">
+        <ng-container *ngSwitchCase="'required'">
+          Insert an email
+        </ng-container>
         <ng-container *ngSwitchCase="'email'">
-          Email invalido
+          Invalid email
         </ng-container>
       </ng-container>
     </div>
@@ -13,15 +16,15 @@
     <div class="error">
       <ng-container *ngIf="submited" [ngSwitch]="getError('password')">
         <ng-container *ngSwitchCase="'required'">
-          Inserte una contraseña
+          Insert a password
         </ng-container>
         <ng-container *ngSwitchCase="'minlength'">
-          Contraseña muy corta
+          Password too short
         </ng-container>
       </ng-container>
     </div>
     <input type="text" formControlName="password" placeholder="Password" type="password">
-    <button type="submit">Signin</button>
-    <div class="signup">No estas logeado? <a [routerLink]="['/user/access/signup/']">Registrarse</a></div>
+    <button type="submit">Sign in</button>
+    <div class="signup center">Are you logged? <a [routerLink]="['/user/access/signup/']">Sign up</a></div>
   </div>
 </form>

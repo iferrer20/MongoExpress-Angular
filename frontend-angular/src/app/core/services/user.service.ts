@@ -24,7 +24,7 @@ export class UserService {
   }
 
   signIn(username: string, password: string) : Observable<User> {
-    return this.api.request<User>('POST', '/user/signin', {
+    return this.api.request<User>('POST', 'user/signin', {
       username, password
     }).pipe(
       first(),
@@ -35,7 +35,7 @@ export class UserService {
     ));
   }
   signUp(email: string, username: string, password: string) : Observable<User> {
-    return this.api.request<User>('POST', '/user/signup', {
+    return this.api.request<User>('POST', 'user/signup', {
       email, username, password
     }).pipe(
       first(),

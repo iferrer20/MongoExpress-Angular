@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { first, map } from "rxjs/operators";
+import { catchError, first, map } from "rxjs/operators";
 import { Observable } from 'rxjs';
 
 interface BodyData {
@@ -20,7 +20,17 @@ export class ApiService {
     })
     .pipe(
       first(),
-      map((bodyData: BodyData) => bodyData.data)
+      map((bodyData: BodyData) => {
+        return bodyData.data;
+      }),
+      catchError((e: BodyData) => { 
+        const { error } = e.error;
+        if (error) {
+          throw new Error(error);
+        } else {
+          throw new Error('Unknown error');
+        }
+      })
     );
   }
   

@@ -3,41 +3,47 @@
   <div>
     <h1>Sign up</h1>
     <div class="error">
-      <ng-container *ngIf="submited">
-        <ng-container *ngIf="signupForm.get('email')?.errors">
+      <ng-container *ngIf="submited" [ngSwitch]="getError('email')">
+        <ng-container *ngSwitchCase="'required'">
+          Inserte un email
+        </ng-container>
+        <ng-container *ngSwitchCase="'email'">
           Email invalido
         </ng-container>
       </ng-container>
     </div>
-    <input type="text" formControlName="username" placeholder="Email">
+    <input type="text" formControlName="email" placeholder="Email">
     <div class="error">
-      <ng-container *ngIf="submited">
-        <ng-container *ngIf="signupForm.get('username')?.errors?.minlength">
-          Nombre de usuario muy corto
+      <ng-container *ngIf="submited" [ngSwitch]="getError('username')">
+        <ng-container *ngSwitchCase="'required'">
+          Insert an username
+        </ng-container>
+        <ng-container *ngSwitchCase="'minlength'">
+          Username too short 
         </ng-container>
       </ng-container>
     </div>
-    <input type="text" formControlName="username" placeholder="Email">
+    <input type="text" formControlName="username" placeholder="Username">
     <div class="error">
-      <ng-container *ngIf="submited" [ngSwitch]="signupForm.get('password')?.errors">
-        <ng-container *ngSwitchCase="">
-          Inserte una contraseña
+      <ng-container *ngIf="submited" [ngSwitch]="getError('password')">
+        <ng-container *ngSwitchCase="'required'">
+          Insert a password
         </ng-container>
-        <ng-container *ngE="signupForm.get('password')?.errors?.minlength">
-          Contraseña muy corta
+        <ng-container *ngSwitchCase="'minlength'">
+          Password too short
         </ng-container>
       </ng-container>
     </div>
-    <input type="text" formControlName="repeatPassword" placeholder="Password" type="password">
+    <input type="text" formControlName="password" placeholder="Password" type="password">
     <div class="error">
-      <ng-container *ngIf="submited">
-        <ng-container *ngIf="signupForm.errors?.mispassword">
-          Contraseña no coincide
+      <ng-container *ngIf="submited" [ngSwitch]="getError('parent')">
+        <ng-container *ngSwitchCase="'mispassword'">
+          Password mismatch
         </ng-container>
       </ng-container>
     </div>
-    <input type="text" formControlName="password" placeholder="Retype password" type="password">
+    <input type="text" formControlName="repeatPassword" placeholder="Retype password" type="password">
     <button type="submit">Sign up</button>
-    <div class="signup">Estas logeado? <a [routerLink]="['/user/access/signin/']">Iniciar sesión</a></div>
+    <div class="signup center">Are you logged? <a [routerLink]="['/user/access/signin/']">Sign in</a></div>
   </div>
 </form>
