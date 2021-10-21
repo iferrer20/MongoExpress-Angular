@@ -1,4 +1,6 @@
+import { CarouselItem } from './../shared/carousel/carousel-item.component';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  categories!: CarouselItem[];
+  
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.categories = this.route.snapshot.data.categoryList;
   }
-
 }

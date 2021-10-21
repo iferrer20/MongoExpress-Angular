@@ -1,0 +1,25 @@
+.carousel-track {
+	display: flex;
+	overflow-x: auto;
+}
+
+app-carousel-item {
+	background-position: center;
+	background-size: cover;
+	/* background-repeat: no-repeat; */
+	min-height: 189px;
+	min-width: 21vw;
+	border: 1px solid #777;
+	box-shadow: inset 0px 0px 2px 0px;
+	border-radius: 4px;
+	margin-right: 10px;
+	display: flex;
+	align-items: flex-end;
+	padding-bottom: 12px;
+	box-sizing: border-box;
+	justify-content: center;
+
+  &:not(:active):hover {
+    opacity: 0.9;
+  }
+}

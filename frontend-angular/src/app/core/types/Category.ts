@@ -12,5 +12,6 @@ export default interface Category {
     _id: string,
     shortName: string,
     description: string,
-    iconName: string
+    iconName: string,
+    slug: string
 }

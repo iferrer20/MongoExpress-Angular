@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ProductService } from '../core/services/product.service';
-import Product from '../core/types/Product';
+import { ProductService } from '../../core/services/product.service';
+import Product from '../../core/types/Product';
 
 @Injectable()
 export class ProductListResolver implements Resolve<Product[]> {

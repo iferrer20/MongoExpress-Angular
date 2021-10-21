@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductListResolver } from './product-list-resolver.service';
+import { ProductListResolver } from '../shared/product-list/product-list-resolver.service';
 import { ShopComponent } from './shop.component';
 
 const routes: Routes = [
