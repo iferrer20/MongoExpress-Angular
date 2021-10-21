@@ -6,6 +6,8 @@ export enum UserPrivileges {
 }
 
 export interface User {
-  uid: string,
+  _id: string,
+  username: string,
+  email: string,
   privileges: UserPrivileges
 }

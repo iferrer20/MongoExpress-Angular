@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
 
 @Component({
@@ -12,7 +13,11 @@ export class SigninComponent implements OnInit {
   submited: boolean = false;
   errorSignin: string = '';
 
-  constructor(private user: UserService, private fb: FormBuilder) {
+  constructor(
+    public userService: UserService, 
+    private fb: FormBuilder,
+    private route: Router
+  ) {
   }
 
   onSignin() {
@@ -22,14 +27,11 @@ export class SigninComponent implements OnInit {
       return;
 
     this.errorSignin = '';
-    this.user.signIn(
+    this.userService.signIn(
       this.signinForm.get('username')?.value, 
       this.signinForm.get('password')?.value
     ).subscribe(
-      () => {},
-      (error: Error) => {
-        this.errorSignin = error.message;
-      }
+      () => this.route.navigate(['/'])
     );
   }
 

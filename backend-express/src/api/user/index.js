@@ -7,22 +7,26 @@ import { genJWT } from '../../utils';
 const client = new OAuth2Client();
 const router = Router();
 
+function sendJWT(res, user) {
+  const { _id } = user;
+  const token = genJWT({ _id , exp: Math.floor((Date.now() + 7*24*60*60*1000)/1000)});
+
+  res.cookie('token', token, {maxAge: 604800}); // 1 week
+}
 router.post('/signin/', ah(async (req, res) => {
-  const { userOrEmail, password } = req.body;
+  const { username, password } = req.body;
   const user = await User.findOne({
     $or: [
-      { username: userOrEmail },
-      { email: userOrEmail },
+      { username },
+      { email: username },
     ]
   });
 
   if (!user || !user.comparePassword(password))
     throw new Error('Invalid username or password');
 
-  const { _id } = user;
-  const token = genJWT({ _id });
-
-  res.end(user.toJSONFor(user));
+  sendJWT(res, user);
+  res.json(await user.toJSONFor(user));
 }));
 
 router.post('/social_signin/', ah(async (req, res) => {
@@ -60,7 +64,8 @@ router.post('/signup/', ah(async (req, res) => {
   await user.validate();
   await user.save();
 
-  res.end();
+  sendJWT(res, user);
+  res.json(await user.toJSONFor(user));
 }));
 
 

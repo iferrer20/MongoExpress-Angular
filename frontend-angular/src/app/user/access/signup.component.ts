@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
 
 @Component({
@@ -12,7 +13,11 @@ export class SignupComponent implements OnInit {
   submited: boolean = false;
   errorSignup: string = '';
 
-  constructor(private user: UserService, private fb: FormBuilder) {
+  constructor(
+    public userService: UserService, 
+    private fb: FormBuilder,
+    private route: Router
+  ) {
   }
 
   onSignup() {
@@ -21,15 +26,12 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.invalid)
       return;
 
-    this.user.signUp(
+    this.userService.signUp(
       this.signupForm.get('email')?.value, 
       this.signupForm.get('username')?.value, 
       this.signupForm.get('password')?.value
     ).subscribe(
-      data => {},
-      ({error}) => {
-        this.errorSignup = error.error;
-      }
+      () => this.route.navigate(['/'])
     );
   }
   checkSamePassword(fg: FormGroup) {

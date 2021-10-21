@@ -24,8 +24,11 @@ const userSchema = mongoose.Schema({
     lat: field(Number),
     lon: field(Number)
   }),
-  password: field(String)
-
+  password: field(String),
+  privileges: { 
+    ...field(Number),
+    default: 0
+  }
 }, { toJSON: { virtuals: true } });
 
 userSchema.methods.comparePassword = function (password) {
@@ -42,17 +45,13 @@ userSchema.pre('save', function (next) {
 });
 
 userSchema.methods.toJSONFor = async function (viewer) {
-  let user = {uid: this._id, ...this};
+  const user = {...this.toObject()};
+
   delete user.password;
-  delete user._id;
-  
-  if (this._id == viewer._id) {
-    user.hasPassword = !!user.password;
-  } else {
-    //user.isFollowing = 
-  }
+  delete user.__v;
 
   return user;
+
 };
 
 userSchema.methods.hasFavorite = async function (product) {

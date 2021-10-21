@@ -11,6 +11,7 @@ import { FooterComponent } from './layout/footer.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CarouselItemComponent } from './carousel/carousel-item.component';
 import { CategoryCarouselComponent } from './category-carousel/category-carousel.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { CategoryCarouselComponent } from './category-carousel/category-carousel
   ],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule
   ],
   exports: [
     CarouselComponent,

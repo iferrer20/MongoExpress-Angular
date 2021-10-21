@@ -5,9 +5,9 @@ import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
 import { SigninComponent } from './access/signin.component';
 import { SignupComponent } from './access/signup.component';
-import { LogoComponent } from './logo.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AccessComponent } from './access/access.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -15,8 +15,8 @@ import { AccessComponent } from './access/access.component';
     UserComponent,
     SigninComponent,
     SignupComponent,
-    LogoComponent,
-    AccessComponent
+    AccessComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,

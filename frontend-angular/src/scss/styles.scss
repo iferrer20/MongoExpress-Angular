@@ -9,9 +9,6 @@ body,html {
   min-height: 100vh;
 }
 
-body {
-  @extend %scroll;
-}
 
 input, button, textarea {
   background-color: $dark-white;
