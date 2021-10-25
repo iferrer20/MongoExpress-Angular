@@ -18,14 +18,14 @@ router.param('category', ah(async (req, res, next, slug) => {
 }));
 
 router.get('/', ah(async (req, res) => {
-  let [data, total] = await allResolved([
+  let [list, total] = await allResolved([
     Category.find().exec(),
     Category.countDocuments().exec()
   ]);
 
   // data = data.map(cat => cat.toJSON()); // not needed: toJSON automatically called
 
-  res.json({ data, total });
+  res.json({ list, total });
 }));
 
 router.post('/', ah(async (req, res) => {

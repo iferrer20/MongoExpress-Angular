@@ -20,14 +20,14 @@ router.param('product', ah(async (req, res, next, slug) => {
 }));
 
 router.get('/', ah(async (req, res) => {
-  let [data, total] = await allResolved([
+  let [list, total] = await allResolved([
     Product.find()
       .populate({ path: 'category', select: '-_id slug shortName' })
       .exec(),
     Product.countDocuments().exec()
   ]);
 
-  res.json({ data, total });
+  res.json({ list, total });
 }));
 
 router.post('/', ah(async (req, res) => {

@@ -54,7 +54,6 @@
       flex-wrap: wrap;
       overflow: auto;
       justify-content: center;
-      @include scroll;
     }
 
     .hidden {

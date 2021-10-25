@@ -24,7 +24,7 @@ export class CarouselItemComponent implements OnInit {
       .reduce((hash, char) => 0 | (31 * hash + char.charCodeAt(0)), 0);
   }
 
-  @HostBinding("style.background-color")
+  @HostBinding('style.background-color')
   get color(): string {
     const c = '#' + (this.getHash(this.item.slug) >>> 0 & 0xFFFFFF).toString(16).padStart(6, '0');
     console.log(c)

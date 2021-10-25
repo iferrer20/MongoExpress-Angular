@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { catchError, first, map, tap } from "rxjs/operators";
 import { Observable } from 'rxjs';
 
-interface BodyData {
+export interface BodyData {
   [key: string]: any,
   list?: any
   error?: any
