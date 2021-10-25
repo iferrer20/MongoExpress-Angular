@@ -4,8 +4,7 @@ import { ApiService } from './services/api.service';
 import { ProductService } from './services/product.service';
 import { CategoryService } from './services/category.service';
 import { UserService } from './services/user.service';
-
-
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [],
@@ -19,7 +18,8 @@ import { UserService } from './services/user.service';
     ApiService,
     ProductService,
     CategoryService,
-    UserService
+    UserService,
+    AuthGuard
   ]
 })
 export class CoreModule { }
