@@ -25,7 +25,7 @@ print("------CATEGORIES")
 print("---listing")
 listing = printRes(requests.get(url))
 
-for c in listing['data']:
+for c in listing['list']:
   print("---deleting")
   printRes(requests.delete(url + c['slug']))
 
@@ -51,7 +51,7 @@ for d in dummies:
   printRes(requests.post(url, json=d))
 
 print("---saving categories")
-categories = printRes(requests.get(url))['data']
+categories = printRes(requests.get(url))['list']
 
 url = "http://localhost/api/product/"
 data = {'category': categories[0]['id'], 'name': 'producto1', 'description': 'descripción producto' }
@@ -69,7 +69,7 @@ print("------PRODUCTS")
 print("---listing")
 listing = printRes(requests.get(url))
 
-for c in listing['data']:
+for c in listing['list']:
   print("---deleting")
   printRes(requests.delete(url + c['slug']))
 
