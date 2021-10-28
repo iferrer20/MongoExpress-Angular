@@ -1,5 +1,9 @@
 <div class="app-header">
-  <img src="./assets/header-logo.png" alt="Truequepop">
+  <a [routerLink]="['/']">
+    <img src="./assets/header-logo.png" alt="Truequepop">
+  </a>
   <app-search-bar></app-search-bar>
+  <a class="menu-link" routerLinkActive="active" [routerLink]="['/']">Home</a>
+  <a class="menu-link" routerLinkActive="active" [routerLink]="['/shop']">Shop</a>
   <a [routerLink]="['/user/profile/@me']" class="gg-profile"></a>
 </div>

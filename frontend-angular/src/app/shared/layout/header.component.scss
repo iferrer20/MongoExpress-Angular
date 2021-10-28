@@ -1,15 +1,26 @@
-
+@import 'global';
+@import 'palette';
 
 .app-header {
     display: flex;
     height: 64px;
     background-color: whitesmoke;
     align-items: center;
-    > img {
+
+    > a.menu-link {
+      @include boxed;
+      text-decoration: none;
+      &.active {
+        background-color: $gray;
+        color: $white;
+      }
+    }
+
+    > a img {
       height: 64px;
     }
 
-    > a {
+    > a.gg-profile {
       --ggs: 2;
       color: black;
       margin-left: auto;
