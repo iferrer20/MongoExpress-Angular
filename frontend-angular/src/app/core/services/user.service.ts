@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators';
 @Injectable()
 export class UserService {
 
-  _user!: User;
+  private _user!: User;
   errno!: string;
 
   constructor(private api: ApiService) {
@@ -24,7 +24,7 @@ export class UserService {
 
   private loadOwnUser() {
     try {
-      this._user = JSON.parse(window.atob(localStorage.getItem("user") as string)) as User;
+      this._user = JSON.parse(window.atob(localStorage.getItem('user') as string)) as User;
     } catch (e) {}
   }
 
@@ -59,5 +59,13 @@ export class UserService {
   setAdmin() {
     this.user.privileges = UserPrivileges.ADMIN;
     this.saveOwnUser();
+  }
+
+  getUser(username: string) {
+    return this.api.request<User>('GET', 'user/' + username);
+  }
+
+  isLogged() {
+    return !!this.user;
   }
 }

@@ -21,8 +21,11 @@ export class ApiService {
     })
     .pipe(
       catchError((e: BodyData) => { 
+        console.log(e);
         if (e.error?.error) {
           throw new Error(e.error?.error);
+        } else if (e.status == 404) {
+          throw new Error('Not found');
         } else {
           throw new Error('Unknown error');
         }

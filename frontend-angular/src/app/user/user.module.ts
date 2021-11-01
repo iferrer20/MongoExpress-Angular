@@ -8,6 +8,8 @@ import { SignupComponent } from './access/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AccessComponent } from './access/access.component';
 import { ProfileComponent } from './profile/profile.component';
+import { RouterModule } from '@angular/router';
+import { ProfileResolver } from './profile/profile-resolver.service';
 
 
 @NgModule({
@@ -17,6 +19,9 @@ import { ProfileComponent } from './profile/profile.component';
     SignupComponent,
     AccessComponent,
     ProfileComponent
+  ],
+  providers: [
+    ProfileResolver
   ],
   imports: [
     CommonModule,

@@ -14,7 +14,7 @@ export class ProductListResolver implements Resolve<Product[]> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<any> {
+  ): Observable<Product[]> {
     return this.productService.list();
   }
 }

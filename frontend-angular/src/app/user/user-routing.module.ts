@@ -5,6 +5,8 @@ import { SignupComponent } from './access/signup.component';
 import { SigninComponent } from './access/signin.component';
 import { AccessComponent } from './access/access.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AuthGuard } from '../core/guards/auth.guard';
+import { ProfileResolver } from './profile/profile-resolver.service';
 
 const routes: Routes = [
   { path: '', component: UserComponent },
@@ -17,8 +19,12 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'profile',
-    component: ProfileComponent
+    path: 'profile/:id',
+    component: ProfileComponent,
+    resolve: {
+      user: ProfileResolver
+    },
+    canActivate: [AuthGuard]
   }
 ];
 

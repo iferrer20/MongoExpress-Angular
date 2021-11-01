@@ -68,5 +68,19 @@ router.post('/signup/', ah(async (req, res) => {
   res.json(await user.toJSONFor(user));
 }));
 
+router.param('user', ah(async (req, res, next, username) => {
+  let user = await User.findOne({ username }).exec();
+
+  if (!user) {
+    return res.sendStatus(404);
+  }
+
+  req.params.user = user;
+  next();
+}));
+
+router.get(':user', ah(async (req, res) => {
+  res.json(req.params.user);
+}));
 
 export default router;

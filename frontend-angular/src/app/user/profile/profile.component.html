@@ -1,1 +1,9 @@
-<p>profile works!</p>
+<div *ngIf="user; else notfound">
+  <img src="/api/user/pfp/{{user._id}}" alt="">
+  <p>user: {{user.username}}</p>
+  <p>email: {{user.email}}</p>
+</div>
+
+<ng-template #notfound>
+  <p>Not found</p>
+</ng-template>
