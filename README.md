@@ -209,3 +209,21 @@ Se comprueba con el navegador:
 
 ![ScreenShot](readme_files/12.png)
 
+# Subir imagenes a docker hub
+
+Para subir la imagen a docker hub necesitamos crear una cuenta primero en docker hub, una vez creada la cuenta necesitamos creé los repositorios de las imagenes, luego cambié el nombre de la imagen para poner iferrer20/, luego necesito logearme con docker login, y luego hago un docker push iferrer20/<nombre imagen>
+
+Imagen backend
+![ScreenShot](readme_files/14.png)
+Imagen frontend
+![ScreenShot](readme_files/15.png)
+
+```bash
+# Imagen backend
+docker image tag truequepop-backend iferrer20/truequepop-backend
+docker login
+docker push iferrer20/truequepop-backend
+# Imagen frontend
+docker image tag truequepop-frontend iferrer20/truequepop-frontend
+docker push iferrer20/truequepop-frontend
+```
