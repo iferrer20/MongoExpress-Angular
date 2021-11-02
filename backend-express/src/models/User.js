@@ -1,7 +1,9 @@
 import mongoose, { Schema } from 'mongoose';
 import { createHash } from '../utils';
 
+const ObjectId = mongoose.Schema.Types.ObjectId;
 const field = (type, required = true) => ({ type, required });
+
 const userSchema = mongoose.Schema({
   username: {
     type: String,
@@ -28,6 +30,12 @@ const userSchema = mongoose.Schema({
   privileges: { 
     ...field(Number),
     default: 0
+  },
+  followers: {
+    type: [{type: ObjectId, ref:'User'}]
+  },
+  following: {
+    type: [{type: ObjectId, ref:'User'}]
   }
 }, { toJSON: { virtuals: true } });
 
@@ -44,19 +52,24 @@ userSchema.pre('save', function (next) {
   next();
 });
 
-userSchema.methods.toJSONFor = async function (viewer) {
+userSchema.methods.toJSONFor = function (viewer) {
   const user = {...this.toObject()};
 
+  user.followers = user.followers.length;
+  user.following = user.following.length;
   delete user.password;
   delete user.__v;
 
   return user;
-
 };
+
+userSchema.methods.follow = async function(_id) {
+  await User.updateOne({_id}, {$addToSet: {followers: this._id, following: _id}});
+}
 
 userSchema.methods.hasFavorite = async function (product) {
   return false; /** TODO: implement */
 };
 
-export default mongoose.model('User', userSchema);
-
+const User = mongoose.model('User', userSchema);
+export default User;

@@ -1,7 +1,9 @@
 <div *ngIf="user; else notfound">
   <img src="/api/user/pfp/{{user._id}}" alt="">
-  <p>user: {{user.username}}</p>
-  <p>email: {{user.email}}</p>
+  <p>User: {{user.username}}</p>
+  <p>Email: {{user.email}}</p>
+  <p>Followers: {{user.followers}}</p>
+  <button *ngIf="userService.isLogged() && userService.user._id != user._id" (click)="follow()">Follow</button>
 </div>
 
 <ng-template #notfound>

@@ -2,7 +2,7 @@ import { Router } from 'express';
 import ah from 'express-async-handler'; /* asyncHandler */
 import User from '../../models/User';
 import { OAuth2Client } from 'google-auth-library';
-import { genJWT } from '../../utils';
+import { checkJWT, genJWT } from '../../utils';
 
 const client = new OAuth2Client();
 const router = Router();
@@ -11,7 +11,7 @@ function sendJWT(res, user) {
   const { _id } = user;
   const token = genJWT({ _id , exp: Math.floor((Date.now() + 7*24*60*60*1000)/1000)});
 
-  res.cookie('token', token, {maxAge: 604800}); // 1 week
+  res.cookie('token', token, {maxAge: 7*24*60*60*1000 }); // 1 week
 }
 router.post('/signin/', ah(async (req, res) => {
   const { username, password } = req.body;
@@ -26,7 +26,7 @@ router.post('/signin/', ah(async (req, res) => {
     throw new Error('Invalid username or password');
 
   sendJWT(res, user);
-  res.json(await user.toJSONFor(user));
+  res.json(user.toJSONFor(user));
 }));
 
 router.post('/social_signin/', ah(async (req, res) => {
@@ -65,7 +65,7 @@ router.post('/signup/', ah(async (req, res) => {
   await user.save();
 
   sendJWT(res, user);
-  res.json(await user.toJSONFor(user));
+  res.json(user.toJSONFor(user));
 }));
 
 router.param('user', ah(async (req, res, next, username) => {
@@ -79,8 +79,23 @@ router.param('user', ah(async (req, res, next, username) => {
   next();
 }));
 
-router.get(':user', ah(async (req, res) => {
-  res.json(req.params.user);
+router.get('/@:user', ah(async (req, res) => {
+  res.json(req.params.user.toJSONFor());
+}));
+
+router.use('/', ah(async (req, res, next) => {
+  // Veryify token
+  const { token } = req.cookies;
+  const { _id } = checkJWT(token);
+
+  req.user = await User.findOne({_id}).exec();
+  next();
+}));
+
+router.post('/follow/', ah(async (req, res) => {
+  const { _id } = req.body;
+  req.user.follow(_id);
+  res.end();
 }));
 
 export default router;

@@ -18,6 +18,10 @@ export class ProfileComponent implements OnInit {
     public userService: UserService 
   ) { }
 
+  follow() {
+    this.userService.follow(this.user._id).subscribe();
+  }
+
   ngOnInit(): void {
     this.user = this.route.snapshot.data.user;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

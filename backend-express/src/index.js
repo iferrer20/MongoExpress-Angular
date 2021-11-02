@@ -2,14 +2,17 @@ import express from 'express';
 import api from './api';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 dotenv.config(); // Load dotenv config
 const app = express();
-console.log(process.env.PORT);
 const port = process.env.PORT;
+
 
 /* Middlewares */
 app.use(express.json());
+app.use(cookieParser());
+
 
 /* Database */
 mongoose.connect('mongodb://root:land@land_db/');

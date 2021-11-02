@@ -27,7 +27,6 @@ export async function allResolved(prom) {
   return prom;
 }
 
-
 export function createHash(salt, text) {
   return crypto.createHmac('sha256', salt).update(text).digest('hex');
 }
@@ -38,7 +37,7 @@ export function genJWT(o) {
 
 export function checkJWT(token) {
   try {
-    jwt.verify(token, jwtkey);
+    return jwt.verify(token, jwtkey);
   } catch (e) {
     throw new Error("Invalid JWT token");
   }

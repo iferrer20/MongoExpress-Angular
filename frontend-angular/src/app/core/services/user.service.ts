@@ -61,6 +61,10 @@ export class UserService {
     this.saveOwnUser();
   }
 
+  follow(_id: string) {
+    return this.api.request('POST', 'user/follow', {_id});
+  }
+
   getUser(username: string) {
     return this.api.request<User>('GET', 'user/' + username);
   }
@@ -68,4 +72,5 @@ export class UserService {
   isLogged() {
     return !!this.user;
   }
+
 }
