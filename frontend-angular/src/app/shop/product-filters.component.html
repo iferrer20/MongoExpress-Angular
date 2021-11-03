@@ -1,7 +1,7 @@
 
 <div class="categories">
   <div>Categories</div>
-  <div *ngFor="let category of catService.categories">
+  <div *ngFor="let category of catService.categories" class="category">
     <label>
       <input type="checkbox">
       {{ catService.getCategoryPretty(category) }}

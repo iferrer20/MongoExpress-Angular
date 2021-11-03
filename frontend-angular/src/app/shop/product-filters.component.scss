@@ -1,10 +1,17 @@
 @import 'global';
 
 :host {
-  //display: flex;
-  //width: 300px;
-  //flex-direction: column;
-  //box-sizing: border-box;
-  //padding: 20px;
-  //@include shadow;
+  display: flex;
+  width: 300px;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 20px;
+
+  .category {
+    label {
+      display: flex;
+      align-items: center;
+    }
+  }
+  @include shadow;
 }
