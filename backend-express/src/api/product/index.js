@@ -2,6 +2,7 @@ import { Router } from 'express';
 import Product from '../../models/Product';
 import { allResolved } from '../../utils';
 import ah from 'express-async-handler'; /* asyncHandler */
+import { readUserJwt } from '../../middlewares/read_user_jwt';
 
 const router = Router();
 
@@ -47,8 +48,8 @@ router.post('/', ah(async (req, res) => {
   res.json({ product, slug: product.slug });
 }));
 
-router.get('/:product', ah(async (req, res) => {
-  res.json({ product: req.params.product });
+router.get('/:product', readUserJwt(), ah(async (req, res) => {
+  res.json(req.params.product.toJSONFor(req.user));
 }));
 
 router.put('/:product', ah(async (req, res) => {

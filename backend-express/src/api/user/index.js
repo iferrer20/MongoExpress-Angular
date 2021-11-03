@@ -2,7 +2,8 @@ import { Router } from 'express';
 import ah from 'express-async-handler'; /* asyncHandler */
 import User from '../../models/User';
 import { OAuth2Client } from 'google-auth-library';
-import { checkJWT, genJWT } from '../../utils';
+import { genJWT } from '../../utils';
+import { readUserJwt } from '../../middlewares/read_user_jwt';
 
 const client = new OAuth2Client();
 const router = Router();
@@ -83,16 +84,7 @@ router.get('/@:user', ah(async (req, res) => {
   res.json(req.params.user.toJSONFor());
 }));
 
-router.use('/', ah(async (req, res, next) => {
-  // Veryify token
-  const { token } = req.cookies;
-  const { _id } = checkJWT(token);
-
-  req.user = await User.findOne({_id}).exec();
-  next();
-}));
-
-router.post('/follow/', ah(async (req, res) => {
+router.post('/follow/', readUserJwt(false), ah(async (req, res) => {
   const { _id } = req.body;
   req.user.follow(_id);
   res.end();

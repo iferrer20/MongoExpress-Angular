@@ -58,7 +58,7 @@ productSchema.methods.toJSON = function () {
 };
 
 productSchema.methods.toJSONFor = async function (user) {
-  return {
+  return user ? {
     id: this._id,
     owner: await this.owner.toJSONFor(user),
     category: this.category,
@@ -70,7 +70,7 @@ productSchema.methods.toJSONFor = async function (user) {
     likes: this.likes,
     slug: this.slug,
     isFavorited: await user.hasFavorite(this)
-  };
+  } : this.toJSON();
 };
 
 export default mongoose.model('Product', productSchema);
