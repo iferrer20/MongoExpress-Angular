@@ -1,0 +1,10 @@
+
+<div class="categories">
+  <div>Categories</div>
+  <div *ngFor="let category of catService.categories">
+    <label>
+      <input type="checkbox">
+      {{ catService.getCategoryPretty(category) }}
+    </label>
+  </div>
+</div>

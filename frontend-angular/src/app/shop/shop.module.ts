@@ -1,20 +1,26 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { ProductListResolver } from '../shared/product-list/product-list-resolver.service';
 
 import { ShopRoutingModule } from './shop-routing.module';
 import { ShopComponent } from './shop.component';
+import { ProductFiltersComponent } from './product-filters.component';
+import { ProductListResolver } from '../core/resolvers/product-list-resolver.service';
+import { CategoryResolver } from '../core/resolvers/category.resolver';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
-    ShopComponent
+    ShopComponent,
+    ProductFiltersComponent
   ],
   imports: [
+    CommonModule,
     SharedModule,
-    ShopRoutingModule
+    ShopRoutingModule,
   ],
   providers: [
-    ProductListResolver
+    ProductListResolver,
+    CategoryResolver
   ]
 })
 export class ShopModule { }

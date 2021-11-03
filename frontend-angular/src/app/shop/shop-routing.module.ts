@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductListResolver } from '../shared/product-list/product-list-resolver.service';
+import { CategoryResolver } from '../core/resolvers/category.resolver';
+import { ProductListResolver } from '../core/resolvers/product-list-resolver.service';
 import { ShopComponent } from './shop.component';
 
 const routes: Routes = [
@@ -8,6 +9,7 @@ const routes: Routes = [
     path: '',
     component: ShopComponent,
     resolve: {
+      categories: CategoryResolver,
       productList: ProductListResolver
     }
   }

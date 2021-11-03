@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import Product from '../core/types/Product';
+import { Product, ProductList } from '../core/types/Product';
 
 @Component({
   selector: 'app-shop',
@@ -9,7 +9,7 @@ import Product from '../core/types/Product';
 })
 export class ShopComponent implements OnInit {
 
-  productList!: Product[];
+  productList!: ProductList;
   
   constructor(private route: ActivatedRoute) { }
 

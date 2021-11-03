@@ -7,9 +7,9 @@
       </div>
     </template> -->
     <div class="products">
-      <app-product-element *ngFor="let product of products" [product]="product"></app-product-element>
+      <app-product-element *ngFor="let product of productList.list" [product]="product"></app-product-element>
       <div class="hidden" *ngFor="let empty of [].constructor(10)"></div>
-      <div class="noproducts" *ngIf="!products.length">
+      <div class="noproducts" *ngIf="!productList.list.length">
         No hay productos disponibles
         <i class="gg-smile-sad"></i>
       </div>

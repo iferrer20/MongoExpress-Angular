@@ -36,6 +36,9 @@ const userSchema = mongoose.Schema({
   },
   following: {
     type: [{type: ObjectId, ref:'User'}]
+  },
+  favorites: {
+    type: [{type: ObjectId, ref: 'Product'}]
   }
 }, { toJSON: { virtuals: true } });
 

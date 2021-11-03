@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {User} from 'src/app/core/types/User';
-import Product from '../../core/types/Product';
+import { Product, ProductList } from '../../core/types/Product';
 
 @Component({
   selector: 'app-product-list',
@@ -8,7 +8,7 @@ import Product from '../../core/types/Product';
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit {
-  @Input() products!: Product[];
+  @Input() productList!: ProductList;
   loading: boolean = false;
 
   constructor() {  }

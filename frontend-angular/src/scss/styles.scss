@@ -32,8 +32,8 @@ input[type=checkbox]:hover {
 
 input[type=checkbox] {
   appearance: none;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   background-color: $white;
   position: relative;
   cursor: pointer;
@@ -49,8 +49,6 @@ input[type=checkbox]:checked::after {
   display: block;
   box-sizing: border-box;
   position: absolute;
-  left: 3px;
-  top: -1px;
   width: 6px;
   height: 10px;
   border-width: 0 2px 2px 0;
@@ -59,8 +57,8 @@ input[type=checkbox]:checked::after {
   transform: rotate(45deg);
 
   position: absolute;
-  left: 7px;
-  top: 5px;
+  left: 5px;
+  top: 3px;
   transform: scale(1.5) rotate(45deg);
   color: white;
 }

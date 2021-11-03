@@ -5,6 +5,7 @@ import { ProductService } from './services/product.service';
 import { CategoryService } from './services/category.service';
 import { UserService } from './services/user.service';
 import { AuthGuard } from './guards/auth.guard';
+import { CategoryResolver } from './resolvers/category.resolver';
 
 @NgModule({
   declarations: [],
@@ -15,6 +16,7 @@ import { AuthGuard } from './guards/auth.guard';
 
   ],
   providers: [
+    CategoryResolver,
     ApiService,
     ProductService,
     CategoryService,

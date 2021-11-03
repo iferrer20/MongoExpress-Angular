@@ -6,17 +6,14 @@
   <div class="info">
     <div class="title">{{ product.name }}</div>
 
-    <div class="price">
-      {{ product.price }}€
-    </div>
     <div class="description">
       {{ product.description }}
     </div>
     <div class="author">
       Autor: {{ product.owner }}
     </div>
-    <div class="quality">
-
+    <div class="category">
+      Category: {{ catService.getCategoryPretty(product.category) }}
     </div>
     <div class="actions" *ngIf="user.isAdmin()">
       <span><i class="gg-pen"></i></span>

@@ -1,6 +1,7 @@
-import { CarouselItem } from './../shared/carousel/carousel-item.component';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CategoryService } from '../core/services/category.service';
+import { CarouselItem } from '../shared/carousel/carousel-item.component';
 
 @Component({
   selector: 'app-home',
@@ -9,11 +10,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  categories!: CarouselItem[];
-  
-  constructor(private route: ActivatedRoute) { }
+  carouselItems!: CarouselItem[];
+
+  constructor(private route: ActivatedRoute, public catService: CategoryService) { }
 
   ngOnInit(): void {
-    this.categories = this.route.snapshot.data.categoryList;
+    this.carouselItems = this.catService.categories.map(c => (<CarouselItem> {
+      slug: c.slug,
+      title: c.shortName
+    }));
   }
 }

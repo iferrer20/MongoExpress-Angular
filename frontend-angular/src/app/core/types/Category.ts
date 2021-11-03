@@ -8,10 +8,11 @@ Category:
 
 */
 
-export default interface Category {
+export interface Category {
     _id: string,
     shortName: string,
     description: string,
     iconName: string,
     slug: string
 }
+

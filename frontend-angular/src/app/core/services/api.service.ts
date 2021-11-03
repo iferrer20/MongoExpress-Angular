@@ -17,11 +17,10 @@ export class ApiService {
 
   request<I>(method: string, uri: string, data: any = {}): Observable<I> {
     return this.http.request<I>(method, environment.api_url + uri, {
-      body: data
+      [method != 'GET' ? 'body' : 'params']: data
     })
     .pipe(
       catchError((e: BodyData) => { 
-        console.log(e);
         if (e.error?.error) {
           throw new Error(e.error?.error);
         } else if (e.status == 404) {
@@ -32,6 +31,5 @@ export class ApiService {
       })
     );
   }
-  
 }
 

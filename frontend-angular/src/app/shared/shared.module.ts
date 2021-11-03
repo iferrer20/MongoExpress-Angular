@@ -10,7 +10,6 @@ import { HeaderComponent } from './layout/header.component';
 import { FooterComponent } from './layout/footer.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CarouselItemComponent } from './carousel/carousel-item.component';
-import { CategoryCarouselComponent } from './category-carousel/category-carousel.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -23,7 +22,6 @@ import { RouterModule } from '@angular/router';
     FooterComponent,
     SearchBarComponent,
     CarouselItemComponent,
-    CategoryCarouselComponent
   ],
   imports: [
     CommonModule,
@@ -31,12 +29,11 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   exports: [
-    CarouselComponent,
     ProductListComponent,
     HeaderComponent,
     FooterComponent,
     SearchBarComponent,
-    CategoryCarouselComponent
+    CarouselComponent
   ]
 })
 export class SharedModule { }
