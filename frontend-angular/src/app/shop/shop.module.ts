@@ -4,14 +4,16 @@ import { SharedModule } from '../shared/shared.module';
 import { ShopRoutingModule } from './shop-routing.module';
 import { ShopComponent } from './shop.component';
 import { ProductFiltersComponent } from './product-filters.component';
-import { ProductListResolver } from '../core/resolvers/product-list-resolver.service';
+import { ProductListResolver } from '../core/resolvers/product-list.resolver';
 import { CategoryResolver } from '../core/resolvers/category.resolver';
 import { CommonModule } from '@angular/common';
+import { ShopDetailsComponent } from './shop-details.component';
 
 @NgModule({
   declarations: [
     ShopComponent,
-    ProductFiltersComponent
+    ProductFiltersComponent,
+    ShopDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -21,6 +23,9 @@ import { CommonModule } from '@angular/common';
   providers: [
     ProductListResolver,
     CategoryResolver
+  ],
+  exports: [
+    ShopDetailsComponent
   ]
 })
 export class ShopModule { }

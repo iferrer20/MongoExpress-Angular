@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CategoryResolver } from '../core/resolvers/category.resolver';
-import { ProductListResolver } from '../core/resolvers/product-list-resolver.service';
+import { ProductListResolver } from '../core/resolvers/product-list.resolver';
+import { ProductResolver } from '../core/resolvers/product.resolver';
 import { ShopComponent } from './shop.component';
 
 const routes: Routes = [
@@ -12,7 +13,14 @@ const routes: Routes = [
       categories: CategoryResolver,
       productList: ProductListResolver
     }
-  }
+  },
+  {
+    path: 'view/:slug',
+    component: ShopComponent,
+    resolve: {
+      product: ProductResolver
+    }
+  },
 ];
 
 @NgModule({

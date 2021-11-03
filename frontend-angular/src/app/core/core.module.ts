@@ -1,3 +1,5 @@
+import { ProductResolver } from './resolvers/product.resolver';
+import { ProductListResolver } from './resolvers/product-list.resolver';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from './services/api.service';
@@ -21,7 +23,9 @@ import { CategoryResolver } from './resolvers/category.resolver';
     ProductService,
     CategoryService,
     UserService,
-    AuthGuard
+    AuthGuard,
+    ProductListResolver,
+    ProductResolver
   ]
 })
 export class CoreModule { }

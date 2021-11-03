@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ProductService } from '../services/product.service';
-import { ProductList } from '../types/Product';
+import Product from '../types/Product';
 
 @Injectable()
-export class ProductListResolver implements Resolve<ProductList> {
+export class ProductListResolver implements Resolve<Product[]> {
 
   constructor(
     private productService: ProductService
@@ -14,7 +14,7 @@ export class ProductListResolver implements Resolve<ProductList> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<ProductList> {
+  ): Observable<Product[]> {
     return this.productService.list();
   }
 }
