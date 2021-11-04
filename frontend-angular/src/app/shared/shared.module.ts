@@ -11,6 +11,7 @@ import { FooterComponent } from './layout/footer.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CarouselItemComponent } from './carousel/carousel-item.component';
 import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   exports: [
     ProductListComponent,

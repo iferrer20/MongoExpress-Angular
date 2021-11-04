@@ -1,4 +1,4 @@
-import { ProductList } from './../types/Product';
+import { ProductFilters, ProductList } from './../types/Product';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -16,6 +16,14 @@ export class ProductListResolver implements Resolve<ProductList> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<ProductList> {
-    return this.productService.list();
+    const { text, category, author, order, quality } = route.queryParams;
+    const filtersObj = <ProductFilters> {text, category, author, order, quality};
+    Object.keys(filtersObj).forEach(prop => {
+      if (filtersObj[prop] === undefined) {
+        delete filtersObj[prop];
+      }
+    });
+
+    return this.productService.list(filtersObj);
   }
 }

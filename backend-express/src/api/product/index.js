@@ -24,7 +24,7 @@ router.param('product', ah(async (req, res, next, slug) => {
 router.get('/', ah(async (req, res) => {
 
   // Filters
-  const { category, quality, order } = req.query;
+  const { text, category, quality, order } = req.query;
 
   var q = Product.aggregate()
     .lookup({
@@ -35,6 +35,15 @@ router.get('/', ah(async (req, res) => {
     })
     .unwind('$category');
 
+  if (text) {
+    var regex = {
+      '$regex': text.toString().replace(/[#-.]|[[-^]|[?|{}]/g, '\\$&'),
+      '$options': 'i'
+    };
+
+    q.match({'$or': [{description: regex}, {name: regex}]});
+  }
+
   if (category) {
     q.match({ 'category.shortName': category });
   }
@@ -42,6 +51,7 @@ router.get('/', ah(async (req, res) => {
   if (quality) {
     q.match({ quality });
   }
+
   if (order == 'FavFirst') {
     q.sort({
       'likes': -1

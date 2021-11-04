@@ -1,4 +1,4 @@
-<form>
-    <input type="text" name="search" maxlength="100">
+<form [formGroup]="searchForm" (ngSubmit)="doSearch()">
+    <input type="text" formControlName="text" maxlength="100">
     <button type="submit">🔍</button>
 </form>

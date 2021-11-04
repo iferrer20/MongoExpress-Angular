@@ -1,6 +1,8 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CategoryService } from '../core/services/category.service';
 import { orders, ProductFilters, qualities } from '../core/types/Product';
+import { skip, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'shop-product-filters',
@@ -8,32 +10,41 @@ import { orders, ProductFilters, qualities } from '../core/types/Product';
   styleUrls: ['./product-filters.component.scss']
 })
 export class ProductFiltersComponent implements OnInit {
-
+  
   qualities = qualities;
   orders = orders;
-
-  @Input('initialFilters') filters: ProductFilters = <ProductFilters> {};
+  
+  filters: ProductFilters = <ProductFilters> {};
   @Output('onFilter') eventFilters = new EventEmitter<ProductFilters>();
-
+  
+  constructor(
+    public catService: CategoryService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
+  
   changeCategory(s: string) {
-    this.filters.category = s;
-    this.emitFilters();
+    this.setFilter('category', s);
   }
 
   changeQuality(s: string) {
-    this.filters.quality = s;
-    this.emitFilters();
+    this.setFilter('quality', s);
   }
   
   changeOrder(s: string) {
-    console.log(s)
-    this.filters.order = s;
-    this.emitFilters();
+    this.setFilter('order', s);
   }
 
   unsetCategory() {
-    this.filters.category = '';
-    this.emitFilters();
+    this.setFilter('category', null);
+  }
+
+  setFilter(name: string, value: string | null) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {[name]: value || null},
+      queryParamsHandling: 'merge'
+    });
   }
 
   emitFilters() {
@@ -46,10 +57,16 @@ export class ProductFiltersComponent implements OnInit {
     this.eventFilters.emit(this.filters);
   }
 
-  constructor(public catService: CategoryService) { }
-
   ngOnInit(): void {
-    this.emitFilters();
+    this.route.queryParams
+    .pipe(
+      tap(({text, category, author, order, quality}) => {
+        this.filters = {text, category, author, order, quality}
+      }),
+      skip(1))
+    .subscribe(() => {
+      this.emitFilters();
+    });
   }
 
 }

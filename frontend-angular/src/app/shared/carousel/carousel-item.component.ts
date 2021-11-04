@@ -17,7 +17,6 @@ export class CarouselItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.item.link)
   }
 
   getHash(name: string): number {
