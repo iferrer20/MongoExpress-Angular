@@ -12,6 +12,7 @@ services:
         #- ./data/img/:/usr/share/nginx/html/img/:rw
   db:
     image: mongo:4.4
+    command: --quiet --logpath /dev/null
     container_name: "land_db"
       #volumes:
     environment:
