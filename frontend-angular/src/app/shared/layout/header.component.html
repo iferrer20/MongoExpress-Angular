@@ -3,7 +3,7 @@
     <img src="./assets/header-logo.png" alt="Truequepop">
   </a>
   <app-search-bar></app-search-bar>
-  <a class="menu-link" routerLinkActive="active" [routerLink]="['/']">Home</a>
+  <a class="menu-link" routerLinkActive="active" [routerLink]="['/']" [routerLinkActiveOptions]="{ exact: true }">Home</a>
   <a class="menu-link" routerLinkActive="active" [routerLink]="['/shop']">Shop</a>
   <a [routerLink]="['/user/profile/me']" class="gg-profile"></a>
 </div>

@@ -25,7 +25,6 @@ import { ShopDetailsComponent } from './shop-details.component';
     CategoryResolver
   ],
   exports: [
-    ShopDetailsComponent
   ]
 })
 export class ShopModule { }

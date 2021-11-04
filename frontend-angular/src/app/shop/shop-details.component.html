@@ -1,1 +1,22 @@
-<p>shop-details works!</p>
+<div class="product-container">
+  <a class="back-btn nolinkdec" (click)="goBack()" href="#">&lt; Back</a>
+  <div class="images"><p>images</p></div>
+  <h1>{{product.name}}</h1>
+  <hr>
+  <div class="properties">
+    <div>
+      <span>Quality:</span>
+      <span>{{product.quality}}</span>
+    </div>
+    <div>
+      <span>Category:</span>
+      <span>{{product.category.description}}</span>
+    </div>
+    <div>
+      <span>Fecha publicación:</span>
+      <span>{{getCreationDateString()}}</span>
+    </div>
+  </div>
+  <hr>
+  <div>Description</div>
+</div>

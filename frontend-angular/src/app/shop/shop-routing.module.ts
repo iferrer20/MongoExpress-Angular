@@ -1,3 +1,4 @@
+import { ShopDetailsComponent } from './shop-details.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CategoryResolver } from '../core/resolvers/category.resolver';
@@ -16,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'view/:slug',
-    component: ShopComponent,
+    component: ShopDetailsComponent,
     resolve: {
       product: ProductResolver
     }

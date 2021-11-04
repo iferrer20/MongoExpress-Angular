@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Product } from '../core/types/Product';
 
 @Component({
   selector: 'app-shop-details',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShopDetailsComponent implements OnInit {
 
-  constructor() { }
+  product!: Product;
+
+  constructor(
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
+    this.product = this.route.snapshot.data.product;
   }
 
+  getCreationDateString() {
+    return new Date(this.product.datePublished).toLocaleString();
+  }
+  
+  goBack() {
+    history.back();
+  }
 }

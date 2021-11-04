@@ -1,4 +1,5 @@
 form {
+  min-width: max-content;
   button[type="submit"] {
     filter: grayscale(1); 
   }

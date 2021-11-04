@@ -1,0 +1,33 @@
+@import 'global';
+
+.back-btn {
+  @include boxed;
+}
+
+.product-container {
+  @include shadow;
+  padding: 30px;
+  max-width: 1024px;
+  margin: 20px auto 0 auto;
+  box-sizing: border-box;
+
+  .images {
+    height: 200px;
+    background-color: #ddd;
+  }
+
+  .properties {
+    display: flex;
+    flex-wrap: wrap;
+
+    >div {
+      flex: 0 0 50%;
+      box-sizing: border-box;
+      
+      span:first-child {
+        font-weight: bold;
+        margin-right: 5px;
+      }
+    }
+  }
+}
