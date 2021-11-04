@@ -12,7 +12,7 @@ export class ProductFiltersComponent implements OnInit {
   qualities = qualities;
   orders = orders;
 
-  filters: ProductFilters = <ProductFilters> {};
+  @Input('initialFilters') filters: ProductFilters = <ProductFilters> {};
   @Output('onFilter') eventFilters = new EventEmitter<ProductFilters>();
 
   changeCategory(s: string) {
@@ -24,6 +24,7 @@ export class ProductFiltersComponent implements OnInit {
     this.filters.quality = s;
     this.emitFilters();
   }
+  
   changeOrder(s: string) {
     console.log(s)
     this.filters.order = s;
@@ -36,13 +37,19 @@ export class ProductFiltersComponent implements OnInit {
   }
 
   emitFilters() {
+    for (const p in this.filters) {
+      if (!this.filters[p]) {
+        delete this.filters[p];
+      }
+    }
+
     this.eventFilters.emit(this.filters);
   }
 
   constructor(public catService: CategoryService) { }
 
   ngOnInit(): void {
-    
+    this.emitFilters();
   }
 
 }

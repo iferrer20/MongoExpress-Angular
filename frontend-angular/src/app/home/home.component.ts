@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.carouselItems = this.catService.categories.map(c => (<CarouselItem> {
-      slug: c.slug,
+      link: {url: ['/shop/'], query: {category: c.shortName}},
       title: c.shortName
     }));
   }

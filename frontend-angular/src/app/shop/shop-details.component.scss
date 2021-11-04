@@ -6,6 +6,7 @@
 
 .action-btn {
   @include boxed;
+  cursor: pointer;
 }
 
 .fav-btn {

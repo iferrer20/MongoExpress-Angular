@@ -1,6 +1,7 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../core/services/product.service';
+import { ActivatedRoute } from '@angular/router';
 import { Product } from '../core/types/Product';
 
 @Component({
@@ -14,7 +15,8 @@ export class ShopDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +31,6 @@ export class ShopDetailsComponent implements OnInit {
   }
   
   goBack() {
-    history.back();
+    this.location.back();
   }
 }

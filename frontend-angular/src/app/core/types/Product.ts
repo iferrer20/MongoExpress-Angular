@@ -50,9 +50,10 @@ export const orders: string[] = [
 ];
 
 export interface ProductFilters {
-  text: string,
-  category: string,
-  author: string,
-  order: string,
-  quality: string
+  [key: string]: any,
+  text?: string,
+  category?: string,
+  author?: string,
+  order?: string,
+  quality?: string
 }

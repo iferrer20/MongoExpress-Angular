@@ -3,7 +3,7 @@ import { Component, OnInit, Input, HostBinding } from '@angular/core';
 export interface CarouselItem {
   img?: string,
   title: string,
-  slug: string
+  link: any
 }
 
 @Component({
@@ -17,6 +17,7 @@ export class CarouselItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.item.link)
   }
 
   getHash(name: string): number {
@@ -26,7 +27,7 @@ export class CarouselItemComponent implements OnInit {
 
   @HostBinding('style.background-color')
   get color(): string {
-    const c = '#' + (this.getHash(this.item.slug) >>> 0 & 0xFFFFFF).toString(16).padStart(6, '0');
+    const c = '#' + (this.getHash(this.item.title) >>> 0 & 0xFFFFFF).toString(16).padStart(6, '0');
     return c;
   }
 

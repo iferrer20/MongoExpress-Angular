@@ -1,5 +1,5 @@
 <div class="product-container">
-  <a class="action-btn nolinkdec" [routerLink]="['../../']">&lt; Back</a>
+  <a class="action-btn nolinkdec" (click)="goBack()">&lt; Back</a>
   <button class="action-btn nolinkdec fav-btn" [class.active]="product.isFavorited" (click)="onFavorite()">
     <i class="gg-heart">
 
