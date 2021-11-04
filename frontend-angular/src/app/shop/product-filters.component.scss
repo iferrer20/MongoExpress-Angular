@@ -9,8 +9,10 @@
 
   .category {
     label {
-      display: flex;
+      user-select: none;
+      display: inline-flex;
       align-items: center;
+      cursor: pointer;
     }
   }
   @include shadow;

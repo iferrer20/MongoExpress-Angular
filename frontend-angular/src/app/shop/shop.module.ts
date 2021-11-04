@@ -8,6 +8,7 @@ import { ProductListResolver } from '../core/resolvers/product-list.resolver';
 import { CategoryResolver } from '../core/resolvers/category.resolver';
 import { CommonModule } from '@angular/common';
 import { ShopDetailsComponent } from './shop-details.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ShopDetailsComponent } from './shop-details.component';
     CommonModule,
     SharedModule,
     ShopRoutingModule,
+    FormsModule
   ],
   providers: [
     ProductListResolver,

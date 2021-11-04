@@ -1,6 +1,7 @@
+import { ProductService } from './../core/services/product.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Product, ProductList } from '../core/types/Product';
+import { ProductFilters } from '../core/types/Product';
 
 @Component({
   selector: 'app-shop',
@@ -8,13 +9,14 @@ import { Product, ProductList } from '../core/types/Product';
   styleUrls: ['./shop.component.scss']
 })
 export class ShopComponent implements OnInit {
-
-  productList!: ProductList;
   
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, public prodService: ProductService) { }
+
+  onFilter(filters: ProductFilters) {
+    this.prodService.list(filters).subscribe();
+  }
 
   ngOnInit(): void {
-    this.productList = this.route.snapshot.data.productList;
   }
 
 }

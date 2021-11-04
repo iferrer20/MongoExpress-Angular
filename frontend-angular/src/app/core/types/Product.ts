@@ -31,6 +31,22 @@ export interface ProductList {
   total: number
 }
 
+export const qualities: string[] = [
+  '',
+  'New', 
+  'LikeNew', 
+  'MinorDamages', 
+  'Decrepit', 
+  'Broken'
+];
+
+export const orders: string[] = [
+  '',
+  'FavFirst',
+  'ViewsFirst',
+  'NewFirst'
+];
+
 export interface ProductFilters {
   text: string,
   category: string,

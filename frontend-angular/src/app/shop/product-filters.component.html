@@ -3,8 +3,28 @@
   <div>Categories</div>
   <div *ngFor="let category of catService.categories" class="category">
     <label>
-      <input type="checkbox">
+      <input type="checkbox" 
+      [ngModel]="category.shortName == filters.category" 
+      (change)="$any($event.target).checked ? changeCategory(category.shortName) : unsetCategory()">
       {{ catService.getCategoryPretty(category) }}
     </label>
   </div>
+</div>
+
+<div class="quality">
+  <div>Quality</div>
+  <select name="" id="" [ngModel]="filters.quality" (change)="changeQuality($any($event.target).value)">
+    <option *ngFor="let quality of qualities">
+      {{ quality }}
+    </option>
+  </select>
+</div>
+
+<div class="order">
+  <div>Order</div>
+  <select [ngModel]="filters.order" (change)="changeOrder($any($event.target).value)">
+    <option *ngFor="let order of orders">
+      {{ order }}
+    </option>
+  </select>
 </div>

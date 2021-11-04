@@ -3,6 +3,7 @@ import Product from '../../models/Product';
 import { allResolved } from '../../utils';
 import ah from 'express-async-handler'; /* asyncHandler */
 import { readUserJwt } from '../../middlewares/read_user_jwt';
+import Category from '../../models/Category';
 
 const router = Router();
 
@@ -21,10 +22,42 @@ router.param('product', ah(async (req, res, next, slug) => {
 }));
 
 router.get('/', ah(async (req, res) => {
+
+  // Filters
+  const { category, quality, order } = req.query;
+
+  var q = Product.aggregate()
+    .lookup({
+      from: Category.collection.name,
+      localField: 'category',
+      foreignField: '_id',
+      as: 'category'
+    })
+    .unwind('$category');
+
+  if (category) {
+    q.match({ 'category.shortName': category });
+  }
+
+  if (quality) {
+    q.match({ quality });
+  }
+  if (order == 'FavFirst') {
+    q.sort({
+      'likes': -1
+    });
+  } else if (order == 'ViewsFirst') {
+    q.sort({
+      'views': -1
+    });
+  } else if (order == 'NewFirst') {
+    q.sort({
+      'datePublished': -1
+    });
+  }
+
   let [list, total] = await allResolved([
-    Product.find()
-      .populate({ path: 'category', select: '-_id slug shortName' })
-      .exec(),
+    q.exec(),
     Product.countDocuments().exec()
   ]);
 
