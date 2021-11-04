@@ -1,6 +1,9 @@
 <div class="product-container">
-  <a class="back-btn nolinkdec" (click)="goBack()" href="#">&lt; Back</a>
-  <div class="images"><p>images</p></div>
+  <a class="action-btn nolinkdec" [routerLink]="['../../']">&lt; Back</a>
+  <a class="action-btn nolinkdec fav-btn">❤️</a>
+  <div class="images">
+    <p>images</p>
+  </div>
   <h1>{{product.name}}</h1>
   <hr>
   <div class="properties">
@@ -13,8 +16,16 @@
       <span>{{product.category.description}}</span>
     </div>
     <div>
-      <span>Fecha publicación:</span>
+      <span>Creation date:</span>
       <span>{{getCreationDateString()}}</span>
+    </div>
+    <div>
+      <span>Likes:</span>
+      <span>{{product.likes}}</span>
+    </div>
+    <div>
+      <span>Views:</span>
+      <span>{{product.views}}</span>
     </div>
   </div>
   <hr>

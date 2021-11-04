@@ -1,4 +1,4 @@
-<div class="product" ngOnce> <!-- render one time -->
+<div class="product" [routerLink]="['view', product.slug]" ngOnce> <!-- render one time -->
   <div>
     <div :style="`background-image: url(/img/car/${car.id}/1.jpg)`">
     </div>

@@ -12,6 +12,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
     a.disabled {
       pointer-events: none;
     }

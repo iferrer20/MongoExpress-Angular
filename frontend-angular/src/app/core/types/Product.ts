@@ -23,7 +23,8 @@ export interface Product {
   quality: string,
   datePublished: Date,
   views: number,
-  likes: number
+  likes: number,
+  slug: string
 }
 
 export interface ProductList {
