@@ -1,3 +1,4 @@
+import User from '../models/User';
 import { checkJWT } from "../utils";
 import ah from 'express-async-handler'; /* asyncHandler */
 

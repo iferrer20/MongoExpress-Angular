@@ -60,7 +60,7 @@ productSchema.methods.toJSON = function () {
 productSchema.methods.toJSONFor = async function (user) {
   return user ? {
     id: this._id,
-    owner: await this.owner.toJSONFor(user),
+    owner: this.owner ? await this.owner.toJSONFor(user) : null,
     category: this.category,
     name: this.name,
     description: this.description,
