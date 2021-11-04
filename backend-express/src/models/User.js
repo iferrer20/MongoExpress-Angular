@@ -70,8 +70,21 @@ userSchema.methods.follow = async function(_id) {
   await User.updateOne({_id}, {$addToSet: {followers: this._id, following: _id}});
 }
 
-userSchema.methods.hasFavorite = async function (product) {
-  return false; /** TODO: implement */
+userSchema.methods.favorite = async function (product) {
+  if (this.hasFavorite(product)) {
+    this.favorites.splice(this.favorites.indexOf(product._id), 1);
+    product.likes--;
+  } else {
+    this.favorites.push(product._id);
+    product.likes++;
+  }
+  
+  await product.save();
+  await this.save();
+};
+
+userSchema.methods.hasFavorite = function (product) {
+  return this.favorites.includes(product._id);
 };
 
 const User = mongoose.model('User', userSchema);

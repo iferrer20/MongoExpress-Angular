@@ -57,10 +57,10 @@ productSchema.methods.toJSON = function () {
   };
 };
 
-productSchema.methods.toJSONFor = async function (user) {
+productSchema.methods.toJSONFor = function (user) {
   return user ? {
     id: this._id,
-    owner: this.owner ? await this.owner.toJSONFor(user) : null,
+    owner: this.owner ? this.owner.toJSONFor(user) : null,
     category: this.category,
     name: this.name,
     description: this.description,
@@ -69,7 +69,7 @@ productSchema.methods.toJSONFor = async function (user) {
     views: this.views,
     likes: this.likes,
     slug: this.slug,
-    isFavorited: await user.hasFavorite(this)
+    isFavorited: user.hasFavorite(this)
   } : this.toJSON();
 };
 
