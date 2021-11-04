@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import Product from '../../models/Product';
-import { allResolved } from '../../utils';
+import { allResolved, checkJWT } from '../../utils';
 import ah from 'express-async-handler'; /* asyncHandler */
 import { readUserJwt } from '../../middlewares/read_user_jwt';
 import Category from '../../models/Category';
@@ -114,6 +114,12 @@ router.delete('/:product', ah(async (req, res) => {
   
   await Product.deleteOne({ _id: product._id });
   res.json({ ok: true });
+}));
+
+router.post('/like/:product', readUserJwt(false) , ah(async (req, res) => {
+  await req.user.favorite(req.params.product);
+
+  res.end();
 }));
 
 export default router;

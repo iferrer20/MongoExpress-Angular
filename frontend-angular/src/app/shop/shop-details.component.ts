@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ProductService } from '../core/services/product.service';
 import { Product } from '../core/types/Product';
 
 @Component({
@@ -12,7 +13,8 @@ export class ShopDetailsComponent implements OnInit {
   product!: Product;
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private productService: ProductService
   ) { }
 
   ngOnInit(): void {
@@ -21,6 +23,9 @@ export class ShopDetailsComponent implements OnInit {
 
   getCreationDateString() {
     return new Date(this.product.datePublished).toLocaleString();
+  }
+  onFavorite() {
+    this.productService.like(this.product).subscribe();
   }
   
   goBack() {

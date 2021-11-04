@@ -27,7 +27,6 @@ export class CategoryService {
   }
 
   getCategoryPretty(category: Category): string {
-    console.log(category)
     return category.shortName.replace(/(^.)|(?<=\-)./g, (a) => a.toUpperCase()).replace(/\-/g, ' ');
   }
   

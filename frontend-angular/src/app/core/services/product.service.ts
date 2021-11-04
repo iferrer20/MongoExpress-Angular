@@ -20,6 +20,21 @@ export class ProductService {
     );
   }
 
+  like(product: Product) {
+    return this.api.request('POST', 'product/like/' + product.slug).pipe(
+      tap(() => { 
+        if (!product.isFavorited) {
+          product.likes++;
+          product.isFavorited = true;
+        } else {
+          product.likes--;
+          product.isFavorited = false;
+        }
+
+      })
+    );
+  }
+
   get(slug: string): Observable<Product> {
     return this.api.request('GET', 'product/' + slug);
   }
