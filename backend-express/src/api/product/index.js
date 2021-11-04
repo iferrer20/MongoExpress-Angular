@@ -31,11 +31,10 @@ router.get('/', ah(async (req, res) => {
   res.json({ list, total });
 }));
 
-router.post('/', ah(async (req, res) => {
-  // TODO: check if current user is authorized
+router.post('/', readUserJwt(false/* TODO: change to true when everything ready*/), ah(async (req, res) => {
   const { category, name, description, quality, state } = req.body;
   let product = new Product({
-    owner: null, // TODO
+    owner: req.user._id,
     category,
     name,
     description,
@@ -49,12 +48,16 @@ router.post('/', ah(async (req, res) => {
 }));
 
 router.get('/:product', readUserJwt(), ah(async (req, res) => {
-  res.json(req.params.product.toJSONFor(req.user));
+  res.json(await req.params.product.toJSONFor(req.user));
 }));
 
-router.put('/:product', ah(async (req, res) => {
-  // TODO: check if current user is owner or admin
+router.put('/:product', readUserJwt(true), ah(async (req, res) => {
   let product = req.params.product;
+
+  if (product.owner !== req.user._id && req.user.privileges < 2) {
+    /** Not allowed! */
+    return res.sendStatus(403);
+  }
 
   const allowedFields = ['category', 'name', 'description', 'quality', 'state'];
   for (const f of allowedFields) {
@@ -65,12 +68,18 @@ router.put('/:product', ah(async (req, res) => {
 
   await product.save();
 
-  res.json({ product, slug: product.slug });
+  res.json(await req.params.product.toJSONFor(req.user));
 }));
 
 router.delete('/:product', ah(async (req, res) => {
-  // TODO: check if current user is owner or admin
-  await Product.deleteOne({ _id: req.params.product._id });
+  let product = req.params.product;
+
+  if (product.owner !== req.user._id && req.user.privileges < 2) {
+    /** Not allowed! */
+    return res.sendStatus(403);
+  }
+  
+  await Product.deleteOne({ _id: product._id });
   res.json({ ok: true });
 }));
 

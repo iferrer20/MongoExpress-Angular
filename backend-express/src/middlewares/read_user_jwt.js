@@ -5,13 +5,12 @@ import ah from 'express-async-handler'; /* asyncHandler */
 export const readUserJwt = (optional = true) => ah(async (req, res, next) => {
   req.user = null;
   const { token } = req.cookies;
-  
   if (!token) {
     if (!optional) {
       throw new Error('Not logged in!');
     }
     
-    return;
+    return next();
   }
 
   const { _id } = checkJWT(token);
