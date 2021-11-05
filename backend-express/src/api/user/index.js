@@ -5,11 +5,15 @@ import { OAuth2Client } from 'google-auth-library';
 import { genJWT } from '../../utils';
 import { readUserJwt } from '../../middlewares/read_user_jwt';
 import fs from 'fs/promises';
+import { mkdirSync } from 'fs';
 import path from 'path';
 
 const userpfpdir = path.dirname(require.main.filename) + '/../img/user/';
 const client = new OAuth2Client();
 const router = Router();
+
+/* Make sure the profile pic directory exists before listening, no async mkdir, can't await */
+mkdirSync(userpfpdir, {recursive: true});
 
 function sendJWT(res, user) {
   const { _id } = user;

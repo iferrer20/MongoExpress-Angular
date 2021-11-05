@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, BaseRouteReuseStrategy, Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/core/types/User';
 
@@ -8,10 +8,12 @@ import { User } from 'src/app/core/types/User';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
   user!: User;
   me!: boolean;
+
+  oldShouldReuseRoute!: typeof BaseRouteReuseStrategy.prototype.shouldReuseRoute;
   
   @ViewChild('pfpInput') profileInput!: ElementRef;
 
@@ -33,8 +35,13 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.route.snapshot.data.user;
     this.me = this.route.snapshot.paramMap.get('id') == 'me';
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     
+    this.oldShouldReuseRoute = this.router.routeReuseStrategy.shouldReuseRoute;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
+
+  ngOnDestroy(): void {
+    this.router.routeReuseStrategy.shouldReuseRoute = this.oldShouldReuseRoute;
   }
 
 }

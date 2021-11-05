@@ -29,14 +29,16 @@
   min-height: 350px;
 
   #pfp {
-    min-width: 256px;
-    min-height: 256px;
+    width: 256px;
+    height: 256px;
     border-radius: 100%;
     float: left;
     margin-right: 30px;
     margin-left: 15px;
     background-color: #ddd;
     position: relative;
+    background-size: cover;
+    background-position: center;
 
     &.me {
       
