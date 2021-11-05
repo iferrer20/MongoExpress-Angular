@@ -1,7 +1,8 @@
 <div class="profile-container">
   <div *ngIf="user; else notfound">
     <div>
-      <img src="/api/user/pfp/{{user._id}}" alt="">
+      <img src="/api/user/pfp/{{user._id}}" alt="" id="pfp" [class.me]="me" (click)="me && profileInput.nativeElement.click()">
+      <input type="file" style="display: none;" (change)="changeProfile()" #pfpInput>
       <div>
         <h1>{{user.username}}</h1>
         <hr>

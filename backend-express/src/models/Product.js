@@ -57,20 +57,20 @@ productSchema.methods.toJSON = function () {
   };
 };
 
+productSchema.methods.view = async function() {
+  this.views++;
+  await this.save();
+}
+
 productSchema.methods.toJSONFor = function (user) {
-  return user ? {
-    id: this._id,
-    owner: this.owner ? this.owner.toJSONFor(user) : null,
-    category: this.category,
-    name: this.name,
-    description: this.description,
-    quality: this.quality,
-    datePublished: this.datePublished,
-    views: this.views,
-    likes: this.likes,
-    slug: this.slug,
-    isFavorited: user.hasFavorite(this)
-  } : this.toJSON();
+  const product = this.toJSON();
+  
+  if (user) {
+    product.owner = this.owner ? this.owner.toJSONFor(user) : null;
+    product.isFavorited = user.hasFavorite(this);
+  }
+  
+  return product;
 };
 
 export default mongoose.model('Product', productSchema);

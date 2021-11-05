@@ -91,6 +91,7 @@ router.post('/', readUserJwt(false/* TODO: change to true when everything ready*
 }));
 
 router.get('/:product', readUserJwt(), ah(async (req, res) => {
+  await req.params.product.view();
   res.json(await req.params.product.toJSONFor(req.user));
 }));
 
@@ -127,8 +128,7 @@ router.delete('/:product', ah(async (req, res) => {
 }));
 
 router.post('/like/:product', readUserJwt(false) , ah(async (req, res) => {
-  await req.user.favorite(req.params.product);
-
+  await req.user.favorite(req.params.product); 
   res.end();
 }));
 

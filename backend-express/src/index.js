@@ -3,6 +3,7 @@ import api from './api';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import fileUpload from 'express-fileupload';
 
 dotenv.config(); // Load dotenv config
 const app = express();
@@ -12,6 +13,7 @@ const port = process.env.PORT;
 /* Middlewares */
 app.use(express.json());
 app.use(cookieParser());
+app.use(fileUpload());
 
 
 /* Database */

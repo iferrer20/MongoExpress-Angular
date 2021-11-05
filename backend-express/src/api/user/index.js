@@ -4,7 +4,10 @@ import User from '../../models/User';
 import { OAuth2Client } from 'google-auth-library';
 import { genJWT } from '../../utils';
 import { readUserJwt } from '../../middlewares/read_user_jwt';
+import fs from 'fs/promises';
+import path from 'path';
 
+const userpfpdir = path.dirname(require.main.filename) + '/../img/user/';
 const client = new OAuth2Client();
 const router = Router();
 
@@ -14,6 +17,7 @@ function sendJWT(res, user) {
 
   res.cookie('token', token, {maxAge: 7*24*60*60*1000 }); // 1 week
 }
+
 router.post('/signin/', ah(async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({
@@ -88,6 +92,17 @@ router.post('/follow/', readUserJwt(false), ah(async (req, res) => {
   const { _id } = req.body;
   req.user.follow(_id);
   res.end();
+}));
+
+// pfp
+router.post('/mypfp/', readUserJwt(false), ah(async (req, res) => {
+  const { pfp } = req.files;
+  await fs.writeFile(userpfpdir + req.user._id, pfp.data);
+}));
+
+router.get('/pfp/:id', ah(async (req, res) => {
+  const { id } = req.params;
+  res.sendFile(path.resolve(userpfpdir + id));
 }));
 
 export default router;

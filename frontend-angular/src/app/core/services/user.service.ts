@@ -69,6 +69,13 @@ export class UserService {
     return this.api.request<User>('GET', 'user/' + username);
   }
 
+  changeProfile(img: File) {
+    const formData = new FormData(); 
+    console.log(img)
+    formData.append("pfp", img, img.name);
+    return this.api.request('POST', 'user/mypfp', formData);
+  }
+
   isLogged() {
     return !!this.user;
   }

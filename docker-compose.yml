@@ -24,7 +24,7 @@ services:
     working_dir: /home/node/app
     volumes: 
       - ./backend-express:/home/node/app
-      - ./data/img/:/home/node/img
+      - ./data/img/:/home/node/app/img
     command: /bin/bash -c "usermod -u `stat -c '%u' package.json` node && groupmod -g `stat -c '%g' package.json` node && su node -c 'npm install && npm run dev'"
   dev:
     image: node:14
