@@ -8,6 +8,10 @@
   @include boxed;
 }
 
+.signout-btn {
+  float: right;
+}
+
 .fav-btn {
   &:not(.active) {
     filter: grayscale(1);

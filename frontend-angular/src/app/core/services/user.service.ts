@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators';
 @Injectable()
 export class UserService {
 
-  private _user!: User;
+  private _user: User | null = null;
   errno!: string;
 
   constructor(private api: ApiService) {
@@ -17,7 +17,7 @@ export class UserService {
   get user() {
     return this._user;
   }
-  set user(value) {
+  set user(value: User | null) {
     this._user = value;
     this.saveOwnUser();
   }
@@ -25,14 +25,18 @@ export class UserService {
   private loadOwnUser() {
     try {
       this._user = JSON.parse(window.atob(localStorage.getItem('user') as string)) as User;
-    } catch (e) {}
+    } catch (e) { }
   }
 
   private saveOwnUser() {
-    localStorage.setItem("user", window.btoa(JSON.stringify(this._user)));
+    if (this._user) {
+      localStorage.setItem('user', window.btoa(JSON.stringify(this._user)));
+    } else {
+      localStorage.removeItem('user');
+    }
   }
 
-  signIn(username: string, password: string) : Observable<User> {
+  signIn(username: string, password: string): Observable<User> {
     return this.api.request<User>('POST', 'user/signin', {
       username, password
     }).pipe(
@@ -42,7 +46,7 @@ export class UserService {
       ),
     );
   }
-  signUp(email: string, username: string, password: string) : Observable<User> {
+  signUp(email: string, username: string, password: string): Observable<User> {
     return this.api.request<User>('POST', 'user/signup', {
       email, username, password
     }).pipe(
@@ -52,17 +56,29 @@ export class UserService {
       ),
     );
   }
+
+  signOut() {
+    return this.api.request<User>('POST', 'user/signout')
+    .pipe(
+      tap(
+        (u: User) => this.user = null,
+        (err: string) => this.errno = err
+      ),
+    );
+  }
+
   isAdmin() {
     return this.user?.privileges == UserPrivileges.ADMIN;
   }
 
   setAdmin() {
+    if (!this.user) { return; }
     this.user.privileges = UserPrivileges.ADMIN;
     this.saveOwnUser();
   }
 
   follow(_id: string) {
-    return this.api.request('POST', 'user/follow', {_id});
+    return this.api.request('POST', 'user/follow', { _id });
   }
 
   getUser(username: string) {
@@ -70,7 +86,7 @@ export class UserService {
   }
 
   changeProfile(img: File) {
-    const formData = new FormData(); 
+    const formData = new FormData();
     console.log(img)
     formData.append("pfp", img, img.name);
     return this.api.request('POST', 'user/mypfp', formData);

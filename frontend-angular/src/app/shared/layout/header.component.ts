@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/core/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventBusService } from 'src/app/core/services/event-bus.service';
@@ -9,7 +10,10 @@ import { EventBusService } from 'src/app/core/services/event-bus.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private bus: EventBusService) { }
+  constructor(
+    private bus: EventBusService,
+    public userService: UserService
+  ) { }
 
   ngOnInit(): void {  }
 

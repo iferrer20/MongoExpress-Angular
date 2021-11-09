@@ -19,7 +19,11 @@ function sendJWT(res, user) {
   const { _id } = user;
   const token = genJWT({ _id , exp: Math.floor((Date.now() + 7*24*60*60*1000)/1000)});
 
-  res.cookie('token', token, {maxAge: 7*24*60*60*1000 }); // 1 week
+  res.cookie('token', token, {
+    maxAge: 7*24*60*60*1000, // 1 week
+    httpOnly: true,
+    sameSite: 'Lax'
+  });
 }
 
 router.post('/signin/', ah(async (req, res) => {
@@ -88,6 +92,11 @@ router.param('user', ah(async (req, res, next, username) => {
   next();
 }));
 
+router.post('/signout/', ah(async (req, res) => {
+  res.cookie('token', '', {maxAge: 1});
+  res.end();
+}));
+
 router.get('/@:user', ah(async (req, res) => {
   res.json(req.params.user.toJSONFor());
 }));
@@ -102,6 +111,7 @@ router.post('/follow/', readUserJwt(false), ah(async (req, res) => {
 router.post('/mypfp/', readUserJwt(false), ah(async (req, res) => {
   const { pfp } = req.files;
   await fs.writeFile(userpfpdir + req.user._id, pfp.data);
+  res.end();
 }));
 
 router.get('/pfp/:id', ah(async (req, res) => {

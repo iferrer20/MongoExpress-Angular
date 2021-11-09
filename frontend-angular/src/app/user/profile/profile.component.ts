@@ -12,6 +12,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   user!: User;
   me!: boolean;
+  ver: number = 0;
 
   oldShouldReuseRoute!: typeof BaseRouteReuseStrategy.prototype.shouldReuseRoute;
   
@@ -27,9 +28,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.userService.follow(this.user._id).subscribe();
   }
 
+  signOut() {
+    this.userService.signOut().subscribe(
+      () => this.router.navigate(['/'])
+    );
+  }
+
   changeProfile() {
     const newpfp: File = this.profileInput.nativeElement.files[0];
-    this.userService.changeProfile(newpfp).subscribe();
+    this.userService.changeProfile(newpfp).subscribe(() => {
+      ++this.ver;
+    });
   }
 
   ngOnInit(): void {

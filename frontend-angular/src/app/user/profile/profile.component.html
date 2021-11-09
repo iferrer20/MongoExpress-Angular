@@ -1,14 +1,15 @@
 <div class="profile-container">
   <div *ngIf="user; else notfound">
     <div>
-      <div [ngStyle]="{'background-image':'url(/api/user/pfp/'+user._id+')'}" alt="" id="pfp" [class.me]="me" (click)="me && profileInput.nativeElement.click()"></div>
+      <div [ngStyle]="{'background-image':'url(/api/user/pfp/'+user._id+'?v='+ver+')'}" alt="" id="pfp" [class.me]="me" (click)="me && profileInput.nativeElement.click()"></div>
       <input type="file" style="display: none;" (change)="changeProfile()" #pfpInput>
       <div>
+        <button class="signout-btn" *ngIf="userService.isLogged() && userService.user?._id == user._id" (click)="signOut()">Sign out</button>
         <h1>{{user.username}}</h1>
         <hr>
         <p>Email: {{user.email}}</p>
         <p>Followers: {{user.followers}}</p>
-        <button *ngIf="userService.isLogged() && userService.user._id != user._id" (click)="follow()">Follow</button>
+        <button *ngIf="userService.isLogged() && userService.user?._id != user._id" (click)="follow()">Follow</button>
       </div>
     </div>
     <div class="extra-info"></div>

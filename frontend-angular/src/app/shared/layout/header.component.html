@@ -7,6 +7,6 @@
   <a class="menu-link" routerLinkActive="active" [routerLink]="['/shop']">Shop</a>
   <div class="right">
     <i [routerLink]="['/user/profile/me']" class="gg-profile"></i>
-    <i [routerLink]="" class="gg-add" (click)="modalAdd()"></i>
+    <i [routerLink]="" *ngIf="userService.isLogged()" class="gg-add" (click)="modalAdd()"></i>
   </div>
 </div>
