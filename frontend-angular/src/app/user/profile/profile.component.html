@@ -9,6 +9,7 @@
         <hr>
         <p>Email: {{user.email}}</p>
         <p>Followers: {{user.followers}}</p>
+        <p>Karma: {{user.karma.avg}} ⭐ ({{user.karma.num}} ratings)</p>
         <button *ngIf="userService.isLogged() && userService.user?._id != user._id" (click)="follow()">Follow</button>
       </div>
     </div>

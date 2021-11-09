@@ -10,5 +10,9 @@ export interface User {
   username: string,
   email: string,
   privileges: UserPrivileges,
-  followers: number
+  followers: number,
+  karma: {
+    avg: number,
+    num: number
+  }
 }

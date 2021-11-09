@@ -28,18 +28,18 @@ const userSchema = mongoose.Schema({
     lon: field(Number)
   }),
   password: field(String),
-  privileges: { 
+  privileges: {
     ...field(Number),
     default: 0
   },
   followers: {
-    type: [{type: ObjectId, ref:'User'}]
+    type: [{ type: ObjectId, ref: 'User' }]
   },
   following: {
-    type: [{type: ObjectId, ref:'User'}]
+    type: [{ type: ObjectId, ref: 'User' }]
   },
   favorites: {
-    type: [{type: ObjectId, ref: 'Product'}]
+    type: [{ type: ObjectId, ref: 'Product' }]
   }
 }, { toJSON: { virtuals: true } });
 
@@ -56,19 +56,37 @@ userSchema.pre('save', function (next) {
   next();
 });
 
-userSchema.methods.toJSONFor = function (viewer) {
-  const user = {...this.toObject()};
-
-  user.followers = user.followers.length;
-  user.following = user.following.length;
+userSchema.methods.toJSON = async function () {
+  const user = { ...this.toObject() };
   delete user.password;
   delete user.__v;
+
+  user.karma = (await Product.aggregate()
+    .match({ owner: this._id })
+    .unwind('ratings')
+    .group({
+      _id: '$owner',
+      avg: { '$avg': '$ratings.rating' },
+      num: { '$sum': 1 }
+    })
+    .exec())[0] || { avg: 0, num: 0 };
+  
+  delete user.karma._id;
 
   return user;
 };
 
-userSchema.methods.follow = async function(_id) {
-  await User.updateOne({_id}, {$addToSet: {followers: this._id, following: _id}});
+userSchema.methods.toJSONFor = async function (viewer) {
+  const user = { ...(await this.toJSON()) };
+
+  user.followers = user.followers.length;
+  user.following = user.following.length;
+
+  return user;
+};
+
+userSchema.methods.follow = async function (_id) {
+  await User.updateOne({ _id }, { $addToSet: { followers: this._id, following: _id } });
 }
 
 const tsession = (() => {
@@ -82,14 +100,15 @@ userSchema.methods.favorite = async function (product) {
   const s = await tsession();
   await s.withTransaction(async () => {
     const isFavved = await User.aggregate()
-      .match({_id: this._id})
+      .match({ _id: this._id })
       .unwind('favorites')
-      .match({favorites: product._id});
-    
+      .match({ favorites: product._id })
+      .exec();
+
     const op = isFavved[0] ? '$pull' : '$addToSet';
     const inc = isFavved[0] ? -1 : 1;
-    await User.updateOne({_id: this._id}, {[op]: {favorites: product._id}});
-    await Product.updateOne({_id: product._id}, {'$inc': {likes: inc}});
+    await User.updateOne({ _id: this._id }, { [op]: { favorites: product._id } });
+    await Product.updateOne({ _id: product._id }, { '$inc': { likes: inc } });
   });
 };
 

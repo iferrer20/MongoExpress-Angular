@@ -39,7 +39,7 @@ router.post('/signin/', ah(async (req, res) => {
     throw new Error('Invalid username or password');
 
   sendJWT(res, user);
-  res.json(user.toJSONFor(user));
+  res.json(await user.toJSONFor(user));
 }));
 
 router.post('/social_signin/', ah(async (req, res) => {
@@ -78,7 +78,7 @@ router.post('/signup/', ah(async (req, res) => {
   await user.save();
 
   sendJWT(res, user);
-  res.json(user.toJSONFor(user));
+  res.json(await user.toJSONFor(user));
 }));
 
 router.param('user', ah(async (req, res, next, username) => {
@@ -98,7 +98,7 @@ router.post('/signout/', ah(async (req, res) => {
 }));
 
 router.get('/@:user', ah(async (req, res) => {
-  res.json(req.params.user.toJSONFor());
+  res.json(await req.params.user.toJSONFor());
 }));
 
 router.post('/follow/', readUserJwt(false), ah(async (req, res) => {
