@@ -30,13 +30,16 @@ export class ProductService {
           product.likes--;
           product.isFavorited = false;
         }
-
       })
     );
   }
 
   get(slug: string): Observable<Product> {
     return this.api.request('GET', 'product/' + slug);
+  }
+
+  post(product: Product) {
+    return this.api.request('POST', 'product/', product);
   }
   
 }

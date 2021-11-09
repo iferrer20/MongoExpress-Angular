@@ -8,15 +8,14 @@ import { CategoryService } from './services/category.service';
 import { UserService } from './services/user.service';
 import { AuthGuard } from './guards/auth.guard';
 import { CategoryResolver } from './resolvers/category.resolver';
+import { EventBusService } from './services/event-bus.service';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule
   ],
-  exports: [
-
-  ],
+  exports: [],
   providers: [
     CategoryResolver,
     ApiService,
@@ -25,7 +24,8 @@ import { CategoryResolver } from './resolvers/category.resolver';
     UserService,
     AuthGuard,
     ProductListResolver,
-    ProductResolver
+    ProductResolver,
+    EventBusService
   ]
 })
 export class CoreModule { }

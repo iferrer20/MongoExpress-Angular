@@ -14,6 +14,7 @@
 <div class="quality">
   <div>Quality</div>
   <select name="" id="" [ngModel]="filters.quality" (change)="changeQuality($any($event.target).value)">
+    <option value=""></option>
     <option *ngFor="let quality of qualities">
       {{ quality }}
     </option>
@@ -23,6 +24,7 @@
 <div class="order">
   <div>Order</div>
   <select [ngModel]="filters.order" (change)="changeOrder($any($event.target).value)">
+    <option value=""></option>
     <option *ngFor="let order of orders">
       {{ order }}
     </option>

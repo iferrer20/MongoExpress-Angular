@@ -1,0 +1,43 @@
+<form class="form" [formGroup]="productForm" (ngSubmit)="submit()">
+  <table>
+    <tbody>
+      <tr>
+        <td><input type="text" formControlName="name" placeholder="Name" [(ngModel)]="product.name"></td>
+      </tr>
+      <tr>
+        <td><textarea name="" id="" cols="30" rows="10" formControlName="description" placeholder="Descrption.." [(ngModel)]="product.description"></textarea></td>
+      </tr>
+      <tr>
+        <td>
+          <select name="" id="" [(ngModel)]="product.category" formControlName="category">
+            <option value="" selected>ostia</option>
+            <option *ngFor="let cat of catService.list() | async" [value]="cat._id">
+              {{ catService.getCategoryPretty(cat) }}
+            </option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select name="" id="" [(ngModel)]="product.quality" formControlName="quality">
+            <option value=""></option>
+            <option *ngFor="let quality of qualities" [value]="quality">
+              {{ quality }}
+            </option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select name="" id="" [(ngModel)]="product.state" formControlName="state">
+            <option value=""></option>
+            <option *ngFor="let state of states">
+              {{ state }}
+            </option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="submit">Submit</button>
+</form>

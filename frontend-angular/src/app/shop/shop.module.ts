@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 
 import { ShopRoutingModule } from './shop-routing.module';
@@ -28,5 +28,6 @@ import { FormsModule } from '@angular/forms';
   ],
   exports: [
   ]
+
 })
 export class ShopModule { }

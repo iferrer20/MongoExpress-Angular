@@ -20,11 +20,24 @@
       height: 64px;
     }
 
-    > a.gg-profile {
-      --ggs: 2;
-      color: black;
+    .right {
+      display: flex;
+      > * {
+        margin: 15px;
+      }
+      .gg-profile {
+        --ggs: 2;
+        color: black;
+        cursor: pointer;
+      }
+      .gg-add {
+        --ggs: 2;
+        color: black;
+        cursor: pointer;
+      }
+      
       margin-left: auto;
       margin-right: 200px;
-      cursor: pointer;
+      
     }
 }

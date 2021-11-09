@@ -1,0 +1,30 @@
+
+:host {
+  > div {
+    display: block;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    z-index: 10;
+    display: flex;
+
+    .modal {
+      margin: auto;
+      background-color: white;
+      padding: 20px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      position: relative;
+
+      .gg-close {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}

@@ -25,6 +25,7 @@ export interface Product {
   views: number,
   likes: number,
   slug: string,
+  state: string,
   isFavorited: boolean
 }
 
@@ -34,7 +35,6 @@ export interface ProductList {
 }
 
 export const qualities: string[] = [
-  '',
   'New', 
   'LikeNew', 
   'MinorDamages', 
@@ -43,10 +43,15 @@ export const qualities: string[] = [
 ];
 
 export const orders: string[] = [
-  '',
   'FavFirst',
   'ViewsFirst',
   'NewFirst'
+];
+
+export const states: string[] = [
+  'Available',
+  'Reserved',
+  'Sold'
 ];
 
 export interface ProductFilters {

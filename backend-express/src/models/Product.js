@@ -6,8 +6,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const field = (type, required = true) => ({ type, required });
 const productSchema = mongoose.Schema({
-  /* TODO: make owner required when profiles are implemented */
-  owner: { ...field(ObjectId, false), ref: 'Profile' },
+  owner: { ...field(ObjectId), ref: 'User' },
   category: { ...field(ObjectId), ref: 'Category' },
   name: field(String),
   description: field(String),

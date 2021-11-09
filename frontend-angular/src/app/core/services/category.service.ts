@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Category } from '../types/Category';
 import { ApiService, BodyData } from './api.service';
@@ -15,6 +15,7 @@ export class CategoryService {
   }
 
   list(): Observable<Category[]> {
+    if (this.categories) return of(this.categories);
     return this.api.request<BodyData>('GET', 'category')
         .pipe(
           map(data => data.list),

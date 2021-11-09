@@ -1,0 +1,8 @@
+<div *ngIf="opened">
+  <div class="modal">
+    <i class="gg-close" (click)="close()"></i>
+    <ng-container [ngSwitch]="modal">
+      <modal-create-product *ngSwitchCase="'create-product'"></modal-create-product>
+    </ng-container>
+  </div>
+</div>

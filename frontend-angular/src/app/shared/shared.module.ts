@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CarouselComponent } from './carousel/carousel.component';
@@ -11,7 +11,9 @@ import { FooterComponent } from './layout/footer.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CarouselItemComponent } from './carousel/carousel-item.component';
 import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalComponent } from './modal/modal.component';
+import { CreateProductComponent } from './modal/modals/create-product.component';
 
 @NgModule({
   declarations: [
@@ -23,19 +25,24 @@ import { ReactiveFormsModule } from '@angular/forms';
     FooterComponent,
     SearchBarComponent,
     CarouselItemComponent,
+    ModalComponent,
+    CreateProductComponent,
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
     ProductListComponent,
     HeaderComponent,
     FooterComponent,
     SearchBarComponent,
-    CarouselComponent
+    CarouselComponent,
+    CreateProductComponent,
+    ModalComponent
   ]
 })
 export class SharedModule { }

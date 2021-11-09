@@ -4,12 +4,13 @@ import { allResolved, checkJWT } from '../../utils';
 import ah from 'express-async-handler'; /* asyncHandler */
 import { readUserJwt } from '../../middlewares/read_user_jwt';
 import Category from '../../models/Category';
+import User from '../../models/User';
 
 const router = Router();
 
 router.param('product', ah(async (req, res, next, slug) => {
   let product = await Product.findOne({ slug })
-    /*.populate('owner')*/
+    .populate('owner')
     .populate('category')
     .exec();
 
@@ -33,7 +34,16 @@ router.get('/', ah(async (req, res) => {
       foreignField: '_id',
       as: 'category'
     })
-    .unwind('$category');
+    .lookup({
+      from: User.collection.name,
+      localField: 'owner',
+      foreignField: '_id',
+      as: 'owner'
+    })
+    
+    .unwind('$category')
+    .unwind('$owner')
+    .addFields({owner: '$owner.username'});
 
   if (text) {
     var regex = {

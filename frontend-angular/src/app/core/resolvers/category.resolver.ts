@@ -20,13 +20,8 @@ export class CategoryResolver implements Resolve<Category[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Category[]> {
-
-    if (!this.categoryService.categories) {
-      return this.categoryService
-        .list();
-    } else {
-       return of(this.categoryService.categories);
-    }
+    return this.categoryService
+      .list();
     
   }
 }
