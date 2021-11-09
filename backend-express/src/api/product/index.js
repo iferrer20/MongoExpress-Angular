@@ -84,7 +84,7 @@ router.get('/', ah(async (req, res) => {
   res.json({ list, total });
 }));
 
-router.post('/', readUserJwt(false/* TODO: change to true when everything ready*/), ah(async (req, res) => {
+router.post('/', readUserJwt(), ah(async (req, res) => {
   const { category, name, description, quality, state } = req.body;
   let product = new Product({
     owner: req.user._id,
@@ -139,6 +139,16 @@ router.delete('/:product', ah(async (req, res) => {
 
 router.post('/like/:product', readUserJwt(false) , ah(async (req, res) => {
   await req.user.favorite(req.params.product); 
+  res.end();
+}));
+
+router.post('/rate/:product', readUserJwt(false) , ah(async (req, res) => {
+  const value = +req.body.value;
+  if (isNaN(value) || value > 5 || value < 0) {
+    return req.sendStatus(400);
+  }
+
+  await req.params.product.rate(req.user, value);
   res.end();
 }));
 

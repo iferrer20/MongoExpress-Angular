@@ -14,6 +14,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './modal/modal.component';
 import { CreateProductComponent } from './modal/modals/create-product.component';
+import { ProductFavComponent } from './product-fav/product-fav.component';
+import { ProductRateComponent } from './product-rate/product-rate.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { CreateProductComponent } from './modal/modals/create-product.component'
     CarouselItemComponent,
     ModalComponent,
     CreateProductComponent,
+    ProductFavComponent,
+    ProductRateComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +46,9 @@ import { CreateProductComponent } from './modal/modals/create-product.component'
     SearchBarComponent,
     CarouselComponent,
     CreateProductComponent,
-    ModalComponent
+    ModalComponent,
+    ProductFavComponent,
+    ProductRateComponent
   ]
 })
 export class SharedModule { }

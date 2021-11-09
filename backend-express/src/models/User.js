@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { createHash } from '../utils';
+import Product from './Product';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const field = (type, required = true) => ({ type, required });
@@ -70,17 +71,26 @@ userSchema.methods.follow = async function(_id) {
   await User.updateOne({_id}, {$addToSet: {followers: this._id, following: _id}});
 }
 
-userSchema.methods.favorite = async function (product) {
-  if (this.hasFavorite(product)) {
-    this.favorites.splice(this.favorites.indexOf(product._id), 1);
-    product.likes--;
-  } else {
-    this.favorites.push(product._id);
-    product.likes++;
+const tsession = (() => {
+  var session = null;
+  return async () => {
+    return session || (session = await mongoose.startSession({}));
   }
-  
-  await product.save();
-  await this.save();
+})();
+
+userSchema.methods.favorite = async function (product) {
+  const s = await tsession();
+  await s.withTransaction(async () => {
+    const isFavved = await User.aggregate()
+      .match({_id: this._id})
+      .unwind('favorites')
+      .match({favorites: product._id});
+    
+    const op = isFavved[0] ? '$pull' : '$addToSet';
+    const inc = isFavved[0] ? -1 : 1;
+    await User.updateOne({_id: this._id}, {[op]: {favorites: product._id}});
+    await Product.updateOne({_id: product._id}, {'$inc': {likes: inc}});
+  });
 };
 
 userSchema.methods.hasFavorite = function (product) {

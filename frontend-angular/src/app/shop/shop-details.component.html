@@ -1,10 +1,7 @@
 <div class="product-container">
   <a class="action-btn nolinkdec" (click)="goBack()">&lt; Back</a>
-  <button class="action-btn nolinkdec fav-btn" [class.active]="product.isFavorited" (click)="onFavorite()">
-    <i class="gg-heart">
-
-    </i>
-  </button>
+  <app-product-fav [product]="product"></app-product-fav>
+  <app-product-rate [product]="product"></app-product-rate>
   <div class="images">
     <p>images</p>
   </div>

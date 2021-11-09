@@ -1,0 +1,17 @@
+.rate-btn {
+  &:not(.active):not(.rating) {
+    filter: grayscale(1);
+    color: black;
+  }
+
+  &.active {
+    color: goldenrod;
+    text-shadow: 1px 1px darkgoldenrod;
+    box-shadow: inset 0 0 8px goldenrod;
+  }
+
+  &.rating {
+    color: gold;
+    text-shadow: 1px 1px darkgoldenrod;
+  }
+}

@@ -24,6 +24,8 @@ export interface Product {
   datePublished: Date,
   views: number,
   likes: number,
+  rating: number,
+  userRating: number | null,
   slug: string,
   state: string,
   isFavorited: boolean

@@ -5,6 +5,12 @@ import { uniqueValidator } from '../utils';
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const field = (type, required = true) => ({ type, required });
+
+const ratingSchema = mongoose.Schema({
+  from: { ...field(ObjectId), ref: 'User' },
+  rating: { ...field(Number), min: 0, max: 5 }
+});
+
 const productSchema = mongoose.Schema({
   owner: { ...field(ObjectId), ref: 'User' },
   category: { ...field(ObjectId), ref: 'Category' },
@@ -23,6 +29,7 @@ const productSchema = mongoose.Schema({
   datePublished: { ...field(Date), default: Date.now },
   views: { ...field(Number), default: 0 },
   likes: { ...field(Number), default: 0 },
+  ratings: [ratingSchema],
   slug: { ...field(String), unique: true, default: function () { return this.v_slug; } }
 });
 
@@ -41,6 +48,13 @@ productSchema.virtual('v_slug')
 productSchema.path('slug')
   .validate(uniqueValidator('slug'), 'Slug already exists');
 
+ratingSchema.methods.toJSON = function () {
+  return {
+    from: this.from,
+    rating: this.rating
+  };
+};
+
 productSchema.methods.toJSON = function () {
   return {
     id: this._id,
@@ -52,14 +66,10 @@ productSchema.methods.toJSON = function () {
     datePublished: this.datePublished,
     views: this.views,
     likes: this.likes,
+    rating: this.ratings.reduce((avg, r) => avg + r.rating, 0) / Math.max(this.ratings.length, 1),
     slug: this.slug
   };
 };
-
-productSchema.methods.view = async function() {
-  this.views++;
-  await this.save();
-}
 
 productSchema.methods.toJSONFor = function (user) {
   const product = this.toJSON();
@@ -67,9 +77,38 @@ productSchema.methods.toJSONFor = function (user) {
   if (user) {
     product.owner = this.owner ? this.owner.toJSONFor(user) : null;
     product.isFavorited = user.hasFavorite(this);
+    const ownRating = this.ratings.find(r => r.from.toString() === user._id.toString());
+    product.userRating = ownRating ? ownRating.rating : null;
   }
   
   return product;
 };
 
-export default mongoose.model('Product', productSchema);
+productSchema.methods.view = async function() {
+  this.views++;
+  await this.save();
+};
+
+productSchema.methods.rate = async function(user, amount) {
+  await Product.updateOne({_id: this._id}, { /** remove existing rating (if any) */
+    $pull: {
+      ratings: {
+        from: user._id
+      }
+    }
+  });
+
+  if (amount !== 0) {
+    await Product.updateOne({_id: this._id}, { /** add new the one */
+      $push: {
+        ratings: {
+          from: user._id,
+          rating: amount
+        }
+      }
+    });
+  }
+};
+
+const Product = mongoose.model('Product', productSchema);
+export default Product;

@@ -15,7 +15,6 @@ export class ShopDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService,
     private location: Location
   ) { }
 
@@ -25,9 +24,6 @@ export class ShopDetailsComponent implements OnInit {
 
   getCreationDateString() {
     return new Date(this.product.datePublished).toLocaleString();
-  }
-  onFavorite() {
-    this.productService.like(this.product).subscribe();
   }
   
   goBack() {

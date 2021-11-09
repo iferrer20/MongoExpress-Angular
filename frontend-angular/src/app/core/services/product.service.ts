@@ -22,7 +22,7 @@ export class ProductService {
 
   like(product: Product) {
     return this.api.request('POST', 'product/like/' + product.slug).pipe(
-      tap(() => { 
+      tap(() => {
         if (!product.isFavorited) {
           product.likes++;
           product.isFavorited = true;
@@ -30,6 +30,14 @@ export class ProductService {
           product.likes--;
           product.isFavorited = false;
         }
+      })
+    );
+  }
+
+  rate(product: Product, value: number) {
+    return this.api.request('POST', 'product/rate/' + product.slug, {value}).pipe(
+      tap(() => {
+        product.userRating = value;
       })
     );
   }

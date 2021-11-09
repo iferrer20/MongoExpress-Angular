@@ -1,0 +1,5 @@
+<span class="action-btn">
+  <button *ngFor="let i of [1,2,3,4,5]" class="rate-btn" [class.active]="(product.userRating || 0) >= i" [class.rating]="product.rating >= i" (click)="onRate(i)">
+    <span>⭐</span>
+  </button>
+</span>
