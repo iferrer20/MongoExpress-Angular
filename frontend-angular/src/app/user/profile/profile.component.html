@@ -9,7 +9,7 @@
         <hr>
         <p>Email: {{user.email}}</p>
         <p>Followers: {{user.followers}}</p>
-        <p>Karma: {{user.karma.avg}} ⭐ ({{user.karma.num}} ratings)</p>
+        <p>Karma: {{user.karma.avg.toFixed(2)}} ⭐ ({{user.karma.num}} ratings)</p>
         <button *ngIf="userService.isLogged() && userService.user?._id != user._id" (click)="follow()">Follow</button>
       </div>
     </div>
@@ -19,4 +19,13 @@
   <ng-template #notfound>
     <h1>User not found</h1>
   </ng-template>  
+</div>
+
+<div class="container" *ngIf="user">
+  <h3>Favorite products</h3>
+  <hr>
+  <app-carousel *ngIf="favoriteProducts.length; else nofavs" [items]="favoriteProducts"></app-carousel>
+  <ng-template #nofavs>
+    <h5>(No favorites)</h5>
+  </ng-template>
 </div>

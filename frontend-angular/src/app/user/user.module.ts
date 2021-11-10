@@ -1,3 +1,4 @@
+import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -8,7 +9,6 @@ import { SignupComponent } from './access/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AccessComponent } from './access/access.component';
 import { ProfileComponent } from './profile/profile.component';
-import { RouterModule } from '@angular/router';
 import { ProfileResolver } from './profile/profile-resolver.service';
 
 
@@ -26,7 +26,8 @@ import { ProfileResolver } from './profile/profile-resolver.service';
   imports: [
     CommonModule,
     UserRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class UserModule { }

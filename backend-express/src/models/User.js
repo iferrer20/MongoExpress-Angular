@@ -70,6 +70,28 @@ userSchema.methods.toJSON = async function () {
       num: { '$sum': 1 }
     })
     .exec())[0] || { avg: 0, num: 0 };
+
+  user.favorites = (await User.aggregate()
+    .match({ _id: this._id })
+    .lookup({
+      from: Product.collection.name,
+      localField: 'favorites',
+      foreignField: '_id',
+      as: 'favorites'
+    })
+    .project({favorites: {
+      '$map': {
+        input: '$favorites',
+        as: 'fav',
+        in: {
+          name: "$$fav.name",
+          state: "$$fav.state",
+          slug: "$$fav.slug"
+        }
+      }
+    }})
+    //.option({$slice: ['$favorites', 3]}) //limit array, doesn't work
+    .exec())[0].favorites;
   
   delete user.karma._id;
 

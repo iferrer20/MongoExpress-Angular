@@ -23,13 +23,16 @@
   }
 }
 
-
-.profile-container {
+.container {
   @include shadow;
   padding: 30px;
   max-width: 1024px;
   margin: 20px auto 0 auto;
   box-sizing: border-box;
+}
+
+.profile-container {
+  @extend .container;
   min-height: 350px;
 
   #pfp {
