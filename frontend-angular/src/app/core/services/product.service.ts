@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Product, ProductFilters, ProductList } from '../types/Product';
+import { UserComment } from '../types/User';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -48,6 +48,13 @@ export class ProductService {
 
   post(product: Product) {
     return this.api.request('POST', 'product/', product);
+  }
+  
+  comment(product: Product, comment: UserComment): Observable<UserComment> {
+    return this.api.request('POST', 'product/comment/' + product.slug, comment);
+  }
+  removeComment(product: Product, comment: UserComment) {
+    return this.api.request('DELETE', 'product/comment/' + product.slug + '/' + comment.id);
   }
   
 }

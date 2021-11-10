@@ -1,4 +1,4 @@
-import { ShopDetailsComponent } from './shop-details.component';
+import { ShopDetailsComponent } from './details/shop-details.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CategoryResolver } from '../core/resolvers/category.resolver';

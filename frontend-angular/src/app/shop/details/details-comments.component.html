@@ -1,0 +1,8 @@
+
+<form (ngSubmit)="postComment()" [formGroup]="commentForm" [class.error]="commentForm.get('text')?.hasError('maxlength')">
+    <textarea  placeholder="Message" rows="10" formControlName="text"></textarea>
+    <p class="limit">{{ commentForm.value.text.length }}/200</p>
+    <button type="submit">Submit</button>
+</form>
+
+<app-comment-list [comments]="product.comments" (onRemove)="removeComment($event)"></app-comment-list>

@@ -1,0 +1,31 @@
+:host {
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  width: 100%;
+
+  &.error {
+    > textarea {
+      color: red;
+    }
+    > p {
+      color: red;
+    }
+  }
+
+  .limit {
+    color: rgb(200, 200, 200);
+    margin-left: 10px;
+  }
+}
+
+
+app-comment-list {
+  margin: 50px;
+}

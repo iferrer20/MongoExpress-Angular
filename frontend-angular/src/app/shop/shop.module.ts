@@ -7,20 +7,23 @@ import { ProductFiltersComponent } from './product-filters.component';
 import { ProductListResolver } from '../core/resolvers/product-list.resolver';
 import { CategoryResolver } from '../core/resolvers/category.resolver';
 import { CommonModule } from '@angular/common';
-import { ShopDetailsComponent } from './shop-details.component';
-import { FormsModule } from '@angular/forms';
+import { ShopDetailsComponent } from './details/shop-details.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DetailsCommentsComponent } from './details/details-comments.component';
 
 @NgModule({
   declarations: [
     ShopComponent,
     ProductFiltersComponent,
-    ShopDetailsComponent
+    ShopDetailsComponent,
+    DetailsCommentsComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     ShopRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     ProductListResolver,

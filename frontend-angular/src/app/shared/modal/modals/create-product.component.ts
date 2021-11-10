@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/core/services/category.service';
+import { EventBusService } from 'src/app/core/services/event-bus.service';
 import { ProductService } from 'src/app/core/services/product.service';
 import { Product, qualities, states } from 'src/app/core/types/Product';
 
@@ -20,7 +21,8 @@ export class CreateProductComponent implements OnInit {
   constructor(
     public catService: CategoryService, 
     public prodService: ProductService,
-    private fb: FormBuilder 
+    private fb: FormBuilder,
+    private bus: EventBusService
     ) { }
 
   ngOnInit(): void {
@@ -34,11 +36,19 @@ export class CreateProductComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.product)
     if (this.productForm.invalid)
       return;
     
-    this.prodService.post(this.product).subscribe();
+    this.bus.emit('modal', {
+      modal: '',
+      opened: false
+    });
+
+    this.prodService.post(this.product).subscribe(
+      () => {
+        this.bus.emit('reload-products', {});
+      }
+    );
   }
 
 }

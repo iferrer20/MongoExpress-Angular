@@ -1,4 +1,5 @@
 import { Category } from './Category';
+import { UserComment } from './User';
 
 /*
 Product:
@@ -15,7 +16,7 @@ Product:
 */
 
 export interface Product {
-  _id: string,
+  id: string,
   owner: any,
   category: Category,
   name: string,
@@ -28,7 +29,8 @@ export interface Product {
   userRating: number | null,
   slug: string,
   state: string,
-  isFavorited: boolean
+  isFavorited: boolean,
+  comments: UserComment[]
 }
 
 export interface ProductList {
@@ -64,3 +66,4 @@ export interface ProductFilters {
   order?: string,
   quality?: string
 }
+

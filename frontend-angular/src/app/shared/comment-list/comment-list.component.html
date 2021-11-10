@@ -1,0 +1,6 @@
+
+<div *ngFor="let comment of comments" class="comment">
+  <div class="profile"  [ngStyle]="{'background-image': 'url(/api/user/pfp/'+comment.user.id+')'}"></div>
+  {{comment.text}}
+  <div class="gg-trash remove" *ngIf="me(comment)" (click)="remove(comment)"></div>
+</div>

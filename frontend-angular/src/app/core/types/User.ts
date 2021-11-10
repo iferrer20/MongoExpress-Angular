@@ -6,7 +6,7 @@ export enum UserPrivileges {
 }
 
 export interface User {
-  _id: string,
+  id: string,
   username: string,
   email: string,
   privileges: UserPrivileges,
@@ -20,4 +20,11 @@ export interface User {
     avg: number,
     num: number
   }
+}
+
+export interface UserComment {
+  id?: string,
+  text: string,
+  repply?: string,
+  user: User
 }

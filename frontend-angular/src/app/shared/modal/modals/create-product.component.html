@@ -9,8 +9,8 @@
       </tr>
       <tr>
         <td>
-          <select name="" id="" [(ngModel)]="product.category" formControlName="category">
-            <option value="" selected>ostia</option>
+          <select [(ngModel)]="product.category" formControlName="category">
+            <option value="" selected></option>
             <option *ngFor="let cat of catService.list() | async" [value]="cat._id">
               {{ catService.getCategoryPretty(cat) }}
             </option>

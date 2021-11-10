@@ -14,7 +14,7 @@ export class ModalComponent implements OnInit {
   constructor(private bus: EventBusService) { }
 
   ngOnInit(): void {
-    this.bus.on('modal', (data: any) => {
+    this.bus.on('modal').subscribe((data: any) => {
       this.modal = data.modal;
       this.opened = data.opened;
     });

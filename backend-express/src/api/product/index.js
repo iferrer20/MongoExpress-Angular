@@ -1,18 +1,26 @@
-import { Router } from 'express';
+import { response, Router } from 'express';
 import Product from '../../models/Product';
 import { allResolved, checkJWT } from '../../utils';
 import ah from 'express-async-handler'; /* asyncHandler */
 import { readUserJwt } from '../../middlewares/read_user_jwt';
 import Category from '../../models/Category';
 import User from '../../models/User';
+import Comment from '../../models/Comment';
 
 const router = Router();
 
 router.param('product', ah(async (req, res, next, slug) => {
   let product = await Product.findOne({ slug })
-    .populate('owner')
-    .populate('category')
-    .exec();
+    .populate([
+      { path:'owner' }, 
+      { path: 'category' },
+      {
+        path: 'comments',
+        populate: {
+          path: 'user'
+        }
+      }
+    ]).exec();
 
   if (!product) {
     return res.sendStatus(404);
@@ -149,6 +157,29 @@ router.post('/rate/:product', readUserJwt(false) , ah(async (req, res) => {
   }
 
   await req.params.product.rate(req.user, value);
+  res.end();
+}));
+
+router.param('comment', ah(async (req, res, next, _id) => {
+  const comment = await Comment.findOne({ _id })
+    .populate('user')
+    .exec();
+
+  if (!comment) {
+    return res.sendStatus(404);
+  }
+
+  req.params.comment = comment;
+  next();
+}));
+
+router.post('/comment/:product', readUserJwt(false), ah(async (req, res) => {
+  const comment = await req.params.product.comment(req.user, req.body);
+  res.json(comment.toJSON());
+}));
+
+router.delete('/comment/:product/:comment', readUserJwt(false), ah(async (req, res) => {
+  await req.params.comment.delete(req.user);
   res.end();
 }));
 

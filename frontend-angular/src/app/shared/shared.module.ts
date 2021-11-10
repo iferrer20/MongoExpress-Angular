@@ -16,6 +16,7 @@ import { ModalComponent } from './modal/modal.component';
 import { CreateProductComponent } from './modal/modals/create-product.component';
 import { ProductFavComponent } from './product-fav/product-fav.component';
 import { ProductRateComponent } from './product-rate/product-rate.component';
+import { CommentListComponent } from './comment-list/comment-list.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ProductRateComponent } from './product-rate/product-rate.component';
     ModalComponent,
     CreateProductComponent,
     ProductFavComponent,
-    ProductRateComponent
+    ProductRateComponent,
+    CommentListComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +50,8 @@ import { ProductRateComponent } from './product-rate/product-rate.component';
     CreateProductComponent,
     ModalComponent,
     ProductFavComponent,
-    ProductRateComponent
+    ProductRateComponent,
+    CommentListComponent
   ]
 })
 export class SharedModule { }

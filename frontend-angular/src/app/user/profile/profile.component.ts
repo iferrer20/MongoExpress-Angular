@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ) { }
 
   follow() {
-    this.userService.follow(this.user._id).subscribe();
+    this.userService.follow(this.user.id).subscribe();
   }
 
   signOut() {

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Category from './Category';
-import { uniqueValidator } from '../utils';
+import Comment from './Comment';
+import { allResolved, uniqueValidator } from '../utils';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -10,6 +11,7 @@ const ratingSchema = mongoose.Schema({
   from: { ...field(ObjectId), ref: 'User' },
   rating: { ...field(Number), min: 0, max: 5 }
 });
+
 
 const productSchema = mongoose.Schema({
   owner: { ...field(ObjectId), ref: 'User' },
@@ -30,6 +32,7 @@ const productSchema = mongoose.Schema({
   views: { ...field(Number), default: 0 },
   likes: { ...field(Number), default: 0 },
   ratings: [ratingSchema],
+  comments: [{ ...field(ObjectId), ref: 'Comment'}],
   slug: { ...field(String), unique: true, default: function () { return this.v_slug; } }
 });
 
@@ -67,7 +70,8 @@ productSchema.methods.toJSON = function () {
     views: this.views,
     likes: this.likes,
     rating: this.ratings.reduce((avg, r) => avg + r.rating, 0) / Math.max(this.ratings.length, 1),
-    slug: this.slug
+    slug: this.slug,
+    comments: this.comments.map(c => c.toJSON())
   };
 };
 
@@ -109,6 +113,22 @@ productSchema.methods.rate = async function(user, amount) {
     });
   }
 };
+
+productSchema.methods.comment = async function (user, message) {
+  
+  const comment = await Comment.create({
+    text: message.text,
+    repply: message.repply,
+    user: user._id
+  });
+
+  this.comments.push(comment._id);
+  await this.save();
+
+  await Comment.populate(comment, { path: 'user' });
+
+  return comment;
+}
 
 const Product = mongoose.model('Product', productSchema);
 export default Product;

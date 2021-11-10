@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { filter, map } from 'rxjs/operators';
-import { pipe, Subject, Subscription } from 'rxjs';
+import { Observable, pipe, Subject, Subscription } from 'rxjs';
 
 export interface EventData {
     name: string,
@@ -18,11 +18,11 @@ export class EventBusService {
     this.subject.next(eventData);
   }
 
-  on(eventName: string, action: any) : void {
-    this.subject.pipe(
+  on(eventName: string) : Observable<any> {
+    return this.subject.pipe(
       filter<any>((e: EventData) => e.name === eventName),
       map((e: EventData) => e.data)
-    ).subscribe(action);
+    );
 
   }
 
