@@ -95,6 +95,9 @@ userSchema.methods.toJSON = async function () {
   
   delete user.karma._id;
 
+  user.id = user._id;
+  delete user._id;
+
   return user;
 };
 

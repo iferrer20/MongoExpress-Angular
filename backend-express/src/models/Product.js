@@ -125,7 +125,10 @@ productSchema.methods.comment = async function (user, message) {
   this.comments.push(comment._id);
   await this.save();
 
-  await Comment.populate(comment, { path: 'user' });
+  await Comment.populate(comment, { path: 'user', select: '-__v -email -followers -following -favorites -password' });
+
+  comment.user.id = comment.user._id;
+  delete comment.user._id;
 
   return comment;
 }

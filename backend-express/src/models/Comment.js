@@ -21,10 +21,14 @@ const commentSchema = mongoose.Schema({
 });
 
 commentSchema.methods.toJSON = function () {
+  const user = this.user.toObject();
+  user.id = user._id;
+  delete user._id;
+
   return {
     id: this._id,
     text: this.text,
-    user: this.user.toJSONFor()
+    user: user
   }
 }
 
