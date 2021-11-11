@@ -5,6 +5,10 @@
     <app-product-rate [product]="product"></app-product-rate>
 
     <div>
+      <div class="actions" *ngIf="product.owner.id == userService.user?.id">
+        <!-- <span><i class="gg-pen"></i></span> -->
+        <span class="delete" (click)="deleteProduct()"><i class="gg-trash"></i></span>
+      </div>
       <app-user-link [user]="product.owner"></app-user-link>
     </div>
   </div>

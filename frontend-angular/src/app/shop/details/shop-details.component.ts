@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/core/services/user.service';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../core/services/product.service';
@@ -15,7 +16,9 @@ export class ShopDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    public userService: UserService,
+    private productService: ProductService
   ) { }
 
   ngOnInit(): void {
@@ -28,5 +31,11 @@ export class ShopDetailsComponent implements OnInit {
   
   goBack() {
     this.location.back();
+  }
+
+  deleteProduct() {
+    this.productService.delete(this.product).subscribe(() => {
+      this.goBack();
+    });
   }
 }

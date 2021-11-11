@@ -9,11 +9,16 @@
     <div class="description">
       {{ product.description }}
     </div>
-    <div class="author">
-      Autor: {{ product.owner }}
-    </div>
     <div class="category">
       Category: {{ catService.getCategoryPretty(product.category) }}
+    </div>
+    <div class="views">
+      Views: {{ product.views }}
+    </div>
+    <div class="extra-info">
+      <div>{{product.likes}}</div>
+      <app-product-fav [product]="product" (click)="$event.stopPropagation()"></app-product-fav>
+      <app-user-link [user]="product.owner" (click)="$event.stopPropagation()"></app-user-link>
     </div>
     <div class="actions" *ngIf="user.isAdmin()">
       <span><i class="gg-pen"></i></span>

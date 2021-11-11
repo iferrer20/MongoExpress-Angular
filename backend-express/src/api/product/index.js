@@ -38,7 +38,7 @@ router.param('product', ah(async (req, res, next, slug) => {
   next();
 }));
 
-router.get('/', ah(async (req, res) => {
+router.get('/', readUserJwt(true), ah(async (req, res) => {
 
   // Filters
   const { text, category, quality, order, page } = req.query;
@@ -58,8 +58,17 @@ router.get('/', ah(async (req, res) => {
         as: 'owner'
       })
       .unwind('$category')
-      .unwind('$owner')
-      .addFields({owner: '$owner.username'});
+      .addFields({owner: {
+        '$map': {
+          input: '$owner',
+          as: 'usr',
+          in: {
+            id: "$$usr._id",
+            username: "$$usr.username"
+          }
+        }
+      }})
+      .unwind('$owner');
 
     if (text) {
       var regex = {
@@ -102,6 +111,10 @@ router.get('/', ah(async (req, res) => {
     products(),
     products(true)
   ]);
+
+  if (req.user) {
+    list = list.map(prod => (prod.isFavorited = req.user.favorites.includes(prod._id), prod));
+  }
 
   res.json({ list, total });
 }));
@@ -152,7 +165,7 @@ router.put('/:product', readUserJwt(true), ah(async (req, res) => {
   res.json(await req.params.product.toJSONFor(req.user));
 }));
 
-router.delete('/:product', ah(async (req, res) => {
+router.delete('/:product', readUserJwt(false), ah(async (req, res) => {
   let product = req.params.product;
 
   if (!(product.owner._id.toString() === req.user._id.toString() || req.user.privileges >= 2)) {

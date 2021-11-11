@@ -83,7 +83,7 @@
       padding: 20px;
       display: flex;
       flex-direction: column;
-      height: 80px;
+      // height: 80px;
       flex-grow: 1;
       .title {
         font-weight: bold;
@@ -107,6 +107,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+      .extra-info {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        border-top: 1px dashed $gray;
+        padding-top: 5px;
+        margin-top: 5px;
       }
       .actions {
         margin-left: auto;

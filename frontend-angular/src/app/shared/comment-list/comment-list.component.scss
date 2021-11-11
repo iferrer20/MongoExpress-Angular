@@ -1,6 +1,12 @@
+@import 'palette';
+
 :host {
   display: flex;
   flex-direction: column;
+}
+
+.thread + .thread, .comment + app-comment-list {
+  border-top: 1px dashed $gray;
 }
 
 .comment {

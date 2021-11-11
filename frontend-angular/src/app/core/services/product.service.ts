@@ -42,6 +42,10 @@ export class ProductService {
     );
   }
 
+  delete(product: Product) {
+    return this.api.request('DELETE', 'product/' + product.slug);
+  }
+
   get(slug: string): Observable<Product> {
     return this.api.request('GET', 'product/' + slug);
   }

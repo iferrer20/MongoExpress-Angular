@@ -28,6 +28,7 @@ export class DetailsCommentsComponent implements OnInit {
     this.prodService.comment(this.product, {...this.commentForm.value, commentReplied: this.replyComment?.id}).subscribe((c: UserComment) => {
       if (this.replyComment?.id) {
         this.replyComment.repliedComments.push(c);
+        this.replyComment = undefined;
       } else {
         this.product.comments.push(c);
       }

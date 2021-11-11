@@ -1,14 +1,14 @@
 
-<div *ngFor="let comment of comments">
+<div *ngFor="let comment of comments" class="thread">
   <div class="comment">
-    <div class="profile" [ngStyle]="{'background-image': 'url(/api/user/pfp/'+comment.user.id+')'}" [routerLink]="['/user/profile/@' + comment.user.username]"></div>
+    <app-user-link class="profile" [user]="comment.user"></app-user-link>
     <div>
       <div class="username">{{comment.user.username}}</div>
       <div class="text">{{comment.text}}</div>
     </div>
     
     <div class="opt">
-      <div class="gg-mail-forward reply" [class.selected]="replyComment?.id == comment.id" *ngIf="me(comment)" (click)="reply(comment)"></div>
+      <div class="gg-mail-forward reply" [class.selected]="replyComment?.id == comment.id" (click)="reply(comment)"></div>
       <div class="gg-trash remove"  *ngIf="me(comment)" (click)="remove(comment)"></div>
     </div>
   </div>
