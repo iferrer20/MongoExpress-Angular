@@ -1,8 +1,9 @@
 <div class="product" [routerLink]="['view', product.slug]" ngOnce> <!-- render one time -->
-  <div>
-    <div :style="`background-image: url(/img/car/${car.id}/1.jpg)`">
-    </div>
+  <div class="image" *ngIf="product.image" [ngStyle]="{'background-image': 'url(/api/product/image/' + product.slug + ')'}"></div>
+  <div class="image" *ngIf="!product.image">
+    <p>No image</p>
   </div>
+
   <div class="info">
     <div class="title">{{ product.name }}</div>
 
@@ -19,10 +20,6 @@
       <div>{{product.likes}}</div>
       <app-product-fav [product]="product" (click)="$event.stopPropagation()"></app-product-fav>
       <app-user-link [user]="product.owner" (click)="$event.stopPropagation()"></app-user-link>
-    </div>
-    <div class="actions" *ngIf="user.isAdmin()">
-      <span><i class="gg-pen"></i></span>
-      <span><i class="delete gg-trash"></i></span>
     </div>
   </div>
 </div>
