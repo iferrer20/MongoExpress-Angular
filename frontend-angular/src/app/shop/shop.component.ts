@@ -40,7 +40,12 @@ export class ShopComponent implements OnInit {
   }
 
   getNpages() {
-    return this.prodService.productList.total;
+    const total = this.prodService.productList.total;
+    if (total % 6 == 0) {
+      return total/6;
+    } else {
+      return ~~(total/6)+1;
+    }
   }
 
   ngOnInit(): void {

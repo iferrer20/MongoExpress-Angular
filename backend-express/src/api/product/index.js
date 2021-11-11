@@ -35,60 +35,63 @@ router.get('/', ah(async (req, res) => {
   // Filters
   const { text, category, quality, order, page } = req.query;
 
-  var q = Product.aggregate()
-    .lookup({
-      from: Category.collection.name,
-      localField: 'category',
-      foreignField: '_id',
-      as: 'category'
-    })
-    .lookup({
-      from: User.collection.name,
-      localField: 'owner',
-      foreignField: '_id',
-      as: 'owner'
-    })
-    .unwind('$category')
-    .unwind('$owner')
-    .addFields({owner: '$owner.username'});
+  async function products(getcount) {
+    var q = Product.aggregate()
+      .lookup({
+        from: Category.collection.name,
+        localField: 'category',
+        foreignField: '_id',
+        as: 'category'
+      })
+      .lookup({
+        from: User.collection.name,
+        localField: 'owner',
+        foreignField: '_id',
+        as: 'owner'
+      })
+      .unwind('$category')
+      .unwind('$owner')
+      .addFields({owner: '$owner.username'});
 
-  if (text) {
-    var regex = {
-      '$regex': text.toString().replace(/[#-.]|[[-^]|[?|{}]/g, '\\$&'),
-      '$options': 'i'
-    };
+    if (text) {
+      var regex = {
+        '$regex': text.toString().replace(/[#-.]|[[-^]|[?|{}]/g, '\\$&'),
+        '$options': 'i'
+      };
 
-    q.match({'$or': [{description: regex}, {name: regex}]});
+      q.match({'$or': [{description: regex}, {name: regex}]});
+    }
+
+    if (category) {
+      q.match({ 'category.shortName': category });
+    }
+
+    if (quality) {
+      q.match({ quality });
+    }
+
+    if (order == 'FavFirst') {
+      q.sort({
+        'likes': -1
+      });
+    } else if (order == 'ViewsFirst') {
+      q.sort({
+        'views': -1
+      });
+    } else if (order == 'NewFirst') {
+      q.sort({
+        'datePublished': -1
+      });
+    }
+    if (!getcount) {
+      return q.skip(6 * (page-1)).limit(6).exec();
+    } else {
+      return (await q.count("total").exec())[0].total;
+    }
   }
-
-  if (category) {
-    q.match({ 'category.shortName': category });
-  }
-
-  if (quality) {
-    q.match({ quality });
-  }
-
-  if (order == 'FavFirst') {
-    q.sort({
-      'likes': -1
-    });
-  } else if (order == 'ViewsFirst') {
-    q.sort({
-      'views': -1
-    });
-  } else if (order == 'NewFirst') {
-    q.sort({
-      'datePublished': -1
-    });
-  }
-
-  let [list, total] = await allResolved([
-    q.skip(6 * (page - 1))
-    .limit(6)
-    .exec()
-    ,
-    q.model().find().merge(q).countDocuments()
+  let [list, total] = await Promise.all([
+    products(),
+    products(true)
   ]);
 
   res.json({ list, total });
