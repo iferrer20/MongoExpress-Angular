@@ -2,15 +2,15 @@
   <table>
     <tbody>
       <tr>
-        <td><input type="text" formControlName="name" placeholder="Name" [(ngModel)]="product.name"></td>
+        <td><input type="text" formControlName="name" placeholder="Name"></td>
       </tr>
       <tr>
-        <td><textarea name="" id="" cols="30" rows="10" formControlName="description" placeholder="Descrption.." [(ngModel)]="product.description"></textarea></td>
+        <td><textarea name="" id="" cols="30" rows="10" formControlName="description" placeholder="Descrption.."></textarea></td>
       </tr>
       <tr>
         <td>
-          <select [(ngModel)]="product.category" formControlName="category">
-            <option value="" selected></option>
+          <select formControlName="category">
+            <option value="">Category</option>
             <option *ngFor="let cat of catService.list() | async" [value]="cat._id">
               {{ catService.getCategoryPretty(cat) }}
             </option>
@@ -19,8 +19,8 @@
       </tr>
       <tr>
         <td>
-          <select name="" id="" [(ngModel)]="product.quality" formControlName="quality">
-            <option value=""></option>
+          <select name="" id="" formControlName="quality">
+            <option value="">Quality</option>
             <option *ngFor="let quality of qualities" [value]="quality">
               {{ quality }}
             </option>
@@ -29,8 +29,8 @@
       </tr>
       <tr>
         <td>
-          <select name="" id="" [(ngModel)]="product.state" formControlName="state">
-            <option value=""></option>
+          <select name="" id="" formControlName="state">
+            <option value="">State</option>
             <option *ngFor="let state of states">
               {{ state }}
             </option>

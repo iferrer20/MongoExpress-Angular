@@ -5,4 +5,4 @@
     <button type="submit">Submit</button>
 </form>
 
-<app-comment-list [comments]="product.comments" (onRemove)="removeComment($event)"></app-comment-list>
+<app-comment-list [comments]="product.comments" [replyComment]="replyComment" (onRemove)="removeComment($event)" (onReply)="setReplyComment($event)"></app-comment-list>

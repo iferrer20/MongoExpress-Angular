@@ -12,6 +12,7 @@ import { UserComment } from 'src/app/core/types/User';
 export class DetailsCommentsComponent implements OnInit {
 
   @Input() product!: Product;
+  replyComment?: UserComment;
 
   commentForm!: FormGroup;
 
@@ -21,21 +22,39 @@ export class DetailsCommentsComponent implements OnInit {
   ) { }
 
   postComment() {
-
     if (this.commentForm.invalid)
       return;
 
-    this.prodService.comment(this.product, this.commentForm.value).subscribe((c: UserComment) => {
-      console.log(c)
-      this.product.comments.push(c);
+    this.prodService.comment(this.product, {...this.commentForm.value, commentReplied: this.replyComment?.id}).subscribe((c: UserComment) => {
+      if (this.replyComment?.id) {
+        this.replyComment.repliedComments.push(c);
+      } else {
+        this.product.comments.push(c);
+      }
     });
   }
 
   removeComment(comment: UserComment) {
     this.prodService.removeComment(this.product, comment).subscribe(() => {
-      this.product.comments = this.product.comments.filter(c => c.id != comment.id); // Remove comment from list
+      if (comment.commentReplied) {
+        comment.commentReplied.repliedComments = comment.commentReplied.repliedComments.filter(c => c.id != comment.id);
+      } else {
+        this.product.comments = this.product.comments.filter(c => c.id != comment.id); // Remove comment from list
+      }
+      
     });
   }
+
+  setReplyComment(comment: UserComment) {
+    if (this.replyComment?.id != comment.id) { // Toggle
+      this.replyComment = comment;
+    } else {
+      this.replyComment = undefined;
+
+    }
+    
+  }
+
 
   ngOnInit(): void {
     this.commentForm = this.fb.group({

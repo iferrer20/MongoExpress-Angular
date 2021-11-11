@@ -175,7 +175,7 @@ router.param('comment', ah(async (req, res, next, _id) => {
 
 router.post('/comment/:product', readUserJwt(false), ah(async (req, res) => {
   const comment = await req.params.product.comment(req.user, req.body);
-  res.json(comment.toJSON());
+  res.json(await comment.toJSON());
 }));
 
 router.delete('/comment/:product/:comment', readUserJwt(false), ah(async (req, res) => {

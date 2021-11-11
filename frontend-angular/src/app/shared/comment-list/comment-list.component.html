@@ -1,6 +1,12 @@
 
-<div *ngFor="let comment of comments" class="comment">
-  <div class="profile"  [ngStyle]="{'background-image': 'url(/api/user/pfp/'+comment.user.id+')'}"></div>
-  {{comment.text}}
-  <div class="gg-trash remove" *ngIf="me(comment)" (click)="remove(comment)"></div>
+<div *ngFor="let comment of comments">
+  <div class="comment">
+    <div class="profile"  [ngStyle]="{'background-image': 'url(/api/user/pfp/'+comment.user.id+')'}"></div>
+      {{comment.text}}
+      <div class="opt">
+        <div class="gg-mail-forward reply" [class.selected]="replyComment?.id == comment.id" *ngIf="me(comment)" (click)="reply(comment)"></div>
+        <div class="gg-trash remove"  *ngIf="me(comment)" (click)="remove(comment)"></div>
+    </div>
+  </div>
+  <app-comment-list (onRemove)="remove($event)" (onReply)="reply($event)" [replyComment]="replyComment" [commentReplied]="comment" *ngIf="comment.repliedComments.length" [comments]="comment.repliedComments"></app-comment-list>
 </div>

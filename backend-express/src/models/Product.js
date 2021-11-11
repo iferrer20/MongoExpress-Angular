@@ -58,7 +58,7 @@ ratingSchema.methods.toJSON = function () {
   };
 };
 
-productSchema.methods.toJSON = function () {
+productSchema.methods.toJSON = async function () {
   return {
     id: this._id,
     owner: this.owner,
@@ -71,12 +71,12 @@ productSchema.methods.toJSON = function () {
     likes: this.likes,
     rating: this.ratings.reduce((avg, r) => avg + r.rating, 0) / Math.max(this.ratings.length, 1),
     slug: this.slug,
-    comments: this.comments.map(c => c.toJSON())
+    comments: await Promise.all(this.comments.map(c => c.toJSON()))
   };
 };
 
-productSchema.methods.toJSONFor = function (user) {
-  const product = this.toJSON();
+productSchema.methods.toJSONFor = async function (user) {
+  const product = await this.toJSON();
   
   if (user) {
     product.owner = this.owner ? this.owner.toJSONFor(user) : null;
@@ -118,17 +118,16 @@ productSchema.methods.comment = async function (user, message) {
   
   const comment = await Comment.create({
     text: message.text,
-    repply: message.repply,
+    commentReplied: message.commentReplied,
     user: user._id
   });
 
-  this.comments.push(comment._id);
+  if (!comment.commentReplied) {
+    this.comments.push(comment._id);
+  }
+  
   await this.save();
-
-  await Comment.populate(comment, { path: 'user', select: '-__v -email -followers -following -favorites -password' });
-
-  comment.user.id = comment.user._id;
-  delete comment.user._id;
+  await comment.reply();
 
   return comment;
 }

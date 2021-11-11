@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import { allResolved } from '../utils';
+import User from './User';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const field = (type, required = true) => ({ type, required });
@@ -9,10 +11,14 @@ const commentSchema = mongoose.Schema({
     max: [200, 'Message too long'],
     ...field(String)
   },
-  reply: {
-    type: ObjectId,
-    ref: 'Comment',
-    required: false
+  repliedComments: [
+    {
+      ...field(ObjectId),
+      ref: 'Comment'
+    }
+  ],
+  commentReplied: {
+    type: ObjectId
   },
   user: {
     ...field(ObjectId),
@@ -20,16 +26,29 @@ const commentSchema = mongoose.Schema({
   }
 });
 
-commentSchema.methods.toJSON = function () {
-  const user = this.user.toObject();
-  user.id = user._id;
-  delete user._id;
+commentSchema.methods.toJSON = async function () {
+  const _user = await User.findById(this.user).exec();
+
+  const user = {
+    id: _user._id,
+    username: _user.username
+  }
 
   return {
     id: this._id,
     text: this.text,
-    user: user
+    user: user,
+    repliedComments: (await allResolved(this.repliedComments.map(async c => { 
+      c = await Comment.findById(c).exec();
+      if (c) {
+        return await c.toJSON(c);
+      }
+    }))).filter(i => i != null) // Recursive comment populate json
   }
+}
+
+commentSchema.methods.reply = async function () {
+  await Comment.findOneAndUpdate({ _id: this.commentReplied }, {$push: {repliedComments: this._id}}).exec();
 }
 
 commentSchema.methods.delete = async function (user) {

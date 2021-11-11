@@ -25,6 +25,7 @@ export interface User {
 export interface UserComment {
   id?: string,
   text: string,
-  repply?: string,
+  commentReplied: UserComment,
+  repliedComments: UserComment[],
   user: User
 }

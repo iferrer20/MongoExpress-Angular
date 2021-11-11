@@ -15,7 +15,6 @@ export class CreateProductComponent implements OnInit {
   qualities = qualities;
   states = states;
 
-  product: Product = <Product> {};
   productForm!: FormGroup;
   
   constructor(
@@ -44,7 +43,7 @@ export class CreateProductComponent implements OnInit {
       opened: false
     });
 
-    this.prodService.post(this.product).subscribe(
+    this.prodService.post(this.productForm.value).subscribe(
       () => {
         this.bus.emit('reload-products', {});
       }

@@ -10,7 +10,10 @@ import { UserComment } from 'src/app/core/types/User';
 export class CommentListComponent implements OnInit {
 
   @Input() comments!: UserComment[];
+  @Input() commentReplied!: UserComment;
+  @Input() replyComment?: UserComment;
   @Output() onRemove: EventEmitter<UserComment> = new EventEmitter();
+  @Output() onReply: EventEmitter<UserComment> = new EventEmitter();
 
   constructor(public uService: UserService) {
   }
@@ -20,10 +23,21 @@ export class CommentListComponent implements OnInit {
   }
 
   remove(c: UserComment) {
+    
+    if (!c.commentReplied && this.commentReplied) {
+      c.commentReplied = this.commentReplied;
+    }
+
     this.onRemove.emit(c);
+  }
+  reply(c: UserComment) {
+    
+    c.commentReplied = this.commentReplied;
+    this.onReply.emit(c);
   }
 
   ngOnInit(): void {
+    
   }
 
 }
