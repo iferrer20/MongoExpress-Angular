@@ -33,7 +33,7 @@ router.param('product', ah(async (req, res, next, slug) => {
 router.get('/', ah(async (req, res) => {
 
   // Filters
-  const { text, category, quality, order } = req.query;
+  const { text, category, quality, order, page } = req.query;
 
   var q = Product.aggregate()
     .lookup({
@@ -48,7 +48,6 @@ router.get('/', ah(async (req, res) => {
       foreignField: '_id',
       as: 'owner'
     })
-    
     .unwind('$category')
     .unwind('$owner')
     .addFields({owner: '$owner.username'});
@@ -85,8 +84,11 @@ router.get('/', ah(async (req, res) => {
   }
 
   let [list, total] = await allResolved([
-    q.exec(),
-    Product.countDocuments().exec()
+    q.skip(6 * (page - 1))
+    .limit(6)
+    .exec()
+    ,
+    q.model().find().merge(q).countDocuments()
   ]);
 
   res.json({ list, total });

@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { CategoryService } from '../core/services/category.service';
 import { orders, ProductFilters, qualities } from '../core/types/Product';
 import { skip, tap } from 'rxjs/operators';
@@ -40,9 +40,10 @@ export class ProductFiltersComponent implements OnInit {
   }
 
   setFilter(name: string, value: string | null) {
+    this.filters.page = 1;
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: {[name]: value || null},
+      queryParams: {[name]: value || null, page: 1},
       queryParamsHandling: 'merge'
     });
   }
@@ -60,10 +61,10 @@ export class ProductFiltersComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams
     .pipe(
-      tap(({text, category, author, order, quality}) => {
-        this.filters = {text, category, author, order, quality}
-      }),
-      skip(1))
+      tap(({text, category, author, order, quality, page}) => {
+        this.filters = {text, category, author, order, quality, page}
+      }))
+      //skip(1))
     .subscribe(() => {
       this.emitFilters();
     });

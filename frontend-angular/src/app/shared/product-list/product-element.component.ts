@@ -9,7 +9,6 @@ import { Product } from '../../core/types/Product';
   styleUrls: ['./product-element.component.scss']
 })
 export class ProductElementComponent implements OnInit {
-
   @Input() product!: Product;
   
   constructor(public user: UserService, public catService: CategoryService) {

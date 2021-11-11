@@ -8,8 +8,8 @@ import { Product, ProductList } from '../../core/types/Product';
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit {
+  page: number = 1;
   @Input() productList!: ProductList;
-  loading: boolean = false;
 
   constructor() {  }
 

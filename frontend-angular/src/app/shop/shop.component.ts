@@ -11,7 +11,9 @@ import { EventBusService } from '../core/services/event-bus.service';
 })
 export class ShopComponent implements OnInit {
   
-  filters!: ProductFilters;
+  filters: ProductFilters = <ProductFilters> {};
+  f: boolean = true;
+
   constructor(
     public route: ActivatedRoute,
     public prodService: ProductService,
@@ -21,12 +23,28 @@ export class ShopComponent implements OnInit {
 
   onFilter(filters: ProductFilters) {
     this.filters = filters;
-    this.prodService.list(filters).subscribe();
+    if (!this.f) {
+      this.prodService.list(filters).subscribe();
+    } else {
+      this.f = false;
+    }
+    
+  }
+  setPagination(n: number) { 
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {page: n || null},
+      queryParamsHandling: 'merge'
+    });
+    //this.prodService.list(this.filters).subscribe();
+  }
+
+  getNpages() {
+    return this.prodService.productList.total;
   }
 
   ngOnInit(): void {
     this.bus.on('reload-products').subscribe(() => {
-      console.log('a')
       this.prodService.list(this.filters).subscribe();
     });
   }

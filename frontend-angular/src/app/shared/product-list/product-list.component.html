@@ -1,11 +1,5 @@
 <div class="list">
-  <!-- <CarFilter /> -->
   <div class="list-products">
-    <!-- <template v-if="isAdmin">
-      <div class="admin-menu">
-        <i class="add gg-add-r nolinkdec" @click="onCreateCar"></i>
-      </div>
-    </template> -->
     <div class="products">
       <app-product-element *ngFor="let product of productList.list" [product]="product"></app-product-element>
       <div class="hidden" *ngFor="let empty of [].constructor(10)"></div>
@@ -13,9 +7,7 @@
         No hay productos disponibles
         <i class="gg-smile-sad"></i>
       </div>
-      
-    </div>
-    <div class="loader" *ngIf="loading">
     </div>
   </div>
+
 </div>

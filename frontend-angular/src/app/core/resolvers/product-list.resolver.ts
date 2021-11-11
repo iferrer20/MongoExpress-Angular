@@ -15,8 +15,8 @@ export class ProductListResolver implements Resolve<ProductList> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<ProductList> {
-    const { text, category, author, order, quality } = route.queryParams;
-    const filtersObj = <ProductFilters> {text, category, author, order, quality};
+    const { text, category, author, order, quality, page } = route.queryParams;
+    const filtersObj = <ProductFilters> {text, category, author, order, quality, page};
     Object.keys(filtersObj).forEach(prop => {
       if (filtersObj[prop] === undefined) {
         delete filtersObj[prop];

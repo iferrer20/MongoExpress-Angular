@@ -1,3 +1,12 @@
 
 <shop-product-filters (onFilter)="onFilter($event)"></shop-product-filters>
-<app-product-list [productList]="prodService.productList"></app-product-list>
+<div>
+  <app-product-list [productList]="prodService.productList"></app-product-list>
+  <div class="pagination">
+    <div 
+      *ngFor="let in of [].constructor(getNpages()); let i = index" 
+      [class.selected]="filters.page == (i+1)" 
+      (click)="setPagination(i+1)"
+      class="shadow">{{ i+1 }}</div>
+  </div>
+</div>

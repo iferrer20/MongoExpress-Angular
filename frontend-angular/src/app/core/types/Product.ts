@@ -64,6 +64,7 @@ export interface ProductFilters {
   category?: string,
   author?: string,
   order?: string,
-  quality?: string
+  quality?: string,
+  page?: number
 }
 
