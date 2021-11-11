@@ -8,8 +8,11 @@
       <app-user-link [user]="product.owner"></app-user-link>
     </div>
   </div>
-  <div class="images">
-    <p>images</p>
+  <div *ngIf="product.image" class="images" [ngStyle]="{'background-image': 'url(/api/product/image/' + product.slug + ')'}">
+    
+  </div>
+  <div *ngIf="!product.image" class="images">
+    <p>No image</p>
   </div>
   <h1>{{product.name}}</h1>
   <hr>

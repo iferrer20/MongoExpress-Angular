@@ -31,6 +31,7 @@ export interface Product {
   slug: string,
   state: string,
   isFavorited: boolean,
+  image: boolean,
   comments: UserComment[]
 }
 

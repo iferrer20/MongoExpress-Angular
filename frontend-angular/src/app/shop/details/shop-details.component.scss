@@ -26,8 +26,17 @@
   }
 
   .images {
-    height: 200px;
+    height: 400px;
     background-color: #ddd;
+    display: flex;
+    border-radius: $border-radius;
+    background-size: cover;
+    background-position: center;
+    
+    p {
+      margin: auto;
+      user-select: none;
+    }
   }
 
   .properties {

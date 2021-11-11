@@ -6,6 +6,14 @@ import { readUserJwt } from '../../middlewares/read_user_jwt';
 import Category from '../../models/Category';
 import User from '../../models/User';
 import Comment from '../../models/Comment';
+import fs from 'fs/promises';
+import { mkdirSync } from 'fs';
+import path from 'path';
+
+const productimgdir = path.dirname(require.main.filename) + '/../img/product/';
+
+// Make sure the image directory exists
+mkdirSync(productimgdir, {recursive: true});
 
 const router = Router();
 
@@ -86,7 +94,8 @@ router.get('/', ah(async (req, res) => {
     if (!getcount) {
       return q.skip(6 * (page-1)).limit(6).exec();
     } else {
-      return (await q.count("total").exec())[0].total;
+      const res = (await q.count("total").exec())[0];
+      return res ? res.total : 0;
     }
   }
   let [list, total] = await Promise.all([
@@ -99,17 +108,22 @@ router.get('/', ah(async (req, res) => {
 
 router.post('/', readUserJwt(), ah(async (req, res) => {
   const { category, name, description, quality, state } = req.body;
+  const { image } = req.files;
+
   let product = new Product({
     owner: req.user._id,
     category,
     name,
     description,
     quality,
-    state
+    state,
+    image: !!image
   });
 
   await product.save();
-
+  if (image) {
+    await fs.writeFile(productimgdir + product.slug, image.data);
+  }
   res.json({ product, slug: product.slug });
 }));
 
@@ -186,6 +200,11 @@ router.post('/comment/:product', readUserJwt(false), ah(async (req, res) => {
 router.delete('/comment/:product/:comment', readUserJwt(false), ah(async (req, res) => {
   await req.params.comment.delete(req.user);
   res.end();
+}));
+
+router.get('/image/:slug', ah(async (req, res) => {
+  const { slug } = req.params;
+  res.sendFile(path.resolve(productimgdir + slug));
 }));
 
 export default router;

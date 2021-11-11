@@ -30,8 +30,15 @@ export class CreateProductComponent implements OnInit {
       category: ['', [Validators.required]],
       description: ['', [Validators.required]],
       quality: ['', [Validators.required]],
-      state: ['', [Validators.required]]
+      state: ['', [Validators.required]],
+      image: [null, [Validators.required]]
     });
+  }
+
+  onSelect(event: any) {
+    const file = event.target.files[0];
+    this.productForm.patchValue({image: file});
+    this.productForm.get('image')?.updateValueAndValidity();
   }
 
   submit() {

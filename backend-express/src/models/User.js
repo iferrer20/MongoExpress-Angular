@@ -8,8 +8,8 @@ const field = (type, required = true) => ({ type, required });
 const userSchema = mongoose.Schema({
   username: {
     type: String,
-    min: [4, 'Username too short'],
-    max: [16, 'Username too long'],
+    minlength: [4, 'Username too short'],
+    maxlength: [16, 'Username too long'],
     match: [/^[a-zA-Z0-9]+$/, 'Username invalid'],
     required: [true, 'can\'t be blank'],
     lowercase: true,

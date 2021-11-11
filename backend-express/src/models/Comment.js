@@ -7,8 +7,8 @@ const field = (type, required = true) => ({ type, required });
 
 const commentSchema = mongoose.Schema({
   text: { 
-    min: [4, 'Message too short'],
-    max: [200, 'Message too long'],
+    minlength: [1, 'Message too short'],
+    maxlength: [200, 'Message too long'],
     ...field(String)
   },
   repliedComments: [

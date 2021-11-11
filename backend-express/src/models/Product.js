@@ -34,7 +34,11 @@ const productSchema = mongoose.Schema({
   likes: { ...field(Number), default: 0 },
   ratings: [ratingSchema],
   comments: [{ ...field(ObjectId), ref: 'Comment'}],
-  slug: { ...field(String), unique: true, default: function () { return this.v_slug; } }
+  slug: { ...field(String), unique: true, default: function () { return this.v_slug; } },
+  image: { 
+    ...field(Boolean),
+    default: false
+  }
 });
 
 productSchema.path('category').validate(async value => {
@@ -73,6 +77,7 @@ productSchema.methods.toJSON = async function () {
     likes: this.likes,
     rating: this.ratings.reduce((avg, r) => avg + r.rating, 0) / Math.max(this.ratings.length, 1),
     slug: this.slug,
+    image: this.image,
     comments: await Promise.all(this.comments.map(c => c.toJSON()))
   };
 };

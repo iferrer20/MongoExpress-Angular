@@ -46,8 +46,15 @@ export class ProductService {
     return this.api.request('GET', 'product/' + slug);
   }
 
-  post(product: Product) {
-    return this.api.request('POST', 'product/', product);
+  post(product: any) {
+    const postData = new FormData();
+    postData.append('name', product.name);
+    postData.append('category', product.category);
+    postData.append('description', product.description);
+    postData.append('quality', product.quality);
+    postData.append('state', product.state);
+    postData.append('image', product.image);
+    return this.api.request('POST', 'product/', postData);
   }
   
   comment(product: Product, comment: UserComment): Observable<UserComment> {
