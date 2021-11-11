@@ -12,14 +12,17 @@ export class ProfileResolver implements Resolve<User> {
     private userService: UserService
   ) { }
 
-
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> {
-    const { id } = route.params;
+    let { id } = route.params;
     if (id == 'me') {
-      return of(this.userService.user);
+      if (!this.userService.user) {
+        return of(null);
+      }
+
+      id = '@' + this.userService.user?.username;
     }
 
     return this.userService.getUser(id).pipe(

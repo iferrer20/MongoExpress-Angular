@@ -1,7 +1,13 @@
 <div class="product-container">
-  <a class="action-btn nolinkdec" (click)="goBack()">&lt; Back</a>
-  <app-product-fav [product]="product"></app-product-fav>
-  <app-product-rate [product]="product"></app-product-rate>
+  <div class="top-bar">
+    <a class="action-btn nolinkdec" (click)="goBack()">&lt; Back</a>
+    <app-product-fav [product]="product"></app-product-fav>
+    <app-product-rate [product]="product"></app-product-rate>
+
+    <div>
+      <app-user-link [user]="product.owner"></app-user-link>
+    </div>
+  </div>
   <div class="images">
     <p>images</p>
   </div>
@@ -19,6 +25,10 @@
     <div>
       <span>Creation date:</span>
       <span>{{getCreationDateString()}}</span>
+    </div>
+    <div>
+      <span>State:</span>
+      <span>{{product.state}}</span>
     </div>
     <div>
       <span>Likes:</span>

@@ -121,7 +121,7 @@ router.get('/:product', readUserJwt(), ah(async (req, res) => {
 router.put('/:product', readUserJwt(true), ah(async (req, res) => {
   let product = req.params.product;
 
-  if (product.owner !== req.user._id && req.user.privileges < 2) {
+  if (!(product.owner._id.toString() === req.user._id.toString() || req.user.privileges >= 2)) {
     /** Not allowed! */
     return res.sendStatus(403);
   }
@@ -141,7 +141,7 @@ router.put('/:product', readUserJwt(true), ah(async (req, res) => {
 router.delete('/:product', ah(async (req, res) => {
   let product = req.params.product;
 
-  if (product.owner !== req.user._id && req.user.privileges < 2) {
+  if (!(product.owner._id.toString() === req.user._id.toString() || req.user.privileges >= 2)) {
     /** Not allowed! */
     return res.sendStatus(403);
   }

@@ -7,10 +7,12 @@
         <button class="signout-btn" *ngIf="userService.isLogged() && userService.user?.id == user.id" (click)="signOut()">Sign out</button>
         <h1>{{user.username}}</h1>
         <hr>
-        <p>Email: {{user.email}}</p>
+        <p *ngIf="userService.user?.id == user.id" >Email: {{user.email}}</p>
         <p>Followers: {{user.followers}}</p>
+        <p>Following: {{user.following}}</p>
         <p>Karma: {{user.karma.avg.toFixed(2)}} ⭐ ({{user.karma.num}} ratings)</p>
-        <button *ngIf="userService.isLogged() && userService.user?.id != user.id" (click)="follow()">Follow</button>
+        <button *ngIf="userService.isLogged() && userService.user?.id != user.id && !user.areYouFollowing" (click)="follow()">Follow</button>
+        <button *ngIf="userService.isLogged() && userService.user?.id != user.id && user.areYouFollowing" (click)="unfollow()">Unfollow</button>
       </div>
     </div>
     <div class="extra-info"></div>
@@ -22,10 +24,28 @@
 </div>
 
 <div class="container" *ngIf="user">
-  <h3>Favorite products</h3>
+  <h3>Favorited products</h3>
   <hr>
   <app-carousel *ngIf="favoriteProducts.length; else nofavs" [items]="favoriteProducts"></app-carousel>
   <ng-template #nofavs>
     <h5>(No favorites)</h5>
+  </ng-template>
+</div>
+
+<div class="container" *ngIf="user">
+  <h3>Last 20 followers</h3>
+  <hr>
+  <app-carousel *ngIf="lastFollowers.length; else nofollows" [items]="lastFollowers"></app-carousel>
+  <ng-template #nofollows>
+    <h5>(No followers)</h5>
+  </ng-template>
+</div>
+
+<div class="container" *ngIf="user && userService.user?.id == user.id">
+  <h3>Last 20 followed</h3>
+  <hr>
+  <app-carousel *ngIf="lastFollowing.length; else nofollowing" [items]="lastFollowing"></app-carousel>
+  <ng-template #nofollowing>
+    <h5>(Not following anyone)</h5>
   </ng-template>
 </div>

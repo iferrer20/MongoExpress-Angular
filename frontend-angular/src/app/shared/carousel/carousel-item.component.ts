@@ -30,4 +30,8 @@ export class CarouselItemComponent implements OnInit {
     return c;
   }
 
+  @HostBinding('style.background-image')
+  get img(): string {
+    return this.item.img ? 'url('+this.item.img+')' : '';
+  }
 }

@@ -97,13 +97,19 @@ router.post('/signout/', ah(async (req, res) => {
   res.end();
 }));
 
-router.get('/@:user', ah(async (req, res) => {
-  res.json(await req.params.user.toJSONFor());
+router.get('/@:user', readUserJwt(true), ah(async (req, res) => {
+  res.json(await req.params.user.toJSONFor(req.user));
 }));
 
 router.post('/follow/', readUserJwt(false), ah(async (req, res) => {
   const { _id } = req.body;
   req.user.follow(_id);
+  res.end();
+}));
+
+router.post('/unfollow/', readUserJwt(false), ah(async (req, res) => {
+  const { _id } = req.body;
+  req.user.unfollow(_id);
   res.end();
 }));
 

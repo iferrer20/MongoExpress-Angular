@@ -2,7 +2,6 @@ import { CarouselItem } from './../../shared/carousel/carousel-item.component';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, BaseRouteReuseStrategy, Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user.service';
-import { Product } from 'src/app/core/types/Product';
 import { User } from 'src/app/core/types/User';
 
 @Component({
@@ -16,6 +15,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   me!: boolean;
   ver: number = 0;
   favoriteProducts: CarouselItem[] = [];
+  lastFollowers: CarouselItem[] = [];
+  lastFollowing: CarouselItem[] = [];
 
   oldShouldReuseRoute!: typeof BaseRouteReuseStrategy.prototype.shouldReuseRoute;
   
@@ -28,7 +29,34 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ) { }
 
   follow() {
-    this.userService.follow(this.user.id).subscribe();
+    const old = this.user.areYouFollowing;
+    this.userService.follow(this.user.id).subscribe(() => {
+      if (!this.userService.user) { return; }
+      this.user.areYouFollowing = true;
+      if (!old) {
+        this.user.followers++;
+        this.user.lastFollowers?.push({
+          id: this.userService.user.id,
+          username: this.userService.user.username
+        });
+        this.readUserData();
+      }
+    });
+  }
+  
+  unfollow() {
+    const old = this.user.areYouFollowing;
+    this.userService.unfollow(this.user.id).subscribe(() => {
+      if (!this.userService.user) { return; }
+      const id = this.userService.user.id;
+
+      this.user.areYouFollowing = false;
+      if (old) {
+        this.user.followers--;
+        this.user.lastFollowers = this.user.lastFollowers?.filter(u => u.id !== id);
+        this.readUserData();
+      }
+    });
   }
 
   signOut() {
@@ -44,13 +72,29 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-    this.user = this.route.snapshot.data.user;
-    this.me = this.route.snapshot.paramMap.get('id') == 'me';
+  readUserData() {
     this.favoriteProducts = this.user?.favorites?.map(f => (<CarouselItem> {
       link: {url: ['/shop/view/' + f.slug]},
       title: f.name
     })) || [];
+
+    this.lastFollowers = this.user?.lastFollowers?.map(f => (<CarouselItem> {
+      link: {url: ['/user/profile/@' + f.username]},
+      title: f.username,
+      img: '/api/user/pfp/' + f.id
+    })) || [];
+
+    this.lastFollowing = this.user?.lastFollowing?.map(f => (<CarouselItem> {
+      link: {url: ['/user/profile/@' + f.username]},
+      title: f.username,
+      img: '/api/user/pfp/' + f.id
+    })) || [];
+  }
+
+  ngOnInit(): void {
+    this.user = this.route.snapshot.data.user;
+    this.me = this.route.snapshot.paramMap.get('id') == 'me';
+    this.readUserData();
     
     this.oldShouldReuseRoute = this.router.routeReuseStrategy.shouldReuseRoute;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

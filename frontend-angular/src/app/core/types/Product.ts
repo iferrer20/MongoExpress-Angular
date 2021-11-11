@@ -1,3 +1,4 @@
+import { User } from 'src/app/core/types/User';
 import { Category } from './Category';
 import { UserComment } from './User';
 
@@ -17,7 +18,7 @@ Product:
 
 export interface Product {
   id: string,
-  owner: any,
+  owner: User,
   category: Category,
   name: string,
   description: string,

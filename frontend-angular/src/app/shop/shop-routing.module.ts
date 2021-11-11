@@ -10,6 +10,9 @@ const routes: Routes = [
   {
     path: '',
     component: ShopComponent,
+    data: {
+      title: 'Shop'
+    },
     resolve: {
       categories: CategoryResolver,
       productList: ProductListResolver
@@ -18,6 +21,9 @@ const routes: Routes = [
   {
     path: 'view/:slug',
     component: ShopDetailsComponent,
+    data: {
+      title: 'Product details - Shop'
+    },
     resolve: {
       product: ProductResolver
     }

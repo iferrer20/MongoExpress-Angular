@@ -81,6 +81,10 @@ export class UserService {
     return this.api.request('POST', 'user/follow', { _id });
   }
 
+  unfollow(_id: string) {
+    return this.api.request('POST', 'user/unfollow', { _id });
+  }
+
   getUser(username: string) {
     return this.api.request<User>('GET', 'user/' + username);
   }

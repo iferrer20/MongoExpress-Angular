@@ -14,13 +14,14 @@ const routes: Routes = [
     path: 'access',
     component: AccessComponent,
     children: [
-      { path: 'signin', component: SigninComponent },
-      { path: 'signup', component: SignupComponent }
+      { path: 'signin', data: {title: 'Sign In'}, component: SigninComponent },
+      { path: 'signup', data: {title: 'Sign Up'}, component: SignupComponent }
     ]
   },
   {
     path: 'profile/:id',
     component: ProfileComponent,
+    data: {title: 'User Profile'}, 
     resolve: {
       user: ProfileResolver
     },

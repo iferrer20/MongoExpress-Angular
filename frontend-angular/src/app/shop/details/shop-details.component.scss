@@ -16,6 +16,15 @@
   margin: 20px auto 0 auto;
   box-sizing: border-box;
 
+  .top-bar {
+    display: flex;
+    align-items: center;
+
+    >div:last-child {
+      margin-left: auto;
+    }
+  }
+
   .images {
     height: 200px;
     background-color: #ddd;

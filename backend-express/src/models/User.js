@@ -91,12 +91,15 @@ userSchema.methods.toJSON = async function () {
       }
     }})
     //.option({$slice: ['$favorites', 3]}) //limit array, doesn't work
-    .exec())[0].favorites;
-  
+    .exec())[0].favorites.slice(0, 20);
+
   delete user.karma._id;
 
   user.id = user._id;
   delete user._id;
+  delete user.followers;
+  delete user.following;
+  delete user.email;
 
   return user;
 };
@@ -104,15 +107,69 @@ userSchema.methods.toJSON = async function () {
 userSchema.methods.toJSONFor = async function (viewer) {
   const user = { ...(await this.toJSON()) };
 
-  user.followers = user.followers.length;
-  user.following = user.following.length;
+  user.followers = this.followers.length;
+  user.following = this.following.length;
+
+  if (viewer) {
+    user.areYouFollowing = this.followers.includes(viewer._id);
+
+    user.lastFollowers = (await User.aggregate()
+      .match({ _id: this._id })
+      .lookup({
+        from: User.collection.name,
+        localField: 'followers',
+        foreignField: '_id',
+        as: 'followers'
+      })
+      .project({followers: {
+        '$map': {
+          input: '$followers',
+          as: 'usr',
+          in: {
+            id: "$$usr._id",
+            username: "$$usr.username"
+          }
+        }
+      }})
+    .exec())[0].followers.slice(0, 20);
+
+    if (viewer._id.toString() == this._id.toString()) {
+      user.email = this.email;
+
+      user.lastFollowing = (await User.aggregate()
+        .match({ _id: this._id })
+        .lookup({
+          from: User.collection.name,
+          localField: 'following',
+          foreignField: '_id',
+          as: 'following'
+        })
+        .project({following: {
+          '$map': {
+            input: '$following',
+            as: 'usr',
+            in: {
+              id: "$$usr._id",
+              username: "$$usr.username"
+            }
+          }
+        }})
+      .exec())[0].following.slice(0, 20);
+    }
+  }
 
   return user;
 };
 
 userSchema.methods.follow = async function (_id) {
-  await User.updateOne({ _id }, { $addToSet: { followers: this._id, following: _id } });
-}
+  await User.updateOne({ _id }, { $addToSet: { followers: this._id } });
+  await User.updateOne({ _id: this._id }, { $addToSet: { following: _id } });
+};
+
+userSchema.methods.unfollow = async function (_id) {
+  await User.updateOne({ _id }, { $pull: { followers: this._id } });
+  await User.updateOne({ _id: this._id }, { $pull: { following: _id } });
+};
 
 const tsession = (() => {
   var session = null;

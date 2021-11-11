@@ -1,3 +1,8 @@
 :host {
   max-width: 100%;
+  flex-grow: 1;
+}
+
+.cat-container {
+  max-width: 80%;
 }

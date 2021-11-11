@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Category from './Category';
 import Comment from './Comment';
 import { allResolved, uniqueValidator } from '../utils';
+import User from './User';
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -61,12 +62,13 @@ ratingSchema.methods.toJSON = function () {
 productSchema.methods.toJSON = async function () {
   return {
     id: this._id,
-    owner: this.owner,
+    owner: await this.owner.toJSON(),
     category: this.category,
     name: this.name,
     description: this.description,
     quality: this.quality,
     datePublished: this.datePublished,
+    state: this.state,
     views: this.views,
     likes: this.likes,
     rating: this.ratings.reduce((avg, r) => avg + r.rating, 0) / Math.max(this.ratings.length, 1),
@@ -79,7 +81,7 @@ productSchema.methods.toJSONFor = async function (user) {
   const product = await this.toJSON();
   
   if (user) {
-    product.owner = this.owner ? this.owner.toJSONFor(user) : null;
+    //product.owner = this.owner ? this.owner.toJSONFor(user) : null;
     product.isFavorited = user.hasFavorite(this);
     const ownRating = this.ratings.find(r => r.from.toString() === user._id.toString());
     product.userRating = ownRating ? ownRating.rating : null;
