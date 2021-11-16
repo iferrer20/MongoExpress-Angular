@@ -39,6 +39,7 @@ export function checkJWT(token) {
   try {
     return jwt.verify(token, jwtkey);
   } catch (e) {
+    console.log(e)
     throw new Error("Invalid JWT token");
   }
 }
