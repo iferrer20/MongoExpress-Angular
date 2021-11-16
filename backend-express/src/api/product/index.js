@@ -121,7 +121,7 @@ router.get('/', readUserJwt(true), ah(async (req, res) => {
 
 router.post('/', readUserJwt(), ah(async (req, res) => {
   const { category, name, description, quality, state } = req.body;
-  const { image } = req.files;
+  const { image } = (req.files || {});
 
   let product = new Product({
     owner: req.user._id,

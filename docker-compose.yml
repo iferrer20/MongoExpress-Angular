@@ -19,17 +19,17 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=land
   backend:
-    image: node:14
+    image: node:14-alpine
     container_name: "land_backend"
     working_dir: /home/node/app
     volumes: 
       - ./backend-express:/home/node/app
       - ./data/img/:/home/node/app/img
-    command: /bin/bash -c "usermod -u `stat -c '%u' package.json` node && groupmod -g `stat -c '%g' package.json` node && su node -c 'npm install && npm run dev'"
+    command: sh ./.startnode.sh ${PROD}
   dev:
-    image: node:14
+    image: node:14-alpine
     container_name: "land_dev"
     working_dir: /home/node/app
     volumes:
       - ./frontend-angular:/home/node/app
-    command: /bin/bash -c "usermod -u `stat -c '%u' .` node && groupmod -g `stat -c '%g' .` node && su node -c 'npm install && npm start -- --port 80 --host 0.0.0.0 --disable-host-check --deploy-url /dev/ --base-href /dev/'"
+    command: sh ./.startnode.sh ${PROD}

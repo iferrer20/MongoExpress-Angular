@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng serve --port 80 --host 0.0.0.0 --disable-host-check --deploy-url /dev/ --base-href /dev/",
+    "build": "rm -rf dist/* && ng build --delete-output-path false --output-path dist/",
     "watch": "ng build --watch --configuration development",
+    "prod": "npm run build",
     "test": "ng test"
   },
   "private": true,
