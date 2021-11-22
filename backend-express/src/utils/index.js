@@ -1,12 +1,21 @@
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import jwtkey from '../private/jwt-key';
+import client from 'prom-client';
 
 class MultiPromiseError extends Error {
   constructor(errors) {
     super();
     this.errors = errors;
   }
+}
+
+const counters = {};
+export function getEpCounter(name) {
+  return counters[name] || (counters[name] = new client.Counter({
+    name,
+    help: 'The total number of processed requests'
+  }));
 }
 
 export async function allResolved(prom) {

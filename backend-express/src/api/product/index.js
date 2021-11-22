@@ -1,6 +1,6 @@
 import { response, Router } from 'express';
 import Product from '../../models/Product';
-import { allResolved, checkJWT } from '../../utils';
+import { allResolved, checkJWT, getEpCounter} from '../../utils';
 import ah from 'express-async-handler'; /* asyncHandler */
 import { readUserJwt } from '../../middlewares/read_user_jwt';
 import Category from '../../models/Category';
@@ -38,7 +38,7 @@ router.param('product', ah(async (req, res, next, slug) => {
   next();
 }));
 
-router.get('/', readUserJwt(true), ah(async (req, res) => {
+router.get('/', readUserJwt(true), ah(async (req, res) => {getEpCounter('productsGet').inc();
 
   // Filters
   const { text, category, quality, order, page } = req.query;
@@ -119,7 +119,7 @@ router.get('/', readUserJwt(true), ah(async (req, res) => {
   res.json({ list, total });
 }));
 
-router.post('/', readUserJwt(), ah(async (req, res) => {
+router.post('/', readUserJwt(), ah(async (req, res) => {getEpCounter('createProduct').inc();
   const { category, name, description, quality, state } = req.body;
   const { image } = (req.files || {});
 
@@ -140,12 +140,12 @@ router.post('/', readUserJwt(), ah(async (req, res) => {
   res.json({ product, slug: product.slug });
 }));
 
-router.get('/:product', readUserJwt(), ah(async (req, res) => {
+router.get('/:product', readUserJwt(), ah(async (req, res) => {getEpCounter('getProduct').inc();
   await req.params.product.view();
   res.json(await req.params.product.toJSONFor(req.user));
 }));
 
-router.put('/:product', readUserJwt(true), ah(async (req, res) => {
+router.put('/:product', readUserJwt(true), ah(async (req, res) => {getEpCounter('updateProduct').inc();
   let product = req.params.product;
 
   if (!(product.owner._id.toString() === req.user._id.toString() || req.user.privileges >= 2)) {
@@ -165,7 +165,7 @@ router.put('/:product', readUserJwt(true), ah(async (req, res) => {
   res.json(await req.params.product.toJSONFor(req.user));
 }));
 
-router.delete('/:product', readUserJwt(false), ah(async (req, res) => {
+router.delete('/:product', readUserJwt(false), ah(async (req, res) => {getEpCounter('deleteProduct').inc();
   let product = req.params.product;
 
   if (!(product.owner._id.toString() === req.user._id.toString() || req.user.privileges >= 2)) {
@@ -177,12 +177,12 @@ router.delete('/:product', readUserJwt(false), ah(async (req, res) => {
   res.json({ ok: true });
 }));
 
-router.post('/like/:product', readUserJwt(false) , ah(async (req, res) => {
+router.post('/like/:product', readUserJwt(false) , ah(async (req, res) => {getEpCounter('likeProduct').inc();
   await req.user.favorite(req.params.product); 
   res.end();
 }));
 
-router.post('/rate/:product', readUserJwt(false) , ah(async (req, res) => {
+router.post('/rate/:product', readUserJwt(false) , ah(async (req, res) => {getEpCounter('rateProduct').inc();
   const value = +req.body.value;
   if (isNaN(value) || value > 5 || value < 0) {
     return req.sendStatus(400);
@@ -205,17 +205,17 @@ router.param('comment', ah(async (req, res, next, _id) => {
   next();
 }));
 
-router.post('/comment/:product', readUserJwt(false), ah(async (req, res) => {
+router.post('/comment/:product', readUserJwt(false), ah(async (req, res) => {getEpCounter('commentProduct').inc();
   const comment = await req.params.product.comment(req.user, req.body);
   res.json(await comment.toJSON());
 }));
 
-router.delete('/comment/:product/:comment', readUserJwt(false), ah(async (req, res) => {
+router.delete('/comment/:product/:comment', readUserJwt(false), ah(async (req, res) => {getEpCounter('deleteCommentProduct').inc();
   await req.params.comment.delete(req.user);
   res.end();
 }));
 
-router.get('/image/:slug', ah(async (req, res) => {
+router.get('/image/:slug', ah(async (req, res) => {getEpCounter('getProductImage').inc();
   const { slug } = req.params;
   res.sendFile(path.resolve(productimgdir + slug));
 }));

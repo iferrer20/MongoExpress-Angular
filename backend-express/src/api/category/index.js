@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import Category from '../../models/Category';
-import { allResolved } from '../../utils';
+import { allResolved,getEpCounter } from '../../utils';
 import ah from 'express-async-handler'; /* asyncHandler */
 
 const router = Router();
@@ -17,7 +17,7 @@ router.param('category', ah(async (req, res, next, slug) => {
   next();
 }));
 
-router.get('/', ah(async (req, res) => {
+router.get('/', ah(async (req, res) => {getEpCounter('categoriesGet').inc();
   let [list, total] = await allResolved([
     Category.find().exec(),
     Category.countDocuments().exec()
@@ -28,7 +28,7 @@ router.get('/', ah(async (req, res) => {
   res.json({ list, total });
 }));
 
-router.post('/', ah(async (req, res) => {
+router.post('/', ah(async (req, res) => {getEpCounter('createCategory').inc();
   // TODO: check if current user is admin
   const { shortName, description, iconName } = req.body;
   let category = new Category({
@@ -49,11 +49,11 @@ router.post('/', ah(async (req, res) => {
   res.json({ category, slug: category.slug });
 }));
 
-router.get('/:category', ah(async (req, res) => {
+router.get('/:category', ah(async (req, res) => {getEpCounter('getCategory').inc();
   res.json({ category: req.params.category });
 }));
 
-router.put('/:category', ah(async (req, res) => {
+router.put('/:category', ah(async (req, res) => {getEpCounter('updateCategory').inc();
   // TODO: check if current user is admin
   const { shortName, description, iconName } = req.body;
   let category = req.params.category;
@@ -76,7 +76,7 @@ router.put('/:category', ah(async (req, res) => {
   res.json({ category, slug: category.slug });
 }));
 
-router.delete('/:category', ah(async (req, res) => {
+router.delete('/:category', ah(async (req, res) => {getEpCounter('deleteCategory').inc();
   // TODO: check if current user is admin
   await Category.deleteOne({ _id: req.params.category._id });
   res.json({ ok: true });

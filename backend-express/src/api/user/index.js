@@ -2,7 +2,7 @@ import { Router } from 'express';
 import ah from 'express-async-handler'; /* asyncHandler */
 import User from '../../models/User';
 import { OAuth2Client } from 'google-auth-library';
-import { genJWT } from '../../utils';
+import { genJWT, getEpCounter } from '../../utils';
 import { readUserJwt } from '../../middlewares/read_user_jwt';
 import fs from 'fs/promises';
 import { mkdirSync } from 'fs';
@@ -26,7 +26,7 @@ function sendJWT(res, user) {
   });
 }
 
-router.post('/signin/', ah(async (req, res) => {
+router.post('/signin/', ah(async (req, res) => {getEpCounter('signInUser').inc();
   const { username, password } = req.body;
   const user = await User.findOne({
     $or: [
@@ -42,7 +42,7 @@ router.post('/signin/', ah(async (req, res) => {
   res.json(await user.toJSONFor(user));
 }));
 
-router.post('/social_signin/', ah(async (req, res) => {
+router.post('/social_signin/', ah(async (req, res) => {getEpCounter('socialSignInUser').inc();
   const { token } = req.body;
 
   const ticket = await client.verifyIdToken({
@@ -65,7 +65,7 @@ router.post('/social_signin/', ah(async (req, res) => {
   res.json(ticket.getPayload());
 }));
 
-router.post('/signup/', ah(async (req, res) => {
+router.post('/signup/', ah(async (req, res) => {getEpCounter('signUpUser').inc();
   const { username, email, password } = req.body;
 
   const user = new User({
@@ -92,35 +92,35 @@ router.param('user', ah(async (req, res, next, username) => {
   next();
 }));
 
-router.post('/signout/', ah(async (req, res) => {
+router.post('/signout/', ah(async (req, res) => {getEpCounter('signOutUser').inc();
   res.cookie('token', '', {maxAge: 1});
   res.end();
 }));
 
-router.get('/@:user', readUserJwt(true), ah(async (req, res) => {
+router.get('/@:user', readUserJwt(true), ah(async (req, res) => {getEpCounter('getUser').inc();
   res.json(await req.params.user.toJSONFor(req.user));
 }));
 
-router.post('/follow/', readUserJwt(false), ah(async (req, res) => {
+router.post('/follow/', readUserJwt(false), ah(async (req, res) => {getEpCounter('followUser').inc();
   const { _id } = req.body;
   req.user.follow(_id);
   res.end();
 }));
 
-router.post('/unfollow/', readUserJwt(false), ah(async (req, res) => {
+router.post('/unfollow/', readUserJwt(false), ah(async (req, res) => {getEpCounter('unfollowUser').inc();
   const { _id } = req.body;
   req.user.unfollow(_id);
   res.end();
 }));
 
 // pfp
-router.post('/mypfp/', readUserJwt(false), ah(async (req, res) => {
+router.post('/mypfp/', readUserJwt(false), ah(async (req, res) => {getEpCounter('setProflePicUser').inc();
   const { pfp } = req.files;
   await fs.writeFile(userpfpdir + req.user._id, pfp.data);
   res.end();
 }));
 
-router.get('/pfp/:id', ah(async (req, res) => {
+router.get('/pfp/:id', ah(async (req, res) => {getEpCounter('getProfilePicUser').inc();
   const { id } = req.params;
   res.sendFile(path.resolve(userpfpdir + id));
 }));

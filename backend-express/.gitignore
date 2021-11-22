@@ -2,5 +2,4 @@ package-lock.json
 node_modules
 dist/*
 !dist/.gitkeep
-src/private/*
 !src/private/.gitkeep

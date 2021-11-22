@@ -17,7 +17,7 @@ app.use(fileUpload());
 
 
 /* Database */
-mongoose.connect('mongodb://root:land@land_db/');
+mongoose.connect('mongodb://root:land@land_db' + (process.env.PROD ? '_prod' : '') + '/');
 
 /* api */
 app.use('/api/', api);
